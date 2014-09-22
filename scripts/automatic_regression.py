@@ -40,6 +40,8 @@ modules = [
     'regression/test_landing_field_length.py',
     'regression/test_take_off_field_length.py',
     'regression/test_aerodynamics.py',
+    'regression/test_cmalpha.py',
+    'regression/test_cnbeta.py',
     
     # tutorials
     

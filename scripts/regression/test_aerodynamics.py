@@ -6,8 +6,11 @@
 import SUAVE
 from SUAVE.Attributes import Units
 from SUAVE.Structure import Data
-from SUAVE.Methods.Aerodynamics.Lift import compute_aircraft_lift
-from SUAVE.Methods.Aerodynamics.Drag import compute_aircraft_drag
+#from SUAVE.Methods.Aerodynamics.Lift import compute_aircraft_lift
+#from SUAVE.Methods.Aerodynamics.Drag import compute_aircraft_drag
+
+from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift import compute_aircraft_lift
+from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Drag import compute_aircraft_drag
 
 import numpy as np
 import pylab as plt
@@ -82,12 +85,14 @@ def main():
     for k in ['fuselages','wings','propulsors']:
         geometry[k] = deepcopy(vehicle[k])    
     geometry.reference_area = vehicle.reference_area  
+    #geometry.wings[0] = Data()
+    #geometry.wings[0].vortex_lift = False
     
     # --------------------------------------------------------------------
     # Test compute Lift
     # --------------------------------------------------------------------
     
-    compute_aircraft_lift(conditions, configuration, None) # geometry is third variable, not used
+    compute_aircraft_lift(conditions, configuration, geometry) 
     
     lift = conditions.aerodynamics.lift_breakdown.total
     lift_r = np.array([-2.07712357, -0.73495391, -0.38858687, -0.1405849 ,  0.22295808,
@@ -484,7 +489,7 @@ if __name__ == '__main__':
     conditions.freestream.temperature = np.array([218.92391647]*test_num)
     conditions.freestream.pressure = np.array([23908.73408391]*test_num)
     
-    compute_aircraft_lift(conditions, configuration, None) # geometry is third variable, not used
+    compute_aircraft_lift(conditions, configuration, geometry) # geometry is third variable, not used
     CL = conditions.aerodynamics.lift_breakdown.total    
     
     compute_aircraft_drag(conditions, configuration, geometry)

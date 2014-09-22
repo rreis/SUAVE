@@ -15,6 +15,7 @@ from Airfoils import Airfoil
 class Wing(Lofted_Body):
     def __defaults__(self):
         self.tag = 'Wing'
+
         self.mass_properties = Mass_Properties()
         self.position  = [0.0,0.0,0.0]
         
