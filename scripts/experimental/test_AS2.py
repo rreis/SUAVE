@@ -70,9 +70,9 @@ def define_vehicle():
     vehicle.mass_properties.operating_empty      = 22500    # kg
     vehicle.mass_properties.takeoff              = 52163    # kg
     vehicle.mass_properties.max_zero_fuel        = 0.9 * vehicle.mass_properties.max_takeoff 
-    vehicle.mass_properties.cargo                = 10000.  * Units.kilogram
+    vehicle.mass_properties.cargo                = 1000.  * Units.kilogram
 
-    vehicle.mass_properties.center_of_gravity         = [60 * Units.feet, 0, 0]  # Not correct
+    vehicle.mass_properties.center_of_gravity         = [26.3 * Units.feet, 0, 0]
     vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] # Not Correct
 
     # envelope properties
@@ -80,9 +80,9 @@ def define_vehicle():
     vehicle.envelope.limit_load    = 1.5
 
     # basic parameters
-    vehicle.reference_area        = 124.862       
-    vehicle.passengers            = 8
-    vehicle.systems.control  = "fully powered" 
+    vehicle.reference_area       = 124.862       
+    vehicle.passengers           = 8
+    vehicle.systems.control      = "fully powered" 
     vehicle.systems.accessories = "long range"
     
     
@@ -92,7 +92,6 @@ def define_vehicle():
     
     wing = SUAVE.Components.Wings.Wing()
     wing.tag = 'Main Wing'
-
     wing.areas.reference = 125.4    #
     wing.aspect_ratio    = 3.63     #
     wing.spans.projected = 21.0     #
@@ -103,6 +102,15 @@ def define_vehicle():
 
     # size the wing planform
     SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
+    
+    # size the wing planform ----------------------------------
+    # These can be determined by the wing sizing function
+    # Note that the wing sizing function will overwrite span
+    wing.chords.root  = 12.9
+    wing.chords.tip   = 1.0
+    wing.areas.wetted = wing.areas.reference*2.0 
+    # The span that would normally be overwritten here doesn't match
+    # ---------------------------------------------------------    
     
     wing.chords.mean_aerodynamic = 7.0
     wing.areas.exposed = 0.8*wing.areas.wetted
@@ -186,6 +194,14 @@ def define_vehicle():
     wing.span_efficiency = 0.9
     wing.twists.root = 0.0*Units.degrees
     wing.twists.tip  = 0.0*Units.degrees
+
+    wing.vertical   = True 
+    wing.t_tail     = False
+    wing.eta         = 1.0
+
+    wing.high_lift    = False                 #
+    wing.high_mach    = True
+    wing.vortex_lift  = False
     wing.vertical = True
     wing.transition_x_upper = 0.9
     wing.transition_x_lower = 0.9    
@@ -215,6 +231,8 @@ def define_vehicle():
     # size fuselage planform
     SUAVE.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
     
+    fuselage.areas.wetted = 615.0
+    
     # add to vehicle
     vehicle.append_component(fuselage)
     
@@ -238,7 +256,7 @@ def define_vehicle():
     turbojet.burner_pressure_ratio         = 1.0      #
     turbojet.turbine_nozzle_pressure_ratio = 1.0      #
     turbojet.Tt4                           = 1500.0   #
-    turbojet.design_thrust                 = 15000.0 * Units.lb  # 31350 lbs
+    turbojet.thrust.design                 = 15000.0 * Units.lb  # 31350 lbs
     turbojet.number_of_engines             = 3.0      #
     turbojet.engine_length                 = 8.0      # meters - includes 3.4m inlet
     turbojet.lengths = Data()

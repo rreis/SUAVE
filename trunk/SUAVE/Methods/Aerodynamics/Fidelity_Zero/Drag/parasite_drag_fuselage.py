@@ -56,6 +56,7 @@ def parasite_drag_fuselage(conditions,configuration,fuselage):
     Swet        = fuselage.areas.wetted
     
     l_fus  = fuselage.lengths.cabin
+    #l_fus  = fuselage.lengths.total
     d_fus  = fuselage.width
     l_nose = fuselage.lengths.nose
     l_tail = fuselage.lengths.tail

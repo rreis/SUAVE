@@ -1,9 +1,9 @@
-# full_setup_737800.py
+# full_setup_aircraft.py
 # 
 # Created:  SUave Team    , Aug 2014
 # Modified: Tim MacDonald , Sep 2014
 
-""" setup file for a mission with a Boeing 737-800 single aisle
+""" setup file for a mission with an aircraft of your choice
 """
 
 
@@ -16,8 +16,11 @@ from SUAVE.Attributes import Units
 
 import numpy as np
 import pylab as plt
+from SUAVE.Attributes.Atmospheres       import Atmosphere
 
 import copy, time
+from SUAVE.AA241.Conditions.compute_conditions import compute_conditions
+from SUAVE.AA241.Drag.fuselage_parasite_drag   import fuselage_parasite_drag
 
 from SUAVE.Structure import (
 Data, Container, Data_Exception, Data_Warning,
@@ -26,9 +29,22 @@ Data, Container, Data_Exception, Data_Warning,
 def full_setup_737800():
 
     vehicle = vehicle_setup()
-    mission = mission_setup(vehicle)
     
-    return vehicle, mission
+    # ------- Set sizing case here ------------------------############
+    
+    altitude = 35000 * Units.ft      # default is meters
+    velocity = 500   * Units.knots   # default is m/s
+    # maybe mach number instead
+    
+    # -----------------------------------------------------############
+    
+    conditions = compute_conditions(altitude,velocity)   
+    
+    cd_fuselage = fuselage_parasite_drag(vehicle,conditions)
+    
+    print cd_fuselage
+    
+    return vehicle
 
 def vehicle_setup():
     
@@ -234,6 +250,7 @@ def vehicle_setup():
     turbofan.thrust.design                 = 25000.0  #
     turbofan.number_of_engines             = 2.0      #
     
+    turbofan.lengths = Data()
     turbofan.lengths.engine                = 3.0
     
     # size the turbofan
@@ -314,174 +331,5 @@ def vehicle_setup():
     
     return vehicle    
 
-
-# ----------------------------------------------------------------------
-#   Define the Mission
-# ----------------------------------------------------------------------
-def mission_setup(vehicle):
-    
-    # ------------------------------------------------------------------
-    #   Initialize the Mission
-    # ------------------------------------------------------------------
-
-    mission = SUAVE.Attributes.Missions.Mission()
-    mission.tag = 'The Test Mission'
-
-    # atmospheric model
-    planet = SUAVE.Attributes.Planets.Earth()
-    atmosphere = SUAVE.Attributes.Atmospheres.Earth.US_Standard_1976()
-    
-    #airport
-    airport = SUAVE.Attributes.Airports.Airport()
-    airport.altitude   =  0.0  * Units.ft
-    airport.delta_isa  =  0.0
-    airport.atmosphere = SUAVE.Attributes.Atmospheres.Earth.US_Standard_1976()
-    
-    mission.airport = airport
-    
-    
-    # ------------------------------------------------------------------
-    #   First Climb Segment: constant Mach, constant segment angle 
-    # ------------------------------------------------------------------
-    
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
-    segment.tag = "Climb - 1"
-    
-    # connect vehicle configuration
-    segment.config = vehicle.configs.takeoff
-    
-    # define segment attributes
-    segment.atmosphere     = atmosphere
-    segment.planet         = planet    
-    
-    segment.altitude_start = 0.0   * Units.km
-    segment.altitude_end   = 3.0   * Units.km
-    segment.air_speed      = 125.0 * Units['m/s']
-    segment.climb_rate     = 6.0   * Units['m/s']
-    
-    # add to misison
-    mission.append_segment(segment)
-    
-    
-    # ------------------------------------------------------------------
-    #   Second Climb Segment: constant Speed, constant segment angle 
-    # ------------------------------------------------------------------    
-    
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
-    #segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Mach_Constant_Rate()
-    segment.tag = "Climb - 2"
-    
-    # connect vehicle configuration
-    segment.config = vehicle.configs.cruise
-    
-    # segment attributes
-    segment.atmosphere     = atmosphere
-    segment.planet         = planet    
-    
-    #segment.altitude_start = 3.0   * Units.km ## Optional
-    segment.altitude_end   = 8.0   * Units.km
-    segment.air_speed      = 190.0 * Units['m/s']
-    segment.climb_rate     = 6.0   * Units['m/s']
-    #segment.mach_number    = 0.5
-    #segment.climb_rate     = 6.0   * Units['m/s']
-    
-    # add to mission
-    mission.append_segment(segment)
-
-    
-    # ------------------------------------------------------------------
-    #   Third Climb Segment: constant Mach, constant segment angle 
-    # ------------------------------------------------------------------    
-    
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
-    segment.tag = "Climb - 3"
-    
-    # connect vehicle configuration
-    segment.config = vehicle.configs.cruise
-    
-    # segment attributes
-    segment.atmosphere   = atmosphere
-    segment.planet       = planet        
-    
-    segment.altitude_end = 10.668 * Units.km
-    segment.air_speed    = 226.0  * Units['m/s']
-    segment.climb_rate   = 3.0    * Units['m/s']
-    
-    # add to mission
-    mission.append_segment(segment)
-    
-    
-    # ------------------------------------------------------------------    
-    #   Cruise Segment: constant speed, constant altitude
-    # ------------------------------------------------------------------    
-    
-    segment = SUAVE.Attributes.Missions.Segments.Cruise.Constant_Speed_Constant_Altitude()
-    segment.tag = "Cruise"
-    
-    # connect vehicle configuration
-    segment.config = vehicle.configs.cruise
-    
-    # segment attributes
-    segment.atmosphere = atmosphere
-    segment.planet     = planet        
-    
-    #segment.altitude   = 10.668  * Units.km     # Optional
-    segment.air_speed  = 230.412 * Units['m/s']
-    segment.distance   = 3933.65 * Units.km
-        
-    mission.append_segment(segment)
-
-    # ------------------------------------------------------------------    
-    #   First Descent Segment: consant speed, constant segment rate
-    # ------------------------------------------------------------------    
-
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
-    segment.tag = "Descent - 1"
-    
-    # connect vehicle configuration
-    segment.config = vehicle.configs.cruise
-    
-    # segment attributes
-    segment.atmosphere   = atmosphere
-    segment.planet       = planet   
-    
-    segment.altitude_end = 5.0   * Units.km
-    segment.air_speed    = 170.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s']
-    
-    # add to mission
-    mission.append_segment(segment)
-    
-
-    # ------------------------------------------------------------------    
-    #   Second Descent Segment: consant speed, constant segment rate
-    # ------------------------------------------------------------------    
-
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
-    segment.tag = "Descent - 2"
-
-    # connect vehicle configuration
-    segment.config = vehicle.configs.cruise
-
-    # segment attributes
-    segment.atmosphere   = atmosphere
-    segment.planet       = planet    
-    
-    segment.altitude_end = 0.0   * Units.km
-    segment.air_speed    = 145.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s']
-
-    # append to mission
-    mission.append_segment(segment)
-
-    
-    # ------------------------------------------------------------------    
-    #   Mission definition complete    
-    # ------------------------------------------------------------------
-    
-    return mission
-
-
-if __name__ == '__main__': 
-    
-    full_setup()
+if __name__ == '__main__':
+    full_setup_737800()

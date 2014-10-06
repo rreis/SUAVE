@@ -102,7 +102,9 @@ def vehicle_setup():
     wing.high_lift    = False                 #
     wing.high_mach    = True
     wing.vortex_lift  = False
-    wing.transition_x = 0.9    
+	
+    wing.transition_x_upper = 0.9    
+    wing.transition_x_lower = 0.9 
     
     # add to vehicle
     vehicle.append_component(wing)
@@ -139,7 +141,9 @@ def vehicle_setup():
     wing.high_lift    = False                 #
     wing.high_mach    = True
     wing.vortex_lift  = False
-    wing.transition_x = 0.9    
+	
+    wing.transition_x_upper = 0.9    
+    wing.transition_x_lower = 0.9   
     
     # add to vehicle
     vehicle.append_component(wing)
@@ -164,10 +168,10 @@ def vehicle_setup():
     
     wing.chords.mean_aerodynamic = 4.2
     wing.areas.exposed = 1.0*wing.areas.wetted
-    wing.areas.affected = 1.0*wing.areas.wetted
+    wing.areas.affected = 0.0*wing.areas.wetted
     wing.span_efficiency = 0.9
     wing.twists.root = 0.0*Units.degrees
-    wing.twists.tip  = 0.0*Units.degrees  
+    wing.twists.tip  = 0.0*Units.degrees
     wing.origin          = [40,0,0]
     wing.aerodynamic_center = [2,0,0]    
     wing.vertical   = True 
@@ -177,7 +181,8 @@ def vehicle_setup():
     wing.high_lift    = False                 #
     wing.high_mach    = True
     wing.vortex_lift  = False
-    wing.transition_x = 0.9    
+    wing.transition_x_upper = 0.9    
+    wing.transition_x_lower = 0.9   
         
     # add to vehicle
     vehicle.append_component(wing)

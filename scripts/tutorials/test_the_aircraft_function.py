@@ -19,11 +19,8 @@ import pylab as plt
 import copy, time
 
 from full_setup            import full_setup
-<<<<<<< HEAD
-=======
 from full_setup_737800     import full_setup_737800
 from full_setup_AS2        import full_setup_AS2
->>>>>>> origin/feature-supersonic
 from the_aircraft_function import the_aircraft_function
 from post_process          import post_process
 
@@ -34,11 +31,10 @@ from post_process          import post_process
 
 def main():
     
-<<<<<<< HEAD
-    vehicle, mission = full_setup()
-=======
+
+    #vehicle, mission = full_setup()
     vehicle, mission = full_setup_AS2()
->>>>>>> origin/feature-supersonic
+
     
     results = the_aircraft_function(vehicle,mission)
     

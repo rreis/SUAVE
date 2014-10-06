@@ -96,7 +96,7 @@ def compressible_mixed_flat_plate(Re,Ma,Tc,xt):
 # this will run from command line, put simple tests for your code here
 if __name__ == '__main__':    
     
-    validation_test = 0
+    validation_test = 1
     
     if validation_test:
     
