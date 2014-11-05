@@ -1,7 +1,7 @@
 # test_Concorde.py
 # 
-# Created:  Tim MacDonald, 6/25/14
-# Modified: Tim MacDonald, 7/21/14
+# Created:  Tim MacDonald, Jun 14
+# Modified: Tim MacDonald, Nov 14
 
 """ evaluate a mission with a Concorde
 """
@@ -61,15 +61,27 @@ def define_vehicle():
     # Data mostly from www.concordesst.com
 
     # mass properties
-    vehicle.Mass_Props.m_full       = 186880   # kg
-    vehicle.Mass_Props.m_empty      = 78700    # kg
-    vehicle.Mass_Props.m_takeoff    = 185000   # kg
-    vehicle.Mass_Props.m_flight_min = 100000   # kg - Note: Actual value is unknown
-
+    vehicle.mass_properties.max_takeoff          = 185000   # kg
+    vehicle.mass_properties.operating_empty      = 78700    # kg
+    vehicle.mass_properties.takeoff              = 185000   # kg
+    vehicle.mass_properties.max_zero_fuel        = 0.9 * vehicle.mass_properties.max_takeoff 
+    vehicle.mass_properties.cargo                = 1000.  * Units.kilogram
+    
+    vehicle.mass_properties.center_of_gravity    = [35.0,0,0]
+    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] # Not Correct
+    
+    # envelope properties
+    vehicle.envelope.ultimate_load = 3.5
+    vehicle.envelope.limit_load    = 1.5
+    
     # basic parameters
-    vehicle.delta    = 55.0                     # deg
-    vehicle.S        = 358.25                   # m^2
-    vehicle.A_engine = np.pi*(1.212/2)**2       # m^2   
+    vehicle.reference_area         = 358.25
+    vehicle.passengers             = 100
+    vehicle.systems.control        = "fully powered"
+    vehicle.systems.accessories    = "long range"
+    #vehicle.delta                 = 55.0                     # deg
+    #vehicle.reference_area        = 358.25                   # m^2
+    #vehicle.A_engine = np.pi*(1.212/2)**2                    # m^2   
     
     
     # ------------------------------------------------------------------        
@@ -78,6 +90,13 @@ def define_vehicle():
     
     wing = SUAVE.Components.Wings.Wing()
     wing.tag = 'Main Wing'
+    wing.areas.reference    = 358.25
+    wing.aspect_ratio       = 3.63
+    wing.spans.projected    = 21.0
+    wing.sweep              = 0 * Units.deg
+    wing.symmetric          = True
+    wing.thickness_to_chord = 0.03
+    wing.taper              = 0.7
     
     wing.sref      = 358.25         #
     wing.ar        = 1.83           #
