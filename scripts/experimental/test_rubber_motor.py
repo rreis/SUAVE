@@ -5,7 +5,7 @@
 #Robert A. McDonald
 
 import SUAVE
-from SUAVE.Components.Energy.Converters import MotorMap
+from SUAVE.Components.Energy_old.Converters import MotorMap
 import matplotlib.pyplot as pl
 import numpy as np
 

@@ -19,6 +19,7 @@ import numpy as np
 import pylab as plt
 
 import copy, time
+from scipy import integrate
 
 from SUAVE.Structure import (
 Data, Container, Data_Exception, Data_Warning,
@@ -616,6 +617,7 @@ def post_process(vehicle,mission,results):
     # ------------------------------------------------------------------
      
     fig = plt.figure("Velocity and Density")
+    dist_base = 0.0
     for segment in results.segments.values():
             
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
@@ -623,17 +625,26 @@ def post_process(vehicle,mission,results):
         density   = segment.conditions.freestream.density[:,0]
         mach_number   = segment.conditions.freestream.mach_number[:,0]
         
-        axes = fig.add_subplot(2,1,1)
+        axes = fig.add_subplot(3,1,1)
         axes.plot( time , velocity , 'bo-' )
         axes.set_xlabel('Time (min)')
         axes.set_ylabel('Velocity (m/s)')
         axes.grid(True)
         
-        axes = fig.add_subplot(2,1,2)
+        axes = fig.add_subplot(3,1,2)
         axes.plot( time , mach_number , 'bo-' )
         axes.set_xlabel('Time (min)')
         axes.set_ylabel('Mach')
-        axes.grid(True)       
+        axes.grid(True)
+        
+        distance = np.array([dist_base] * len(time))
+        distance[1:] = integrate.cumtrapz(velocity*1.94,time/60.0)+dist_base
+        dist_base = distance[-1]
+        
+        axes = fig.add_subplot(3,1,3)
+        axes.plot( time , distance , 'bo-' )
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('Distance (nmi)')    
     
     
     
@@ -713,30 +724,36 @@ def post_process(vehicle,mission,results):
     # ------------------------------------------------------------------
     
     fig = plt.figure("Drag Components")
-    axes = plt.gca()    
-    for i, segment in enumerate(results.segments.values()):
+    for segment in results.segments.values():
         
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
-        drag_breakdown = segment.conditions.aerodynamics.drag_breakdown
-        cdp = drag_breakdown.parasite.total[:,0]
-        cdi = drag_breakdown.induced.total[:,0]
-        cdc = drag_breakdown.compressible.total[:,0]
-        cdm = drag_breakdown.miscellaneous.total[:,0]
-        cd  = drag_breakdown.total[:,0]
+        Lift   = -segment.conditions.frames.wind.lift_force_vector[:,2]
+        Drag   = -segment.conditions.frames.wind.drag_force_vector[:,0]
+        Thrust = segment.conditions.frames.body.thrust_force_vector[:,0]
+        mach_number   = segment.conditions.freestream.mach_number[:,0]
+        altitude = segment.conditions.freestream.altitude[:,0] / Units.km
         
+        axes = fig.add_subplot(3,1,1)
+        axes.plot(time, altitude, 'bo-')        
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('Altitude (km)')
+        axes.grid(True)        
         
-        axes.plot( time , cdp , 'ko-', label='CD_P' )
-        axes.plot( time , cdi , 'bo-', label='CD_I' )
-        axes.plot( time , cdc , 'go-', label='CD_C' )
-        axes.plot( time , cdm , 'yo-', label='CD_M' )
-        axes.plot( time , cd  , 'ro-', label='CD'   )
+        axes = fig.add_subplot(3,1,2)
+        axes.plot( time , mach_number , 'bo-' )
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('Mach')
+        axes.grid(True)        
         
-        if i == 0:
-            axes.legend(loc='upper center')
-        
-    axes.set_xlabel('Time (min)')
-    axes.set_ylabel('CD')
-    axes.grid(True)
+        axes = fig.add_subplot(3,1,3)
+        axes.plot( time , Lift/Drag , 'bo-' )
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('L/D')
+        axes.grid(True) 
+    
+    #----
+    # for Suave Paper
+    # ---
     
     
     return     
