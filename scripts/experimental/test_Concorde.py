@@ -40,6 +40,9 @@ def main():
     # evaluate the mission
     results = evaluate_mission(vehicle,mission)
     
+    # evaluate weights
+    results = evaluate_weights(vehicle,results)    
+    
     # plot results
     post_process(vehicle,mission,results)
     
@@ -132,7 +135,7 @@ def define_vehicle():
     # ------------------------------------------------------------------
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Vertcal Stabilizer'   
+    wing.tag = 'Vertical Stabilizer'   
     
     wing.areas.reference    = 33.91
     wing.aspect_ratio       = 1.07
@@ -195,7 +198,7 @@ def define_vehicle():
     
     #turbojet = SUAVE.Components.Propulsors.Turbojet2PASS()
     turbojet = SUAVE.Components.Propulsors.Turbojet_SupersonicPASS()
-    turbojet.tag = 'Turbojet Variable Nozzle'
+    turbojet.tag = 'Turbo Fan' # Using turbofan tag to feed into weights module
     
     turbojet.propellant = SUAVE.Attributes.Propellants.Jet_A1()
     
@@ -551,7 +554,7 @@ def post_process(vehicle,mission,results):
         axes.grid(True)   
         
         power = velocity*Thrust
-        mdot_power = mdot*segment.config.propulsion_model['Turbojet Variable Nozzle'].propellant.specific_energy
+        mdot_power = mdot*segment.config.propulsion_model['Turbo Fan'].propellant.specific_energy
         axes = fig.add_subplot(3,1,3)
         axes.plot( time , power/mdot_power , 'bo-' )
         axes.set_xlabel('Time (mins)')
@@ -759,6 +762,29 @@ def post_process(vehicle,mission,results):
     return     
 
 
+# ----------------------------------------------------------------------
+#   Evaluate Aircraft Weights
+# ----------------------------------------------------------------------
+
+def evaluate_weights(vehicle,results):
+    
+    # unpack 
+    from SUAVE.Methods.Weights.Correlations.Tube_Wing import empty
+    
+    # evaluate
+    breakdown = empty(vehicle)
+     
+    # pack
+    vehicle.mass_properties.breakdown = breakdown
+    vehicle.mass_properties.operational_empty = vehicle.mass_properties.breakdown.empty
+    
+    for config in vehicle.configs:
+        config.mass_properties.operational_empty = vehicle.mass_properties.breakdown.empty
+    
+    results.weight_breakdown = breakdown
+    
+    return results    
+
 
 # ---------------------------------------------------------------------- 
 #   Module Tests
@@ -795,3 +821,4 @@ def profile():
     mission = define_mission(vehicle)
     results = evaluate_mission(vehicle,mission)
     print 'Run Time:' , (time.time()-t0)
+    

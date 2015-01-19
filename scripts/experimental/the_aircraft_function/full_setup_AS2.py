@@ -23,7 +23,7 @@ from SUAVE.Structure import (
 Data, Container, Data_Exception, Data_Warning,
 )
 
-def full_setup():
+def full_setup_AS2():
 
     vehicle = vehicle_setup()
     mission = mission_setup(vehicle)
