@@ -54,7 +54,7 @@ def parasite_drag_propulsor(conditions,configuration,propulsor):
     freestream = conditions.freestream
     
     Sref        = propulsor.nacelle_dia**2 / 4 * np.pi 
-    Swet        = Sref * propulsor.lengths.engine_total * 0.8
+    Swet        = propulsor.nacelle_dia * np.pi * propulsor.lengths.engine_total * 0.9
     
     l_prop  = propulsor.lengths.engine_total
     #l_fus  = fuselage.lengths.cabin
@@ -98,17 +98,17 @@ def parasite_drag_propulsor(conditions,configuration,propulsor):
     propulsor_parasite_drag = k_prop * cf_prop * Swet / Sref  
     # --------------------------------------------------------
     
-    ## dump data to conditions
-    #propulsor_result = Result(
-        #wetted_area               = Swet   , 
-        #reference_area            = Sref   , 
-        #parasite_drag_coefficient = propulsor_parasite_drag ,
-        #skin_friction_coefficient = cf_prop ,
-        #compressibility_factor    = k_comp ,
-        #reynolds_factor           = k_reyn , 
-        #form_factor               = k_prop  ,
-    #)
-    #conditions.aerodynamics.drag_breakdown.parasite[propulsor.tag] = propulsor_result
+    # dump data to conditions
+    propulsor_result = Result(
+        wetted_area               = Swet   , 
+        reference_area            = Sref   , 
+        parasite_drag_coefficient = propulsor_parasite_drag ,
+        skin_friction_coefficient = cf_prop ,
+        compressibility_factor    = k_comp ,
+        reynolds_factor           = k_reyn , 
+        form_factor               = k_prop  ,
+    )
+    conditions.aerodynamics.drag_breakdown.parasite[propulsor.tag] = propulsor_result
     
     return propulsor_parasite_drag
 

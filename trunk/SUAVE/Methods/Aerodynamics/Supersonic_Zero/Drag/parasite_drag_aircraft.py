@@ -69,8 +69,8 @@ def parasite_drag_aircraft(conditions,configuration,geometry):
         
     for propulsor in propulsors.values():
         parasite_drag = parasite_drag_propulsor(conditions,configuration,propulsor)
-        #conditions.aerodynamics.drag_breakdown.parasite[propulsor.tag].parasite_drag_coefficient = parasite_drag * propulsor.nacelle_dia**2 / 4 * np.pi /vehicle_reference_area
-        total_parasite_drag += parasite_drag * propulsor.nacelle_dia**2 / 4 * np.pi /vehicle_reference_area
+        conditions.aerodynamics.drag_breakdown.parasite[propulsor.tag].parasite_drag_coefficient = parasite_drag * propulsor.nacelle_dia**2 / 4 * np.pi /vehicle_reference_area * propulsor.number_of_engines
+        total_parasite_drag += parasite_drag * propulsor.nacelle_dia**2 / 4 * np.pi /vehicle_reference_area * propulsor.number_of_engines
         
     # dump to condtitions
     drag_breakdown.parasite.total = total_parasite_drag

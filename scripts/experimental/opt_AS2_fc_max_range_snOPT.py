@@ -25,6 +25,10 @@ import scipy as sp
 from scipy import integrate
 import pylab as plt
 
+from SUAVE.Structure import (
+Data, Container, Data_Exception, Data_Warning,
+)
+
 import copy, time
 
 
@@ -78,9 +82,9 @@ def main():
     
     if myrank == 0:
     
-        vehicle.Mass_Props.m_empty = outputs[1][0]*10000.0
-        vehicle.Mass_Props.m_takeoff = outputs[1][1]*10000.0
-        mission.Segments['Cruise'].distance = (outputs[1][2]*10000.0 - 1313.0) * Units.nmi
+        vehicle.mass_properties.operating_empty = outputs[1][0]*10000.0
+        vehicle.mass_properties.takeoff = outputs[1][1]*10000.0
+        mission.segments['Cruise'].distance = (outputs[1][2]*10000.0 - 1313.0) * Units.nmi
     
         results = evaluate_mission(vehicle,mission)
     
@@ -104,23 +108,23 @@ def opt_func(inputs,vehicle,mission):
     # --------------------------------------------------
     
     
-    vehicle.Mass_Props.m_empty   = inputs[0]*10000.0
-    vehicle.Mass_Props.m_takeoff = inputs[1]*10000.0
-    vehicle.Configs.cruise.Mass_Props.m_empty   = inputs[0]*10000.0
-    vehicle.Configs.cruise.Mass_Props.m_takeoff = inputs[1]*10000.0
-    mission.Segments['Cruise'].distance = (inputs[2]*10000.0 - 1313.0) * Units.nmi
+    vehicle.mass_properties.operating_empty   = inputs[0]*10000.0
+    vehicle.mass_properties.takeoff = inputs[1]*10000.0
+    vehicle.configs.cruise.mass_properties.operating_empty   = inputs[0]*10000.0
+    vehicle.configs.cruise.mass_properties.takeoff = inputs[1]*10000.0
+    mission.segments['Cruise'].distance = (inputs[2]*10000.0 - 1313.0) * Units.nmi
     
     results = evaluate_mission(vehicle,mission)
     
-    m_empty = vehicle.Configs.cruise.Mass_Props.m_empty
-    mass_base = vehicle.Configs.cruise.Mass_Props.m_takeoff
+    m_empty = vehicle.configs.cruise.mass_properties.operating_empty
+    mass_base = vehicle.configs.cruise.mass_properties.takeoff
     dist_base = 0.0
     max_flag = False
-    for i in range(len(results.Segments)):
-        time = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        velocity   = results.Segments[i].conditions.freestream.velocity[:,0]  
-        mass = results.Segments[i].conditions.weights.total_mass[:,0]
-        mdot = results.Segments[i].conditions.propulsion.fuel_mass_rate[:,0]
+    for i in range(len(results.segments)):
+        time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        velocity   = results.segments[i].conditions.freestream.velocity[:,0]  
+        mass = results.segments[i].conditions.weights.total_mass[:,0]
+        mdot = results.segments[i].conditions.propulsion.fuel_mass_rate[:,0]
         mass_from_mdot = np.array([mass_base] * len(time))
         mass_from_mdot[1:] = -integrate.cumtrapz(mdot,time*60.0)+mass_base
         mass_base = mass_from_mdot[-1]
@@ -137,7 +141,7 @@ def opt_func(inputs,vehicle,mission):
             break                  
         max_range = copy.copy(dist_base)
         
-    #m_fuel = vehicle.Configs.cruise.Mass_Props.m_takeoff - mass_base
+    #m_fuel = vehicle.Configs.cruise.mass_properties.takeoff - mass_base
     output = -max_range
     
     print output
@@ -146,36 +150,37 @@ def opt_func(inputs,vehicle,mission):
     # Constraints
     # ---------------------------------------------
     
-    m_empty = vehicle.Configs.cruise.Mass_Props.m_empty
-    mass_base = vehicle.Configs.cruise.Mass_Props.m_takeoff
+    m_empty = vehicle.configs.cruise.mass_properties.operating_empty
+    mass_base = vehicle.configs.cruise.mass_properties.takeoff
     
     cell_power_weight = 1500 # W/kg
     base_weight_frame = 22500 # kg - includes fuel reserves
     fuel_reserve_weight = 1000 
     base_weight = base_weight_frame + fuel_reserve_weight
     max_power = 0.0
-    for i in range(len(results.Segments)):
-        time = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        mass = results.Segments[i].conditions.weights.total_mass[:,0]
-        mdot = results.Segments[i].conditions.propulsion.fuel_mass_rate[:,0]
+    for i in range(len(results.segments)):
+        time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        mass = results.segments[i].conditions.weights.total_mass[:,0]
+        mdot = results.segments[i].conditions.propulsion.fuel_mass_rate[:,0]
         mass_from_mdot = np.array([mass_base] * len(time))
         mass_from_mdot[1:] = -integrate.cumtrapz(mdot,time*60.0)+mass_base
         mass_base = mass_from_mdot[-1]
         
-        velocity   = results.Segments[i].conditions.freestream.velocity[:,0]
-        Thrust     = results.Segments[i].conditions.frames.body.thrust_force_vector[:,0]
+        velocity   = results.segments[i].conditions.freestream.velocity[:,0]
+        Thrust     = results.segments[i].conditions.frames.body.thrust_force_vector[:,0]
         power      = velocity*Thrust
 
         max_current = np.max(power)
         max_power = np.max(np.array([max_power,max_current]))    
         
-    m_takeoff = vehicle.Configs.cruise.Mass_Props.m_takeoff
+    m_takeoff = vehicle.configs.cruise.mass_properties.takeoff
     m_fuel = m_takeoff - mass_base    
-    m_empty = vehicle.Configs.cruise.Mass_Props.m_empty
+    m_empty = vehicle.configs.cruise.mass_properties.operating_empty
     m_fuel_cell_req = max_power/cell_power_weight
     m_fuel_cell     = m_empty - base_weight
     
     constraints = [m_fuel_cell-m_fuel_cell_req,m_takeoff-m_fuel-m_empty]   
+    print constraints
 
     # ---------------------------------------------
     # Error Check
@@ -185,51 +190,6 @@ def opt_func(inputs,vehicle,mission):
     
     return output/10000.0 , constraints , fail
     
-def constraints(inputs,vehicle,mission):
-
-    vehicle.Mass_Props.m_empty   = inputs[0]*10000.0
-    vehicle.Mass_Props.m_takeoff = inputs[1]*10000.0
-    vehicle.Configs.cruise.Mass_Props.m_empty   = inputs[0]*10000.0
-    vehicle.Configs.cruise.Mass_Props.m_takeoff = inputs[1]*10000.0
-    mission.Segments['Cruise'].distance = (inputs[2]*10000.0 - 1313.0) * Units.nmi
-    
-    m_empty = vehicle.Configs.cruise.Mass_Props.m_empty
-    mass_base = vehicle.Configs.cruise.Mass_Props.m_takeoff
-    
-    results = evaluate_mission(vehicle,mission)
-    cell_power_weight = 1500 # W/kg
-    base_weight_frame = 22500 # kg - includes fuel reserves
-    fuel_reserve_weight = 1000 
-    base_weight = base_weight_frame + fuel_reserve_weight
-    max_power = 0.0
-    #powers = np.ones(len(results.Segments))
-    for i in range(len(results.Segments)):
-        time = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        mass = results.Segments[i].conditions.weights.total_mass[:,0]
-        mdot = results.Segments[i].conditions.propulsion.fuel_mass_rate[:,0]
-        mass_from_mdot = np.array([mass_base] * len(time))
-        mass_from_mdot[1:] = -integrate.cumtrapz(mdot,time*60.0)+mass_base
-        mass_base = mass_from_mdot[-1]
-        
-        velocity   = results.Segments[i].conditions.freestream.velocity[:,0]
-        Thrust     = results.Segments[i].conditions.frames.body.thrust_force_vector[:,0]
-        power      = velocity*Thrust
-
-        max_current = np.max(power)
-        max_power = np.max(np.array([max_power,max_current]))    
-        
-    m_takeoff = vehicle.Configs.cruise.Mass_Props.m_takeoff
-    m_fuel = m_takeoff - mass_base    
-    m_empty = vehicle.Configs.cruise.Mass_Props.m_empty
-    m_fuel_cell_req = max_power/cell_power_weight
-    m_fuel_cell     = m_empty - base_weight
-    
-    outputs = np.array([m_fuel_cell-m_fuel_cell_req,m_takeoff-m_fuel-m_empty])
-    
-    print outputs
-    
-    return outputs/10000.0
-
 # ----------------------------------------------------------------------
 #   Build the Vehicle
 # ----------------------------------------------------------------------
@@ -248,56 +208,61 @@ def define_vehicle():
     #   Vehicle-level Properties
     # ------------------------------------------------------------------    
 
-    n_select = 2
+    # mass properties
+    # ------------------------------------------------------------------
+    # Vehicle-level Properties
+    # ------------------------------------------------------------------
+
+    n_select = 3
     if n_select == 0:
         vehicle_propellant = SUAVE.Attributes.Propellants.Jet_A()
-        vehicle.Mass_Props.m_full       = 53000    # kg
-        vehicle.Mass_Props.m_empty      = 22500    # kg
-        vehicle.Mass_Props.m_takeoff    = 52000    # kg       
+        vehicle.mass_properties.max_takeoff     = 53000 # kg
+        vehicle.mass_properties.operating_empty = 22500 # kg
+        vehicle.mass_properties.takeoff         = 52000 # kg
     elif n_select == 1:
         vehicle_propellant = SUAVE.Attributes.Propellants.Jet_A()
-        vehicle.Mass_Props.m_full       = 73000    # kg
-        vehicle.Mass_Props.m_empty      = 42000    # kg
-        vehicle.Mass_Props.m_takeoff    = 72000    # kg   
+        vehicle.mass_properties.max_takeoff     = 73000 # kg
+        vehicle.mass_properties.operating_empty = 42000 # kg
+        vehicle.mass_properties.takeoff         = 72000 # kg
     elif n_select == 2:
         vehicle_propellant = SUAVE.Attributes.Propellants.Liquid_Natural_Gas()
-        vehicle.Mass_Props.m_full       = 67000    # kg
-        vehicle.Mass_Props.m_empty      = 42000    # kg
-        vehicle.Mass_Props.m_takeoff    = 66000    # kg          
+        vehicle.mass_properties.max_takeoff     = 67000 # kg
+        vehicle.mass_properties.operating_empty = 42000 # kg
+        vehicle.mass_properties.takeoff         = 66000 # kg
     elif n_select == 3:
         vehicle_propellant = SUAVE.Attributes.Propellants.Liquid_H2()
-        vehicle.Mass_Props.m_full       = 53000    # kg
-        vehicle.Mass_Props.m_empty      = 42000    # kg
-        vehicle.Mass_Props.m_takeoff    = 52000    # kg      
-    # mass properties
-    # 53000 / 22500 base weight
-    # 71000 / 40500 with fuel cell using Jet A
-    # 65000 / 40500 with fuel cell using LNG
-    # 51000 / 40500 with fuel cell using LH2
-    #vehicle_propellant = SUAVE.Attributes.Propellants.Jet_A1()
-    #vehicle_propellant = SUAVE.Attributes.Propellants.Liquid_Natural_Gas()
-    #vehicle_propellant = SUAVE.Attributes.Propellants.Liquid_H2()
-    #vehicle.Mass_Props.m_full       = 71000    # kg
-    #vehicle.Mass_Props.m_empty      = 40500    # kg
-    #vehicle.Mass_Props.m_takeoff    = 70000    # kg
-    vehicle.Mass_Props.m_flight_min = 25000    # kg - Note: Actual value is unknown
+        vehicle.mass_properties.max_takeoff     = 53000 # kg
+        vehicle.mass_properties.operating_empty = 42000 # kg
+        vehicle.mass_properties.takeoff         = 52000 # kg
+        # mass properties
+        # 53000 / 22500 base weight
+        # 71000 / 40500 with fuel cell using Jet A
+        # 65000 / 40500 with fuel cell using LNG
+        # 51000 / 40500 with fuel cell using LH2
+
+    vehicle.mass_properties.center_of_gravity         = [26.3 * Units.feet, 0, 0]
+    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] # Not Correct
+
+    # envelope properties
+    vehicle.envelope.ultimate_load = 3.5
+    vehicle.envelope.limit_load    = 1.5
 
     # basic parameters
-    vehicle.delta    = 0.0                      # deg
-    vehicle.S        = 125.4                    # m^2
-    vehicle.A_engine = np.pi*(1.0/2)**2       # m^2   
+    vehicle.reference_area       = 124.862       
+    vehicle.passengers           = 8
+    vehicle.systems.control      = "fully powered" 
+    vehicle.systems.accessories  = "long range"
     
     
-     # ------------------------------------------------------------------        
+    # ------------------------------------------------------------------        
     #   Main Wing
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
     wing.tag = 'Main Wing'
-
-    wing.Areas.reference = 125.4    #
+    wing.areas.reference = 125.4    #
     wing.aspect_ratio    = 3.63     #
-    wing.Spans.projected = 21.0     #
+    wing.spans.projected = 21.0     #
     wing.sweep           = 0 * Units.deg
     wing.symmetric       = True
     wing.thickness_to_chord = 0.03
@@ -306,18 +271,30 @@ def define_vehicle():
     # size the wing planform
     SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
-    wing.Chords.mean_aerodynamic = 7.0
-    wing.Areas.exposed = 0.8*wing.Areas.wetted
-    wing.Areas.affected = 0.6*wing.Areas.wetted
+    # size the wing planform ----------------------------------
+    # These can be determined by the wing sizing function
+    # Note that the wing sizing function will overwrite span
+    wing.chords.root  = 12.9
+    wing.chords.tip   = 1.0
+    wing.areas.wetted = wing.areas.reference*2.0 
+    # The span that would normally be overwritten here doesn't match
+    # ---------------------------------------------------------    
+    
+    wing.chords.mean_aerodynamic = 7.0
+    wing.areas.exposed = 0.8*wing.areas.wetted
+    wing.areas.affected = 0.6*wing.areas.wetted
     wing.span_efficiency = 0.74
-    wing.Twists.root = 0.0*Units.degrees
-    wing.Twists.tip  = 2.0*Units.degrees
+    wing.twists.root = 0.0*Units.degrees
+    wing.twists.tip  = 2.0*Units.degrees
+    wing.origin             = [20,0,0]
+    wing.aerodynamic_center = [3,0,0]     
     wing.vertical = False
     
     wing.high_lift    = False                 #
     wing.high_mach    = True
     wing.vortex_lift  = False
-    wing.transition_x = 0.9
+    wing.transition_x_upper = 0.9
+    wing.transition_x_lower = 0.9
     
     #print wing
     # add to vehicle
@@ -331,9 +308,9 @@ def define_vehicle():
     wing.tag = 'Horizontal Stabilizer'
     
     
-    wing.Areas.reference = 24.5     #
+    wing.areas.reference = 24.5     #
     wing.aspect_ratio    = 2.0      #
-    wing.Spans.projected = 7.0      #
+    wing.spans.projected = 7.0      #
     wing.sweep           = 0 * Units.deg
     wing.symmetric       = True
     wing.thickness_to_chord = 0.03
@@ -342,18 +319,19 @@ def define_vehicle():
     # size the wing planform
     SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
-    wing.Chords.mean_aerodynamic = 3.0
-    wing.Areas.exposed = 0.8*wing.Areas.wetted
-    wing.Areas.affected = 0.6*wing.Areas.wetted
+    wing.chords.mean_aerodynamic = 3.0
+    wing.areas.exposed = 0.8*wing.areas.wetted
+    wing.areas.affected = 0.6*wing.areas.wetted
     wing.span_efficiency = 0.74
-    wing.Twists.root = 0.0*Units.degrees
-    wing.Twists.tip  = 2.0*Units.degrees
+    wing.twists.root = 0.0*Units.degrees
+    wing.twists.tip  = 2.0*Units.degrees
     wing.vertical = False
     
     wing.high_lift    = False                 #
     wing.high_mach    = True
     wing.vortex_lift  = False
-    wing.transition_x = 0.9
+    wing.transition_x_upper = 0.9
+    wing.transition_x_lower = 0.9
     
     #print wing
     # add to vehicle
@@ -367,9 +345,9 @@ def define_vehicle():
     wing = SUAVE.Components.Wings.Wing()
     wing.tag = 'Vertcal Stabilizer'    
     
-    wing.Areas.reference = 33.91    #
+    wing.areas.reference = 33.91    #
     wing.aspect_ratio    = 1.3      #
-    wing.Spans.projected = 3.5      #
+    wing.spans.projected = 3.5      #
     wing.sweep           = 45 * Units.deg
     wing.symmetric       = False
     wing.thickness_to_chord = 0.04
@@ -378,13 +356,23 @@ def define_vehicle():
     # size the wing planform
     SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
-    wing.Chords.mean_aerodynamic = 4.2
-    wing.Areas.exposed = 1.0*wing.Areas.wetted
-    wing.Areas.affected = 0.0*wing.Areas.wetted
+    wing.chords.mean_aerodynamic = 4.2
+    wing.areas.exposed = 1.0*wing.areas.wetted
+    wing.areas.affected = 0.0*wing.areas.wetted
     wing.span_efficiency = 0.9
-    wing.Twists.root = 0.0*Units.degrees
-    wing.Twists.tip  = 0.0*Units.degrees
+    wing.twists.root = 0.0*Units.degrees
+    wing.twists.tip  = 0.0*Units.degrees
+
+    wing.vertical   = True 
+    wing.t_tail     = False
+    wing.eta         = 1.0
+
+    wing.high_lift    = False                 #
+    wing.high_mach    = True
+    wing.vortex_lift  = False
     wing.vertical = True
+    wing.transition_x_upper = 0.9
+    wing.transition_x_lower = 0.9    
     
         
     # add to vehicle
@@ -401,36 +389,43 @@ def define_vehicle():
     fuselage.number_coach_seats = 0
     fuselage.seats_abreast = 2
     fuselage.seat_pitch = 0
-    fuselage.Fineness.nose = 4.0
-    fuselage.Fineness.tail = 4.0
-    fuselage.Lengths.fore_space = 16.3
-    fuselage.Lengths.aft_space  = 16.3
-    fuselage.width = 2.2
-    fuselage.Heights.maximum = 1.9
+    fuselage.fineness.nose = 4.0
+    fuselage.fineness.tail = 4.0
+    fuselage.lengths.fore_space = 16.3
+    fuselage.lengths.aft_space  = 16.3
+    fuselage.width = 2.35
+    fuselage.heights.maximum = 2.55
     
     # size fuselage planform
     SUAVE.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
+    
+    fuselage.areas.wetted = 615.0
     
     # add to vehicle
     vehicle.append_component(fuselage)
     
     
     # ------------------------------------------------------------------
-    #  Ducted Fan / Fuel Cell Model
-    # ------------------------------------------------------------------    
-
+    # Ducted Fan / Fuel Cell Model
+    # ------------------------------------------------------------------
+    
     ductedfan = SUAVE.Components.Propulsors.Turbojet_SupersonicPASS()
     ductedfan.tag = 'Ducted Fan'
     ductedfan.nacelle_dia = (.5)*2
     ductedfan.engine_length = 10.0
-    ductedfan.no_of_engines = 3.0
+    #ductedfan.no_of_engines = 3.0
     ductedfan.propellant = vehicle_propellant
     
+    ductedfan.thrust.design                 = 15000.0 * Units.lb  # 31350 lbs
+    ductedfan.number_of_engines             = 3.0      #
+    ductedfan.lengths = Data()
+    ductedfan.lengths.engine_total          = 8.0    
+    
     # add to vehicle
-    vehicle.append_component(ductedfan)    
+    vehicle.append_component(ductedfan)
     
     net = Network()
-    
+
     net.propellant = vehicle_propellant
     net.fuel_cell = fuel_cell_network.Fuel_Cell()
     net.fuel_cell.inputs.propellant = vehicle_propellant
@@ -440,15 +435,17 @@ def define_vehicle():
     net.motor.efficiency = 0.95
     net.propulsor = fuel_cell_network.Propulsor()
     net.propulsor.A0 = (.5)**2*np.pi
+    
+    # vehicle.append_component(net)
 
-#    vehicle.append_component(net)
 
     # ------------------------------------------------------------------
     #   Simple Aerodynamics Model
     # ------------------------------------------------------------------ 
     
-    aerodynamics = SUAVE.Attributes.Aerodynamics.Fidelity_Zero_Supersonic()
+    aerodynamics = SUAVE.Attributes.Aerodynamics.Supersonic_Zero()
     aerodynamics.initialize(vehicle)
+
     vehicle.aerodynamics_model = aerodynamics
     
     # ------------------------------------------------------------------
@@ -492,7 +489,7 @@ def define_mission(vehicle):
     mission.tag = 'The Test Mission'
 
     # initial mass
-    mission.m0 = vehicle.Mass_Props.m_full # linked copy updates if parent changes
+    mission.m0 = vehicle.mass_properties.takeoff # linked copy updates if parent changes
     
     # atmospheric model
     atmosphere = SUAVE.Attributes.Atmospheres.Earth.US_Standard_1976()
@@ -508,7 +505,7 @@ def define_mission(vehicle):
     segment.tag = "Climb - 6"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -530,7 +527,7 @@ def define_mission(vehicle):
     segment.tag = "Climb - 7"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -551,7 +548,7 @@ def define_mission(vehicle):
     segment.tag = "Climb - 8"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -573,7 +570,7 @@ def define_mission(vehicle):
     segment.tag = "Climb - 9"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -595,7 +592,7 @@ def define_mission(vehicle):
     segment.tag = "Climb - 10"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -618,7 +615,7 @@ def define_mission(vehicle):
     segment.tag = "Cruise"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere = atmosphere
@@ -628,7 +625,7 @@ def define_mission(vehicle):
     segment.mach       = 1.4
     # 1687 for 3000 nmi
     
-    desired_range = 3000.0
+    desired_range = 2000.0
     cruise_dist = desired_range - 1313.0
     segment.distance   = cruise_dist * Units.nmi
         
@@ -642,7 +639,7 @@ def define_mission(vehicle):
     segment.tag = "Descent - 1"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -665,7 +662,7 @@ def define_mission(vehicle):
     segment.tag = "Descent - 2"
     
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
     
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -688,7 +685,7 @@ def define_mission(vehicle):
     segment.tag = "Descent - 5"
 
     # connect vehicle configuration
-    segment.config = vehicle.Configs.cruise
+    segment.config = vehicle.configs.cruise
 
     # segment attributes
     segment.atmosphere   = atmosphere
@@ -744,8 +741,8 @@ def post_process(vehicle,mission,results):
     fig = plt.figure("Throttle and Fuel Burn")
     tot_energy = 0.0
     #base_time = 0.0
-    max_power = (vehicle.Mass_Props.m_empty - 1000 - 22500.0)*1500
-    for segment in results.Segments.values():
+    max_power = (vehicle.mass_properties.operating_empty - 1000 - 22500.0)*1500
+    for segment in results.segments.values():
         time = segment.conditions.frames.inertial.time[:,0] / Units.min
         eta  = segment.conditions.propulsion.throttle[:,0]
         max_mdot = segment.config.propulsion_model.fuel_cell.max_mdot
@@ -794,9 +791,9 @@ def post_process(vehicle,mission,results):
     
     plt.figure("Angle of Attack History")
     axes = plt.gca()    
-    for i in range(len(results.Segments)):     
-        time = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        aoa = results.Segments[i].conditions.aerodynamics.angle_of_attack[:,0] / Units.deg
+    for i in range(len(results.segments)):     
+        time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        aoa = results.segments[i].conditions.aerodynamics.angle_of_attack[:,0] / Units.deg
         axes.plot(time, aoa, 'bo-')
     axes.set_xlabel('Time (mins)')
     axes.set_ylabel('Angle of Attack (deg)')
@@ -808,9 +805,9 @@ def post_process(vehicle,mission,results):
 
     #plt.figure("Efficiency")
     #axes = plt.gca()    
-    #for i in range(len(results.Segments)):     
-        #time = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        #e = results.Segments[i].conditions.aerodynamics.angle_of_attack[:,0] / Units.deg
+    #for i in range(len(results.segments)):     
+        #time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        #e = results.segments[i].conditions.aerodynamics.angle_of_attack[:,0] / Units.deg
         #axes.plot(time, aoa, 'bo-')
     #axes.set_xlabel('Time (mins)')
     #axes.set_ylabel('Angle of Attack (deg)')
@@ -822,9 +819,9 @@ def post_process(vehicle,mission,results):
     # ------------------------------------------------------------------
     plt.figure("Altitude")
     axes = plt.gca()    
-    for i in range(len(results.Segments)):     
-        time     = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        altitude = results.Segments[i].conditions.freestream.altitude[:,0] / Units.km
+    for i in range(len(results.segments)):     
+        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        altitude = results.segments[i].conditions.freestream.altitude[:,0] / Units.km
         axes.plot(time, altitude, 'bo-')
     axes.set_xlabel('Time (mins)')
     axes.set_ylabel('Altitude (km)')
@@ -836,13 +833,13 @@ def post_process(vehicle,mission,results):
     # ------------------------------------------------------------------    
     plt.figure("Vehicle Mass")
     axes = plt.gca()
-    m_empty = vehicle.Mass_Props.m_empty
-    mass_base = vehicle.Mass_Props.m_takeoff
-    for i in range(len(results.Segments)):
-        time = results.Segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        mass = results.Segments[i].conditions.weights.total_mass[:,0]
-        mdot = results.Segments[i].conditions.propulsion.fuel_mass_rate[:,0]
-        eta  = results.Segments[i].conditions.propulsion.throttle[:,0]
+    m_empty = vehicle.mass_properties.operating_empty
+    mass_base = vehicle.mass_properties.takeoff
+    for i in range(len(results.segments)):
+        time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        mass = results.segments[i].conditions.weights.total_mass[:,0]
+        mdot = results.segments[i].conditions.propulsion.fuel_mass_rate[:,0]
+        eta  = results.segments[i].conditions.propulsion.throttle[:,0]
         mass_from_mdot = np.array([mass_base] * len(time))
         mass_from_mdot[1:] = -integrate.cumtrapz(mdot,time*60.0)+mass_base
         axes.plot(time, mass_from_mdot, 'b--')
@@ -852,10 +849,10 @@ def post_process(vehicle,mission,results):
     axes.set_ylabel('Vehicle Mass (kg)')
     axes.grid(True)
     
-    mo = vehicle.Mass_Props.m_full
+    mo = vehicle.mass_properties.takeoff
     mf = mass[-1]
     D_m = mo-mf
-    spec_energy = vehicle.Propulsors[0].propellant.specific_energy
+    spec_energy = vehicle.propulsors[0].propellant.specific_energy
     tot_energy = D_m*spec_energy
     print "Total Energy Used          %.0f kJ (does not account for efficiency loses)" % (tot_energy/1000.0)
 
@@ -865,7 +862,7 @@ def post_process(vehicle,mission,results):
      
     fig = plt.figure("Velocity and Density")
     dist_base = 0.0
-    for segment in results.Segments.values():
+    for segment in results.segments.values():
             
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
         velocity   = segment.conditions.freestream.velocity[:,0]
@@ -900,7 +897,7 @@ def post_process(vehicle,mission,results):
     # ------------------------------------------------------------------
     
     fig = plt.figure("Aerodynamic Forces")
-    for segment in results.Segments.values():
+    for segment in results.segments.values():
         
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
         Lift   = -segment.conditions.frames.wind.lift_force_vector[:,2]
@@ -936,7 +933,7 @@ def post_process(vehicle,mission,results):
     # ------------------------------------------------------------------
     
     fig = plt.figure("Aerodynamic Coefficients")
-    for segment in results.Segments.values():
+    for segment in results.segments.values():
         
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
         CLift  = segment.conditions.aerodynamics.lift_coefficient[:,0]
@@ -972,7 +969,7 @@ def post_process(vehicle,mission,results):
     
     fig = plt.figure("Drag Components")
     axes = plt.gca()    
-    for i, segment in enumerate(results.Segments.values()):
+    for i, segment in enumerate(results.segments.values()):
         
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min
         drag_breakdown = segment.conditions.aerodynamics.drag_breakdown
@@ -999,10 +996,10 @@ def post_process(vehicle,mission,results):
     base_weight = 22500.0
     base_weight_str = 'Base Weight = ' + '%.0f' % base_weight + ' kg\n'
     
-    m_takeoff = vehicle.Mass_Props.m_takeoff
+    m_takeoff = vehicle.mass_properties.takeoff
     m_takeoff_str = 'Takeoff Weight = ' + '%.0f' % m_takeoff + ' kg\n'
     
-    m_empty   = vehicle.Mass_Props.m_empty
+    m_empty   = vehicle.mass_properties.operating_empty
     m_empty_str = 'Empty Weight = ' + '%.0f' % m_empty + ' kg\n'
     
     m_fuel_cell = m_empty - base_weight
@@ -1017,6 +1014,16 @@ def post_process(vehicle,mission,results):
     prop_name = vehicle.propulsion_model.propellant.tag
     prop_str = 'Propellant Type = ' + prop_name + '\n'
     
+    cell_density = 1.9e6 # W/m^3
+    cell_volume = max_power/cell_density
+    
+    cell_vol_str = 'Cell Volume = ' + '%.0f' % cell_volume + ' m^3\n'
+    
+    prop_density = vehicle.propulsion_model.propellant.density
+    fuel_volume = m_fuel/prop_density
+    
+    fuel_vol_str = 'Fuel Volume = ' + '%.0f' % fuel_volume + ' m^3\n'
+    
     f = open(prop_name+'_%.0f'%total_range+'.txt','w')
     f.write(prop_str)
     f.write(total_range_str)
@@ -1025,7 +1032,9 @@ def post_process(vehicle,mission,results):
     f.write(m_empty_str)
     f.write(m_fuel_cell_str)
     f.write(base_weight_str)
-    f.write('Reserve Fuel = 1000 kg')
+    f.write('Reserve Fuel = 1000 kg\n')
+    f.write(cell_vol_str)
+    f.write(fuel_vol_str)
     f.close
     
     return     

@@ -1,7 +1,7 @@
 # test_AS2.py
 # 
 # Created:  Tim MacDonald, 6/25/14
-# Modified: Tim MacDonald, 8/01/14
+# Modified: Tim MacDonald, 10/01/14
 
 """ evaluate a mission with an AS2
 """
@@ -260,7 +260,7 @@ def define_vehicle():
     turbojet.number_of_engines             = 3.0      #
     turbojet.engine_length                 = 8.0      # meters - includes 3.4m inlet
     turbojet.lengths = Data()
-    turbojet.lengths.engine_total               = 8.0
+    turbojet.lengths.engine_total          = 8.0
     
     # turbojet sizing conditions
     sizing_segment = SUAVE.Components.Propulsors.Segments.Segment()
@@ -274,7 +274,7 @@ def define_vehicle():
     
     # size the turbojet
     turbojet.engine_sizing_1d(sizing_segment) 
-    # turbojet.nacelle_dia = 0.5
+    turbojet.nacelle_dia = 1.0
     
     # add to vehicle
     vehicle.append_component(turbojet)
