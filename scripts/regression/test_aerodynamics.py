@@ -4,8 +4,8 @@
 # Modified: Tim MacDonald - 09/10/14
 
 import SUAVE
-from SUAVE.Attributes import Units
-from SUAVE.Structure import Data
+from SUAVE.Core import Units
+from SUAVE.Core import Data
 #from SUAVE.Methods.Aerodynamics.Lift import compute_aircraft_lift
 #from SUAVE.Methods.Aerodynamics.Drag import compute_aircraft_drag
 
@@ -117,15 +117,15 @@ def main():
     drag_breakdown = conditions.aerodynamics.drag_breakdown
     
     # Only one wing is evaluated since they rely on the same function
-    cd_c           = drag_breakdown.compressible['Main Wing'].compressibility_drag
+    cd_c           = drag_breakdown.compressible['main_wing'].compressibility_drag
     cd_i           = drag_breakdown.induced.total
     cd_m           = drag_breakdown.miscellaneous.total
     cd_m_fuse_base = drag_breakdown.miscellaneous.fuselage_base
     cd_m_fuse_up   = drag_breakdown.miscellaneous.fuselage_upsweep
-    cd_m_nac_base  = drag_breakdown.miscellaneous.nacelle_base['Turbo Fan']
+    cd_m_nac_base  = drag_breakdown.miscellaneous.nacelle_base['turbo_fan']
     cd_m_ctrl      = drag_breakdown.miscellaneous.control_gaps
-    cd_p_fuse      = drag_breakdown.parasite.Fuselage.parasite_drag_coefficient
-    cd_p_wing      = drag_breakdown.parasite['Main Wing'].parasite_drag_coefficient
+    cd_p_fuse      = drag_breakdown.parasite['fuselage'].parasite_drag_coefficient
+    cd_p_wing      = drag_breakdown.parasite['main_wing'].parasite_drag_coefficient
     cd_tot         = drag_breakdown.total
     
     (cd_c_r, cd_i_r, cd_m_r, cd_m_fuse_base_r, cd_m_fuse_up_r, cd_m_nac_base_r, cd_m_ctrl_r, cd_p_fuse_r, cd_p_wing_r, cd_tot_r) = reg_values()
@@ -189,7 +189,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Main Wing'
+    wing.tag = 'main_wing'
     
     wing.areas.reference = 124.862    #
     wing.aspect_ratio    = 10.18       #
@@ -228,7 +228,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Horizontal Stabilizer'
+    wing.tag = 'horizontal_stabilizer'
     
     wing.areas.reference = 32.488    #
     wing.aspect_ratio    = 6.16      #
@@ -265,7 +265,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Vertical Stabilizer'    
+    wing.tag = 'vertical_stabilizer'    
     
     wing.areas.reference = 32.488    #
     wing.aspect_ratio    = 1.91      #
@@ -303,7 +303,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
     
     fuselage = SUAVE.Components.Fuselages.Fuselage()
-    fuselage.tag = 'Fuselage'
+    fuselage.tag = 'fuselage'
     
     fuselage.number_coach_seats = 200
     fuselage.seats_abreast = 6
@@ -338,7 +338,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------    
     
     turbofan = SUAVE.Components.Propulsors.TurboFanPASS()
-    turbofan.tag = 'Turbo Fan'
+    turbofan.tag = 'turbo_fan'
     
     turbofan.propellant = SUAVE.Attributes.Propellants.Jet_A()
     
@@ -354,6 +354,7 @@ def vehicle_setup():
     turbofan.bypass_ratio                  = 5.4      #
     turbofan.thrust.design                 = 25000.0  #
     turbofan.number_of_engines             = 2.0      #
+    turbofan.engine_length                 = 3.0
     
     # size the turbofan
     turbofan.A2          =   1.753
@@ -407,8 +408,8 @@ def vehicle_setup():
 
     # --- Takeoff Configuration ---
     takeoff_config = vehicle.configs.takeoff
-    takeoff_config.wings['Main Wing'].flaps_angle =  20. * Units.deg
-    takeoff_config.wings['Main Wing'].slats_angle  = 25. * Units.deg
+    takeoff_config.wings['main_wing'].flaps_angle =  20. * Units.deg
+    takeoff_config.wings['main_wing'].slats_angle  = 25. * Units.deg
     # V2_V2_ratio may be informed by user. If not, use default value (1.2)
     takeoff_config.V2_VS_ratio = 1.21
     # CLmax for a given configuration may be informed by user. If not, is calculated using correlations
@@ -417,8 +418,8 @@ def vehicle_setup():
 
     # --- Landing Configuration ---
     landing_config = vehicle.new_configuration("landing")
-    landing_config.wings['Main Wing'].flaps_angle =  30. * Units.deg
-    landing_config.wings['Main Wing'].slats_angle  = 25. * Units.deg
+    landing_config.wings['main_wing'].flaps_angle =  30. * Units.deg
+    landing_config.wings['main_wing'].slats_angle  = 25. * Units.deg
     # Vref_V2_ratio may be informed by user. If not, use default value (1.23)
     landing_config.Vref_VS_ratio = 1.23
     # CLmax for a given configuration may be informed by user
@@ -467,9 +468,9 @@ def reg_values():
                                  0.00343623,  0.00405385,  0.00506457,  0.00406928,  0.00379353,
                                  0.00407611])
     
-    cd_tot_r        = np.array([ 0.19368287,  0.03905116,  0.03209541,  0.01737741,  0.0213476 ,
-                                 0.02507019,  0.03614299,  0.05658934,  0.09780619,  0.19398041,
-                                 0.13518241])
+    cd_tot_r        = np.array([ 0.19427599,  0.03976739,  0.0332802 ,  0.01807724,  0.02206145,
+                                 0.02565411,  0.0368808 ,  0.05753452,  0.09852189,  0.19461151,
+                                 0.13593163])
     
     return cd_c_r, cd_i_r, cd_m_r, cd_m_fuse_base_r, cd_m_fuse_up_r, cd_m_nac_base_r, cd_m_ctrl_r, cd_p_fuse_r, cd_p_wing_r, cd_tot_r
 

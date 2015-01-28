@@ -12,14 +12,14 @@
 # ----------------------------------------------------------------------
 
 import SUAVE
-from SUAVE.Attributes import Units
+from SUAVE.Core import Units
 
 import numpy as np
 import pylab as plt
 
 import copy, time
 
-from SUAVE.Structure import (
+from SUAVE.Core import (
 Data, Container, Data_Exception, Data_Warning,
 )
 
@@ -38,15 +38,22 @@ def main():
 
     # define the problem
     vehicle, mission = full_setup()
-
+    
     # run the problem
     results = the_aircraft_function(vehicle,mission)
-
+    
+    # plot the new results
+    plot_mission(vehicle,mission,results,'bo-')    
+    
+    # load older results
+    #save_results(results)
+    old_results = load_results()
+    
+    # plt the old results
+    plot_mission(vehicle,mission,old_results,'k-')
+    
     # check the results
-    check_results(results)
-
-    # post process the results
-    plot_mission(vehicle,mission,results)
+    check_results(results,old_results)
 
     return
 
@@ -107,7 +114,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
 
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Main Wing'
+    wing.tag = 'main_wing'
 
     wing.aspect_ratio            = 8.4
     wing.sweep                   = 22.0 * Units.deg
@@ -145,7 +152,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
 
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Horizontal Stabilizer'
+    wing.tag = 'horizontal_stabilizer'
 
     wing.aspect_ratio            = 5.5
     wing.sweep                   = 34.5 * Units.deg
@@ -183,7 +190,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
 
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Vertical Stabilizer'
+    wing.tag = 'vertical_stabilizer'
 
     wing.aspect_ratio            = 1.7      #
     wing.sweep                   = 25 * Units.deg
@@ -221,7 +228,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
 
     fuselage = SUAVE.Components.Fuselages.Fuselage()
-    fuselage.tag = 'Fuselage'
+    fuselage.tag = 'fuselage'
 
     fuselage.number_coach_seats    = vehicle.passengers
     fuselage.seats_abreast         = 4
@@ -260,7 +267,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
 
     turbofan = SUAVE.Components.Propulsors.TurboFanPASS()
-    turbofan.tag = 'Turbo Fan'
+    turbofan.tag = 'turbo_fan'
 
     turbofan.propellant = SUAVE.Attributes.Propellants.Jet_A()
 
@@ -276,6 +283,7 @@ def vehicle_setup():
     turbofan.bypass_ratio                  = 5.4      #
     turbofan.thrust.design                 = 20300.0  #
     turbofan.number_of_engines                 = 2.0      #
+    turbofan.engine_length                     = 3.0
 
     # turbofan sizing conditions
     sizing_segment = SUAVE.Components.Propulsors.Segments.Segment()
@@ -325,8 +333,8 @@ def vehicle_setup():
     # --- Takeoff Configuration ---
     takeoff_config = vehicle.configs.takeoff
 
-    takeoff_config.wings['Main Wing'].flaps_angle = 20. * Units.deg
-    takeoff_config.wings['Main Wing'].slats_angle = 25. * Units.deg
+    takeoff_config.wings['main_wing'].flaps_angle = 20. * Units.deg
+    takeoff_config.wings['main_wing'].slats_angle = 25. * Units.deg
 
     takeoff_config.V2_VS_ratio = 1.21
     takeoff_config.maximum_lift_coefficient = 2.
@@ -335,8 +343,8 @@ def vehicle_setup():
     # --- Landing Configuration ---
     landing_config = vehicle.new_configuration("landing")
 
-    landing_config.wings['Main Wing'].flaps_angle = 30. * Units.deg
-    landing_config.wings['Main Wing'].slats_angle = 25. * Units.deg
+    landing_config.wings['main_wing'].flaps_angle = 30. * Units.deg
+    landing_config.wings['main_wing'].slats_angle = 25. * Units.deg
 
     landing_config.Vref_VS_ratio = 1.23
     landing_config.maximum_lift_coefficient = 2.
@@ -360,7 +368,7 @@ def mission_setup(vehicle):
     #   Initialize the Mission
     # ------------------------------------------------------------------
 
-    mission = SUAVE.Attributes.Missions.Mission()
+    mission = SUAVE.Analyses.Missions.Mission()
     mission.tag = 'EMBRAER_E190AR test mission'
 
     # atmospheric model
@@ -380,7 +388,7 @@ def mission_setup(vehicle):
     #   First Climb Segment: Constant Speed, Constant Throttle
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Throttle_Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Throttle_Constant_Speed()
     segment.tag = "CLIMB_250KCAS"
 
     # connect vehicle configuration
@@ -402,7 +410,7 @@ def mission_setup(vehicle):
     #   Second Climb Segment: Constant Speed, Constant Throttle
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Throttle_Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Throttle_Constant_Speed()
     segment.tag = "CLIMB_280KCAS"
 
     # connect vehicle configuration
@@ -426,7 +434,7 @@ def mission_setup(vehicle):
     #   Third Climb Segment: Constant Speed, Constant Climb Rate
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Throttle_Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Throttle_Constant_Speed()
     segment.tag = "CLIMB_Final"
 
     # connect vehicle configuration
@@ -447,7 +455,7 @@ def mission_setup(vehicle):
     #   Cruise Segment: constant speed, constant altitude
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Cruise.Constant_Speed_Constant_Altitude()
+    segment = SUAVE.Analyses.Missions.Segments.Cruise.Constant_Speed_Constant_Altitude()
     segment.tag = "Cruise"
 
     # connect vehicle configuration
@@ -473,7 +481,7 @@ def mission_setup(vehicle):
     #   First Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
     segment.tag = "DESCENT_M0.77"
 
     # connect vehicle configuration
@@ -495,7 +503,7 @@ def mission_setup(vehicle):
     #   Second Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
     segment.tag = "DESCENT_290KCAS"
 
     # connect vehicle configuration
@@ -517,7 +525,7 @@ def mission_setup(vehicle):
     #   Third Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
     segment.tag = "DESCENT_250KCAS"
 
     # connect vehicle configuration
@@ -544,11 +552,8 @@ def mission_setup(vehicle):
 #: def define_mission()
 
 
-def check_results(new_results):
-
-    # load old results
-    old_results = load_results()
-
+def check_results(new_results,old_results):
+    
     # check segment values
     check_list = [
         'mission_profile.segments.Cruise.conditions.aerodynamics.angle_of_attack',

@@ -16,8 +16,8 @@
 import SUAVE
 import numpy as np
 from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep
-from SUAVE.Attributes import Units as Units
-from SUAVE.Structure import (
+from SUAVE.Core import Units
+from SUAVE.Core import (
     Data, Container, Data_Exception, Data_Warning,
 )
 
@@ -42,7 +42,8 @@ def datcom(wing,mach):
                 for a variable named 'aspect_ratio'.
                 sweep_le - wing leading-edge sweep angle [radians]
                 taper - wing taper ratio [dimensionless]
-            mach - flight Mach number [dimensionless]
+            mach - flight Mach number [dimensionless]. Should be a numpy array
+                with one or more elements.
     
         Outputs:
             cL_alpha - The derivative of 3D lift coefficient with respect to AoA
@@ -56,11 +57,12 @@ def datcom(wing,mach):
         ar = wing.effective_aspect_ratio
     except AttributeError:   
         ar = wing.aspect_ratio
+        
     sweep  = wing.sweep # Value is at the leading edge
     
     #Compute relevent parameters
     cL_alpha = []
-    half_chord_sweep = convert_sweep(wing,0.0,0.5)  #Assumes original sweep
+    half_chord_sweep = convert_sweep(wing,0.0,0.5)  #Assumes original sweep is that of LE
     
     #Compute k correction factor for Mach number    
     #First, compute corrected 2D section lift curve slope (C_la) for the given Mach number

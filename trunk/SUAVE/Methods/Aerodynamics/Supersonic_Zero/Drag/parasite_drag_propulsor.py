@@ -1,4 +1,4 @@
-# parasite_drag_fuselage.py
+# parasite_drag_propulsor.py
 # 
 # Created:  Your Name, Dec 2013
 # Modified:         
@@ -15,7 +15,7 @@ from compressible_turbulent_flat_plate import compressible_turbulent_flat_plate
 from compressible_turbulent_flat_plate import compressible_turbulent_flat_plate
 
 from SUAVE.Attributes.Gases import Air # you should let the user pass this as input
-from SUAVE.Attributes.Results.Result import Result
+from SUAVE.Core import Results
 air = Air()
 compute_speed_of_sound = air.compute_speed_of_sound
 
@@ -36,8 +36,8 @@ import scipy as sp
 
 
 def parasite_drag_propulsor(conditions,configuration,propulsor):
-    """ SUAVE.Methods.parasite_drag_fuselage(conditions,configuration,fuselage)
-        computes the parasite drag associated with a fuselage 
+    """ SUAVE.Methods.parasite_drag_propulsor(conditions,configuration,propulsor)
+        computes the parasite drag associated with a propulsor 
         
         Inputs:
 
@@ -49,15 +49,17 @@ def parasite_drag_propulsor(conditions,configuration,propulsor):
     """
 
     # unpack inputs
-    form_factor = configuration.fuselage_parasite_drag_form_factor
-
+    try:
+        form_factor = configuration.propulsor_parasite_drag_form_factor
+    except(AttributeError):
+        form_factor = 2.3
+        
     freestream = conditions.freestream
     
-    Sref        = propulsor.nacelle_dia**2 / 4 * np.pi 
-    Swet        = Sref * propulsor.lengths.engine_total * 0.8
+    Sref        = propulsor.nacelle_dia**2 / 4 * np.pi
+    Swet        = propulsor.nacelle_dia * np.pi * propulsor.engine_length
     
-    l_prop  = propulsor.lengths.engine_total
-    #l_fus  = fuselage.lengths.cabin
+    l_prop  = propulsor.engine_length
     d_prop  = propulsor.nacelle_dia
     
     # conditions
@@ -75,7 +77,13 @@ def parasite_drag_propulsor(conditions,configuration,propulsor):
     cf_prop, k_comp, k_reyn = compressible_turbulent_flat_plate(Re_prop,Mc,Tc)
     
     # form factor for cylindrical bodies
-    d_d = float(d_prop)/float(l_prop)
+    try: # Check if propulsor has an intake
+        A_max = propulsor.nacelle_dia
+        A_exit = propulsor.A7
+        A_inflow = propulsor.Ao
+        d_d = 1/((propulsor.engine_length + propulsor.D) / np.sqrt(4/np.pi*(A_max - (A_exit+A_inflow)/2)))
+    except:
+        d_d = float(d_prop)/float(l_prop)
     D = np.array([[0.0]] * len(Mc))
     a = np.array([[0.0]] * len(Mc))
     du_max_u = np.array([[0.0]] * len(Mc))
@@ -91,24 +99,22 @@ def parasite_drag_propulsor(conditions,configuration,propulsor):
     
     k_prop = (1 + form_factor*du_max_u)**2
     
-    
     # --------------------------------------------------------
     # find the final result    
-
     propulsor_parasite_drag = k_prop * cf_prop * Swet / Sref  
     # --------------------------------------------------------
     
-    ## dump data to conditions
-    #propulsor_result = Result(
-        #wetted_area               = Swet   , 
-        #reference_area            = Sref   , 
-        #parasite_drag_coefficient = propulsor_parasite_drag ,
-        #skin_friction_coefficient = cf_prop ,
-        #compressibility_factor    = k_comp ,
-        #reynolds_factor           = k_reyn , 
-        #form_factor               = k_prop  ,
-    #)
-    #conditions.aerodynamics.drag_breakdown.parasite[propulsor.tag] = propulsor_result
+    # dump data to conditions
+    propulsor_result = Results(
+        wetted_area               = Swet    , 
+        reference_area            = Sref    , 
+        parasite_drag_coefficient = propulsor_parasite_drag ,
+        skin_friction_coefficient = cf_prop ,
+        compressibility_factor    = k_comp  ,
+        reynolds_factor           = k_reyn  , 
+        form_factor               = k_prop  ,
+    )
+    conditions.aerodynamics.drag_breakdown.parasite[propulsor.tag] = propulsor_result    
     
     return propulsor_parasite_drag
 

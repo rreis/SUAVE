@@ -15,10 +15,10 @@ import numpy as np
 import scipy as sp
 import datetime
 import time
-from SUAVE.Attributes import Units
+from SUAVE.Core import Units
 from SUAVE.Components.Energy.Energy_Component import Energy_Component
 
-from SUAVE.Structure import (
+from SUAVE.Core import (
 Data, Container, Data_Exception, Data_Warning,
 )
 
@@ -68,7 +68,7 @@ class Solar_Radiation(Energy_Component):
         gamma = psip - np.pi
         
         # Solar intensity external to the Earths atmosphere
-        Io = 1305.0
+        Io = 1367.0
         
         # Indirect component adjustment
         Ind = 1.0

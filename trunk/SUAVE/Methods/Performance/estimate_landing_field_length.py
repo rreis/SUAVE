@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------
 
 # SUave Imports
-from SUAVE.Structure            import Data
-from SUAVE.Attributes           import Units
+from SUAVE.Core            import Data
+from SUAVE.Core import Units
 
 # package imports
 import numpy as np
@@ -114,7 +114,7 @@ def estimate_landing_field_length(vehicle,config,airport):
         landing_constants = np.zeros(3)
         landing_constants[0] = 250.
         landing_constants[1] =   0.
-        landing_constants[2] =   2.485  / sea_level_gravity  # Two-wheels truck : [ (1.56 / 0.40 + 1.07) / (2*sea_level_gravity) ]
+        landing_constants[2] =  2.485  / sea_level_gravity  # Two-wheels truck : [ (1.56 / 0.40 + 1.07) / (2*sea_level_gravity) ]
 ##        landing_constants[2] =   2.9725 / sea_level_gravity  # Four-wheels truck: [ (1.56 / 0.32 + 1.07) / (2*sea_level_gravity) ]
 
     # Calculating landing field length
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     #   Imports
     # ----------------------------------------------------------------------
     import SUAVE
-    from SUAVE.Attributes   import Units
+    from SUAVE.Core import Units
 
     # ----------------------------------------------------------------------
     #   Build the Vehicle
@@ -170,7 +170,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------
     
         wing = SUAVE.Components.Wings.Main_Wing()
-        wing.tag = 'Main Wing'
+        wing.tag = 'main_wing'
     
         wing.areas.reference    = vehicle.reference_area
         wing.sweep              = 22. * Units.deg  # deg
@@ -239,7 +239,7 @@ if __name__ == '__main__':
     
         # --- Takeoff Configuration ---
         config = vehicle.new_configuration("takeoff")
-        config.wings["Main Wing"].flaps_angle = 15.
+        config.wings['main_wing'].flaps_angle = 15.
         # this configuration is derived from the vehicle.configs.cruise
     
         # ------------------------------------------------------------------
@@ -259,8 +259,8 @@ if __name__ == '__main__':
 
     # --- Landing Configuration ---
     landing_config = vehicle.configs.takeoff
-    landing_config.wings['Main Wing'].flaps_angle =  30. * Units.deg
-    landing_config.wings['Main Wing'].slats_angle  = 25. * Units.deg
+    landing_config.wings['main_wing'].flaps_angle =  30. * Units.deg
+    landing_config.wings['main_wing'].slats_angle  = 25. * Units.deg
     # Vref_V2_ratio may be informed by user. If not, use default value (1.23)
     landing_config.Vref_VS_ratio = 1.23
     # CLmax for a given configuration may be informed by user

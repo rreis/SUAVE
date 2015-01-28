@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Structure import Data, Data_Exception, Data_Warning
+from SUAVE.Core import Data, Data_Exception, Data_Warning
 from SUAVE.Components import Component, Physical_Component, Lofted_Body
 from SUAVE.Attributes.Gases import Air
 
@@ -68,7 +68,9 @@ class Container(Physical_Component.Container):
         segment.T  = conditions.freestream.temperature[:,0]
         segment.p  = conditions.freestream.pressure[:,0]
         
+
         eta        = conditions.propulsion.throttle[:,0]
+
         
         F    = np.zeros_like(eta)
         mdot = np.zeros_like(eta)

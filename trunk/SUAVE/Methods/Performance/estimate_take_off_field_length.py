@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------
 
 # SUave Imports
-from SUAVE.Structure            import Data
-from SUAVE.Attributes           import Units
+from SUAVE.Core            import Data
+from SUAVE.Core import Units
 
 # package imports
 import numpy as np
@@ -18,14 +18,14 @@ import numpy as np
 #  Compute field length required for takeoff
 # ----------------------------------------------------------------------
 
-def estimate_take_off_field_length(vehicle,config,airport):
-    """ SUAVE.Methods.Performance.estimate_take_off_field_length(vehicle,config,airport):
+def estimate_take_off_field_length(vehicle,analyses,airport):
+    """ SUAVE.Methods.Performance.estimate_take_off_field_length(vehicle,airport):
         Computes the takeoff field length for a given vehicle condition in a given airport
 
         Inputs:
             vehicle	 - SUAVE type vehicle
 
-            config   - data dictionary with fields:
+            includes these fields:
                 Mass_Properties.takeoff       - Takeoff weight to be evaluated
                 S                          - Wing Area
                 V2_VS_ratio                - Ratio between V2 and Stall speed
@@ -56,10 +56,10 @@ def estimate_take_off_field_length(vehicle,config,airport):
     atmo            = airport.atmosphere
     altitude        = airport.altitude * Units.ft
     delta_isa       = airport.delta_isa
-    weight          = config.mass_properties.takeoff
-    reference_area  = config.reference_area
+    weight          = vehicle.mass_properties.takeoff
+    reference_area  = vehicle.reference_area
     try:
-        V2_VS_ratio = config.V2_VS_ratio
+        V2_VS_ratio = vehicle.V2_VS_ratio
     except:
         V2_VS_ratio = 1.20
 
@@ -79,7 +79,7 @@ def estimate_take_off_field_length(vehicle,config,airport):
     # Determining vehicle maximum lift coefficient
     # ==============================================
     try:   # aircraft maximum lift informed by user
-        maximum_lift_coefficient = config.maximum_lift_coefficient
+        maximum_lift_coefficient = vehicle.maximum_lift_coefficient
     except:
         # Using semi-empirical method for maximum lift coefficient calculation
         from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift import compute_max_lift_coeff
@@ -92,8 +92,8 @@ def estimate_take_off_field_length(vehicle,config,airport):
         conditions.freestream.viscosity = mu_stall
         conditions.freestream.velocity  = 90. * Units.knots
         try:
-            maximum_lift_coefficient, induced_drag_high_lift = compute_max_lift_coeff(config,conditions)
-            config.maximum_lift_coefficient = maximum_lift_coefficient
+            maximum_lift_coefficient, induced_drag_high_lift = compute_max_lift_coeff(vehicle,conditions)
+            vehicle.maximum_lift_coefficient = maximum_lift_coefficient
         except:
             raise ValueError, "Maximum lift coefficient calculation error. Please, check inputs"
 
@@ -129,7 +129,7 @@ def estimate_take_off_field_length(vehicle,config,airport):
     conditions.freestream.pressure         = np.array([np.atleast_1d(p)])
     conditions.propulsion.throttle         = np.array([np.atleast_1d(1.)])   
 
-    thrust, mdot, P = vehicle.propulsion_model(conditions,numerics) # total thrust
+    thrust, mdot, P = analyses.propulsion(conditions,numerics) # total thrust
 
     # ==============================================
     # Calculate takeoff distance
@@ -137,7 +137,7 @@ def estimate_take_off_field_length(vehicle,config,airport):
 
     # Defining takeoff distance equations coefficients
     try:
-        takeoff_constants = config.takeoff_constants # user defined
+        takeoff_constants = vehicle.takeoff_constants # user defined
     except:  # default values
         takeoff_constants = np.zeros(3)
         if engine_number == 2:
@@ -187,7 +187,7 @@ if __name__ == '__main__':
     #   Imports
     # ----------------------------------------------------------------------
     import SUAVE
-    from SUAVE.Attributes   import Units
+    from SUAVE.Core import Units
 
     # ----------------------------------------------------------------------
     #   Build the Vehicle
@@ -218,7 +218,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------
     
         wing = SUAVE.Components.Wings.Main_Wing()
-        wing.tag = 'Main Wing'
+        wing.tag = 'main_wing'
     
         wing.areas.reference    = vehicle.reference_area
         wing.sweep              = 22. * Units.deg  # deg
@@ -287,7 +287,7 @@ if __name__ == '__main__':
     
         # --- Takeoff Configuration ---
         config = vehicle.new_configuration("takeoff")
-        config.wings["Main Wing"].flaps_angle = 15.
+        config.wings['main_wing'].flaps_angle = 15.
         # this configuration is derived from the vehicle.configs.cruise
     
         # ------------------------------------------------------------------
@@ -306,8 +306,8 @@ if __name__ == '__main__':
 
     # --- Takeoff Configuration ---
     configuration = vehicle.configs.takeoff
-    configuration.wings['Main Wing'].flaps_angle =  20. * Units.deg
-    configuration.wings['Main Wing'].slats_angle  = 25. * Units.deg
+    configuration.wings['main_wing'].flaps_angle =  20. * Units.deg
+    configuration.wings['main_wing'].slats_angle  = 25. * Units.deg
     # V2_V2_ratio may be informed by user. If not, use default value (1.2)
     configuration.V2_VS_ratio = 1.21
     # CLmax for a given configuration may be informed by user
