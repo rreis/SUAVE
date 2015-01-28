@@ -57,11 +57,11 @@ def main():
     
     base_weight = 22500 # kg
     #cell_power_weight = 1500 # W/kg
-    #range_goal = 5000.0 # nmi
+    range_goal = 2500.0 # nmi
     
     results = evaluate_mission(vehicle,mission)
     
-    inputs = np.array([48396.0,61895.0,2500.0])/10000.0
+    inputs = np.array([48396.0,61895.0])/10000.0
    
     mywrap = lambda inputs:opt_func(inputs, vehicle, mission)
     
@@ -69,7 +69,6 @@ def main():
     opt_problem.addObj('Range')
     opt_problem.addVar('Empty Weight','c',lower=1e-6,upper=100,value=inputs[0])
     opt_problem.addVar('Takeoff Weight','c',lower=1e-6,upper=100,value=inputs[1])
-    opt_problem.addVar('Cruise Distance','c',lower=1e-6,upper=100,value=inputs[2])
     opt_problem.addConGroup('constraints',2,'e')
     
     opt = pyOpt.pySNOPT.SNOPT()
@@ -84,7 +83,7 @@ def main():
     
         vehicle.mass_properties.operating_empty = outputs[1][0]*10000.0
         vehicle.mass_properties.takeoff = outputs[1][1]*10000.0
-        mission.segments['Cruise'].distance = (outputs[1][2]*10000.0 - 1313.0) * Units.nmi
+        mission.segments['Cruise'].distance = (range_goal - 1313.0) * Units.nmi
     
         results = evaluate_mission(vehicle,mission)
     
@@ -107,12 +106,13 @@ def opt_func(inputs,vehicle,mission):
     # Variable to optimize
     # --------------------------------------------------
     
+    range_goal = 2500.0 # nmi conversion comes later
     
     vehicle.mass_properties.operating_empty   = inputs[0]*10000.0
     vehicle.mass_properties.takeoff = inputs[1]*10000.0
     vehicle.configs.cruise.mass_properties.operating_empty   = inputs[0]*10000.0
     vehicle.configs.cruise.mass_properties.takeoff = inputs[1]*10000.0
-    mission.segments['Cruise'].distance = (inputs[2]*10000.0 - 1313.0) * Units.nmi
+    mission.segments['Cruise'].distance = (range_goal - 1313.0) * Units.nmi
     
     results = evaluate_mission(vehicle,mission)
     
@@ -142,9 +142,6 @@ def opt_func(inputs,vehicle,mission):
         max_range = copy.copy(dist_base)
         
     #m_fuel = vehicle.Configs.cruise.mass_properties.takeoff - mass_base
-    output = -max_range
-    
-    print output
     
     # ---------------------------------------------
     # Constraints
@@ -178,6 +175,10 @@ def opt_func(inputs,vehicle,mission):
     m_empty = vehicle.configs.cruise.mass_properties.operating_empty
     m_fuel_cell_req = max_power/cell_power_weight
     m_fuel_cell     = m_empty - base_weight
+    
+    output = m_fuel
+    
+    print output    
     
     constraints = [m_fuel_cell-m_fuel_cell_req,m_takeoff-m_fuel-m_empty]   
     print constraints
@@ -625,7 +626,7 @@ def define_mission(vehicle):
     segment.mach       = 1.4
     # 1687 for 3000 nmi
     
-    desired_range = 2500.0
+    desired_range = 2000.0
     cruise_dist = desired_range - 1313.0
     segment.distance   = cruise_dist * Units.nmi
         
@@ -827,41 +828,6 @@ def post_process(vehicle,mission,results):
     axes.set_ylabel('Altitude (km)')
     axes.grid(True)
     
-    # ------------------------------------------------------------------    
-    #   Fuel Burn and Required Air Intake
-    # ------------------------------------------------------------------  
-    fig = plt.figure("Fuel Burn")
-    dist_base = 0.0
-    for segment in results.segments.values():
-                
-        time   = segment.conditions.frames.inertial.time[:,0] / Units.min
-        velocity   = segment.conditions.freestream.velocity[:,0]
-        density   = segment.conditions.freestream.density[:,0]
-        mach_number   = segment.conditions.freestream.mach_number[:,0]
-        mdot = segment.conditions.propulsion.fuel_mass_rate[:,0]
-            
-        axes = fig.add_subplot(3,1,1)
-        axes.plot( time , mdot , 'bo-' )
-        axes.set_xlabel('Time (min)')
-        axes.set_ylabel('Fuel Burn (kg/s)')
-        axes.grid(True)
-        
-        oxy_intake = mdot*8.0
-        air_kg = oxy_intake/0.23
-        air_vol = air_kg/density
-        air_A = air_vol/velocity
-        axes = fig.add_subplot(3,1,2)
-        axes.plot( time , air_A , 'bo-' )
-        axes.set_xlabel('Time (min)')
-        axes.set_ylabel('Required Intake Area')
-        axes.grid(True)
-            
-        intake_drag = air_kg*velocity
-            
-        axes = fig.add_subplot(3,1,3)
-        axes.plot( time , intake_drag , 'bo-' )
-        axes.set_xlabel('Time (min)')
-        axes.set_ylabel('Drag Due to Intake')
     
     # ------------------------------------------------------------------    
     #   Vehicle Mass
@@ -997,6 +963,41 @@ def post_process(vehicle,mission,results):
         axes.set_ylabel('Drag and Thrust (N)')
         axes.grid(True)
     
+    # ------------------------------------------------------------------    
+    #   Fuel Burn and Required Air Intake
+    # ------------------------------------------------------------------  
+    fig = plt.figure("Fuel Burn")
+    dist_base = 0.0
+    for segment in results.segments.values():
+                
+        time   = segment.conditions.frames.inertial.time[:,0] / Units.min
+        velocity   = segment.conditions.freestream.velocity[:,0]
+        density   = segment.conditions.freestream.density[:,0]
+        mach_number   = segment.conditions.freestream.mach_number[:,0]
+        mdot = segment.conditions.propulsion.fuel_mass_rate[:,0]
+            
+        axes = fig.add_subplot(3,1,1)
+        axes.plot( time , mdot , 'bo-' )
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('Fuel Burn (kg/s)')
+        axes.grid(True)
+        
+        oxy_intake = mdot*8.0
+        air_kg = oxy_intake/0.23
+        air_vol = air_kg/density
+        air_A = air_vol/velocity
+        axes = fig.add_subplot(3,1,2)
+        axes.plot( time , air_A , 'bo-' )
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('Required Intake Area')
+        axes.grid(True)
+            
+        intake_drag = air_kg*velocity
+            
+        axes = fig.add_subplot(3,1,3)
+        axes.plot( time , intake_drag , 'bo-' )
+        axes.set_xlabel('Time (min)')
+        axes.set_ylabel('Drag Due to Intake')
     
     # ------------------------------------------------------------------    
     #   Aerodynamics 2
