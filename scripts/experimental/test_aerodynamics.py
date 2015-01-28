@@ -6,14 +6,14 @@
 
 import SUAVE
 import numpy
-from SUAVE.Attributes.Missions.Segments import Base_Segment
+from SUAVE.Analyses.Missions.Segments import Base_Segment
 from SUAVE import Vehicle
 from SUAVE.Components.Wings import Wing
 from SUAVE.Components.Fuselages import Fuselage
 from SUAVE.Components.Propulsors import Turbofan
-from SUAVE.Geometry.Two_Dimensional.Planform import wing_planform
-from SUAVE.Geometry.Two_Dimensional.Planform import fuselage_planform
-from SUAVE.Structure import Data
+from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_planform
+from SUAVE.Methods.Geometry.Two_Dimensional.Planform import fuselage_planform
+from SUAVE.Core import Data
 
 from SUAVE.Attributes.Aerodynamics import PASS_Aero
 

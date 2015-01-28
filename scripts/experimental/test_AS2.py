@@ -12,7 +12,7 @@
 # ----------------------------------------------------------------------
 
 import SUAVE
-from SUAVE.Attributes import Units
+from SUAVE.Core import Units
 from SUAVE.Attributes.Aerodynamics import Conditions
 
 import numpy as np
@@ -22,7 +22,7 @@ import pylab as plt
 
 import copy, time
 
-from SUAVE.Structure import (
+from SUAVE.Core import (
 Data, Container, Data_Exception, Data_Warning,
 )
 
@@ -40,9 +40,6 @@ def main():
     
     # evaluate the mission
     results = evaluate_mission(vehicle,mission)
-    
-    # evaluate weights
-    results = evaluate_weights(vehicle,results)    
     
     # plot results
     post_process(vehicle,mission,results)
@@ -73,9 +70,9 @@ def define_vehicle():
     vehicle.mass_properties.operating_empty      = 22500    # kg
     vehicle.mass_properties.takeoff              = 52163    # kg
     vehicle.mass_properties.max_zero_fuel        = 0.9 * vehicle.mass_properties.max_takeoff 
-    vehicle.mass_properties.cargo                = 1000.  * Units.kilogram
+    vehicle.mass_properties.cargo                = 10000.  * Units.kilogram
 
-    vehicle.mass_properties.center_of_gravity         = [26.3 * Units.feet, 0, 0]
+    vehicle.mass_properties.center_of_gravity         = [60 * Units.feet, 0, 0]  # Not correct
     vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] # Not Correct
 
     # envelope properties
@@ -83,10 +80,10 @@ def define_vehicle():
     vehicle.envelope.limit_load    = 1.5
 
     # basic parameters
-    vehicle.reference_area       = 124.862       
-    vehicle.passengers           = 8
-    vehicle.systems.control      = "fully powered" 
-    vehicle.systems.accessories  = "long range"
+    vehicle.reference_area        = 124.862       
+    vehicle.passengers            = 8
+    vehicle.systems.control  = "fully powered" 
+    vehicle.systems.accessories = "long range"
     
     
     # ------------------------------------------------------------------        
@@ -94,7 +91,8 @@ def define_vehicle():
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Main Wing'
+    wing.tag = 'main_wing'
+
     wing.areas.reference = 125.4    #
     wing.aspect_ratio    = 3.63     #
     wing.spans.projected = 21.0     #
@@ -104,16 +102,7 @@ def define_vehicle():
     wing.taper           = 0.7
 
     # size the wing planform
-    SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
-    
-    # size the wing planform ----------------------------------
-    # These can be determined by the wing sizing function
-    # Note that the wing sizing function will overwrite span
-    wing.chords.root  = 12.9
-    wing.chords.tip   = 1.0
-    wing.areas.wetted = wing.areas.reference*2.0 
-    # The span that would normally be overwritten here doesn't match
-    # ---------------------------------------------------------    
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
     wing.chords.mean_aerodynamic = 7.0
     wing.areas.exposed = 0.8*wing.areas.wetted
@@ -140,7 +129,7 @@ def define_vehicle():
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Horizontal Stabilizer'
+    wing.tag = 'horizontal_stabilizer'
     
     
     wing.areas.reference = 24.5     #
@@ -152,7 +141,7 @@ def define_vehicle():
     wing.taper           = 0.5
 
     # size the wing planform
-    SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
     wing.chords.mean_aerodynamic = 3.0
     wing.areas.exposed = 0.8*wing.areas.wetted
@@ -178,7 +167,7 @@ def define_vehicle():
     # ------------------------------------------------------------------
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Vertical Stabilizer'    
+    wing.tag = 'Vertcal Stabilizer'    
     
     wing.areas.reference = 33.91    #
     wing.aspect_ratio    = 1.3      #
@@ -189,7 +178,7 @@ def define_vehicle():
     wing.taper           = 0.5
 
     # size the wing planform
-    SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
     wing.chords.mean_aerodynamic = 4.2
     wing.areas.exposed = 1.0*wing.areas.wetted
@@ -197,14 +186,6 @@ def define_vehicle():
     wing.span_efficiency = 0.9
     wing.twists.root = 0.0*Units.degrees
     wing.twists.tip  = 0.0*Units.degrees
-
-    wing.vertical   = True 
-    wing.t_tail     = False
-    wing.eta         = 1.0
-
-    wing.high_lift    = False                 #
-    wing.high_mach    = True
-    wing.vortex_lift  = False
     wing.vertical = True
     wing.transition_x_upper = 0.9
     wing.transition_x_lower = 0.9    
@@ -219,7 +200,7 @@ def define_vehicle():
     # ------------------------------------------------------------------
     
     fuselage = SUAVE.Components.Fuselages.Fuselage()
-    fuselage.tag = 'Fuselage'
+    fuselage.tag = 'fuselage'
     
     fuselage.number_coach_seats = 0
     fuselage.seats_abreast = 2
@@ -232,9 +213,7 @@ def define_vehicle():
     fuselage.heights.maximum = 2.55
     
     # size fuselage planform
-    SUAVE.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
-    
-    fuselage.areas.wetted = 615.0
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
     
     # add to vehicle
     vehicle.append_component(fuselage)
@@ -246,7 +225,7 @@ def define_vehicle():
     
     #turbojet = SUAVE.Components.Propulsors.Turbojet2PASS()
     turbojet = SUAVE.Components.Propulsors.Turbojet_SupersonicPASS()
-    turbojet.tag = 'Turbo Fan' # Turbo fan used for weights estimation
+    turbojet.tag = 'Turbojet Variable Nozzle'
     
     turbojet.propellant = SUAVE.Attributes.Propellants.Jet_A1()
     
@@ -259,7 +238,7 @@ def define_vehicle():
     turbojet.burner_pressure_ratio         = 1.0      #
     turbojet.turbine_nozzle_pressure_ratio = 1.0      #
     turbojet.Tt4                           = 1500.0   #
-    turbojet.thrust.design                 = 15000.0 * Units.lb  # 31350 lbs
+    turbojet.design_thrust                 = 15000.0 * Units.lb  # 31350 lbs
     turbojet.number_of_engines             = 3.0      #
     turbojet.engine_length                 = 8.0      # meters - includes 3.4m inlet
     turbojet.lengths = Data()
@@ -329,7 +308,7 @@ def define_mission(vehicle):
     #   Initialize the Mission
     # ------------------------------------------------------------------
 
-    mission = SUAVE.Attributes.Missions.Mission()
+    mission = SUAVE.Analyses.Missions.Mission()
     mission.tag = 'The Test Mission'
 
     # atmospheric model
@@ -350,7 +329,7 @@ def define_mission(vehicle):
     #   Sixth Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
     segment.tag = "Climb - 6"
     
     # connect vehicle configuration
@@ -372,7 +351,7 @@ def define_mission(vehicle):
     #   Seventh Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Speed_Constant_Rate()
     segment.tag = "Climb - 7"
     
     # connect vehicle configuration
@@ -393,7 +372,7 @@ def define_mission(vehicle):
     #   Eighth Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Linear_Mach_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Linear_Mach_Constant_Rate()
     segment.tag = "Climb - 8"
     
     # connect vehicle configuration
@@ -415,7 +394,7 @@ def define_mission(vehicle):
     #   Eighth Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Linear_Mach_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Linear_Mach_Constant_Rate()
     segment.tag = "Climb - 9"
     
     # connect vehicle configuration
@@ -438,7 +417,7 @@ def define_mission(vehicle):
     #   Cruise Segment: constant speed, constant altitude
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Cruise.Constant_Mach_Constant_Altitude()
+    segment = SUAVE.Analyses.Missions.Segments.Cruise.Constant_Mach_Constant_Altitude()
     segment.tag = "Cruise"
     
     # connect vehicle configuration
@@ -458,7 +437,7 @@ def define_mission(vehicle):
     #   First Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------    
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Linear_Mach_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Linear_Mach_Constant_Rate()
     segment.tag = "Descent - 1"
     
     # connect vehicle configuration
@@ -481,7 +460,7 @@ def define_mission(vehicle):
     #   Second Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------    
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Linear_Mach_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Linear_Mach_Constant_Rate()
     segment.tag = "Descent - 2"
     
     # connect vehicle configuration
@@ -504,7 +483,7 @@ def define_mission(vehicle):
     #   Second Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------    
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Constant_Speed_Constant_Rate()
     segment.tag = "Descent - 5"
 
     # connect vehicle configuration
@@ -590,7 +569,7 @@ def post_process(vehicle,mission,results):
         axes.grid(True)   
         
         power = velocity*Thrust
-        mdot_power = mdot*segment.config.propulsion_model['Turbo Fan'].propellant.specific_energy
+        mdot_power = mdot*segment.config.propulsion_model['Turbojet Variable Nozzle'].propellant.specific_energy
         axes = fig.add_subplot(3,1,3)
         axes.plot( time , power/mdot_power , 'bo-' )
         axes.set_xlabel('Time (mins)')
@@ -791,29 +770,6 @@ def post_process(vehicle,mission,results):
     
     return     
 
-
-# ----------------------------------------------------------------------
-#   Evaluate Aircraft Weights
-# ----------------------------------------------------------------------
-
-def evaluate_weights(vehicle,results):
-    
-    # unpack 
-    from SUAVE.Methods.Weights.Correlations.Tube_Wing import empty
-    
-    # evaluate
-    breakdown = empty(vehicle)
-     
-    # pack
-    vehicle.mass_properties.breakdown = breakdown
-    vehicle.mass_properties.operational_empty = vehicle.mass_properties.breakdown.empty
-    
-    for config in vehicle.configs:
-        config.mass_properties.operational_empty = vehicle.mass_properties.breakdown.empty
-    
-    results.weight_breakdown = breakdown
-    
-    return results  
 
 
 # ---------------------------------------------------------------------- 

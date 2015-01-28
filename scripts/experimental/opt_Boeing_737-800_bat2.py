@@ -5,7 +5,7 @@ import pylab as plt
 import copy
 import time
 from pint import UnitRegistry
-from SUAVE.Attributes import Units as Units
+from SUAVE.Core import Units
 # ----------------------------------------------------------------------
 #   Inputs
 # ----------------------------------------------------------------------
@@ -228,7 +228,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Main Wing'
+    wing.tag = 'main_wing'
     
     wing.sref      = vehicle.S       #
     wing.ar        = 8             #
@@ -241,7 +241,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     wing.taper     = 0.16          #
     wing.root_chord= 7.88         #meters
     # size the wing planform
-    SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     Nult_wing      = 3.75
     
     
@@ -274,7 +274,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     # ------------------------------------------------------------------        
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Horizontal Stabilizer'
+    wing.tag = 'horizontal_stabilizer'
     
     wing.sref      =32.488         #
     wing.ar        = 6.16          #
@@ -287,7 +287,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     l_w2h          =16.764         #meters; estimated of length from MAC of wing to h_stabilizer
     Nult_h_stab    =3.75
     # size the wing planform
-    SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
     wing.chord_mac  = 8.0                   #
     wing.S_exposed  = 0.8*wing.area_wetted  #
@@ -309,7 +309,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     # ------------------------------------------------------------------
     
     wing = SUAVE.Components.Wings.Wing()
-    wing.tag = 'Vertical Stabilizer'    
+    wing.tag = 'vertical_stabilizer'    
     
     wing.sref      = 32.488        #
     wing.ar        = 1.91          #
@@ -321,7 +321,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     wing.taper     = 0.25          #
     Nult_v_stab    = 3.75
     # size the wing planform
-    SUAVE.Geometry.Two_Dimensional.Planform.wing_planform(wing)
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing)
     
     wing.chord_mac  = 12.5                  #
     wing.S_exposed  = 0.8*wing.area_wetted  #
@@ -344,7 +344,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     # ------------------------------------------------------------------
     
     fuselage = SUAVE.Components.Fuselages.Fuselage()
-    fuselage.tag = 'Fuselage'
+    fuselage.tag = 'fuselage'
     
     fuselage.num_coach_seats = 200  #
     fuselage.seat_pitch      = 1.    #meters
@@ -357,7 +357,7 @@ def define_vehicle(Mguess,Ereq, Ereq_lis, Preq_lis, max_alt,wing_sweep,alpha_rc,
     fuselage.length          =39.4716 #meters
     Nult_fus=2.5                    #ultimate load factor
     # size fuselage planform
-    SUAVE.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
+    SUAVE.Methods.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
     ################
     
     # ------------------------------------------------------------------
@@ -499,7 +499,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
    
     vehicle.Mass_Props.m_full+=100000*abs(min(climb_alt_3-climb_alt_2, climb_alt_2-climb_alt_1, climb_alt_3-climb_alt_1, 0.))#penalty function in case altitude segments don't match up
     vehicle.Mass_Props.m_full+=100000*abs(max(0,230.412-V_cruise))                                                           #penalty function to make sure that cruise velocity >=737 cruise
-    mission = SUAVE.Attributes.Missions.Mission()
+    mission = SUAVE.Analyses.Missions.Mission()
     mission.tag = 'The Test Mission'
 
     # initial mass
@@ -514,7 +514,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
     #   First Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------
     
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Speed()
     segment.tag = "Climb - 1"
     
     # connect vehicle configuration
@@ -538,7 +538,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
     #   Second Climb Segment: constant Speed, constant segment angle 
     # ------------------------------------------------------------------    
    
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Speed()
     segment.tag = "Climb - 2"
     
     # connect vehicle configuration
@@ -564,7 +564,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
     #   Third Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Climb.Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Climb.Constant_Speed()
     segment.tag = "Climb - 3"
 
     # connect vehicle configuration
@@ -590,7 +590,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
     #   Cruise Segment: constant speed, constant altitude
     # ------------------------------------------------------------------    
     
-    segment = SUAVE.Attributes.Missions.Segments.Cruise.Constant_Speed_Constant_Altitude()
+    segment = SUAVE.Analyses.Missions.Segments.Cruise.Constant_Speed_Constant_Altitude()
     segment.tag = "Cruise"
     
     # connect vehicle configuration
@@ -610,7 +610,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
     #   First Descent Segment: constant speed, constant segment rate
     # ------------------------------------------------------------------    
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Constant_Speed()
     segment.tag = "Descent - 1"
     
     # connect vehicle configuration
@@ -632,7 +632,7 @@ def define_mission(vehicle,climb_alt_1,climb_alt_2,climb_alt_3, Vclimb_1, Vclimb
     #   Second Descent Segment: consant speed, constant segment rate
     # ------------------------------------------------------------------    
 
-    segment = SUAVE.Attributes.Missions.Segments.Descent.Constant_Speed()
+    segment = SUAVE.Analyses.Missions.Segments.Descent.Constant_Speed()
     segment.tag = "Descent - 2"
 
     # connect vehicle configuration

@@ -13,8 +13,8 @@
 # ----------------------------------------------------------------------
 
 import SUAVE
-from SUAVE.Attributes import Units
-from SUAVE.Structure import Data
+from SUAVE.Core import Units
+from SUAVE.Core import Data
 
 import numpy as np
 
@@ -79,10 +79,10 @@ def evaluate_weights(vehicle,results):
 
     # pack
     vehicle.mass_properties.breakdown = breakdown
-    vehicle.mass_properties.operational_empty = vehicle.mass_properties.breakdown.empty
+    vehicle.mass_properties.operating_empty = vehicle.mass_properties.breakdown.empty
 
     for config in vehicle.configs:
-        config.mass_properties.operational_empty = vehicle.mass_properties.breakdown.empty
+        config.mass_properties.operating_empty = vehicle.mass_properties.breakdown.empty
 
     results.weight_breakdown = breakdown
 
@@ -217,8 +217,8 @@ def evaluate_noise(vehicle,mission,results):
     mission_profile = results.mission_profile
 
     weight_landing    = mission_profile.segments[-1].conditions.weights.total_mass[-1,0]
-    number_of_engines = vehicle.propulsors['Turbo Fan'].number_of_engines
-    thrust_sea_level  = vehicle.propulsors['Turbo Fan'].thrust.design
+    number_of_engines = vehicle.propulsors['turbo_fan'].number_of_engines
+    thrust_sea_level  = vehicle.propulsors['turbo_fan'].thrust.design
     thrust_landing    = mission_profile.segments[-1].conditions.frames.body.thrust_force_vector[-1,0]
 
     # evaluate

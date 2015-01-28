@@ -8,8 +8,8 @@
 import SUAVE
 import numpy as np
 from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_mac import trapezoid_mac
-from SUAVE.Attributes import Units as Units
-from SUAVE.Structure import (
+from SUAVE.Core import Units
+from SUAVE.Core import (
     Data, Container, Data_Exception, Data_Warning,
 )
 
@@ -45,17 +45,20 @@ def trapezoid_ac_x(wing):
     l     = wing.taper
     sweep = wing.sweep
     symm  = wing.symmetric
+    c_r   = wing.chords.root
     
     #Get MAC
     mac = trapezoid_mac(wing)
+    
     #Find spanwise location of MAC
     if l != 1.0:
-        mgc = S/b               #mean geometric chord
-        c_r = mgc/(1-0.5*(1-l)) #root chord        
+        if not c_r:
+            mgc = S/b               #mean geometric chord
+            c_r = mgc/(1-0.5*(1-l)) #root chord
         mac_semispan = (b*(1-0.5*symm))*(c_r-mac)/(c_r*(1-l))
     else:
-        mac_semispan = 0.5 * b
+        mac_semispan = 0.25 * b
     
     dx_ac = mac_semispan*np.tan(sweep) + mac/4.0
-    
+
     return dx_ac

@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------
 import SUAVE
 import numpy as np
-from SUAVE.Attributes import Units as Units
-from SUAVE.Structure import (
+from SUAVE.Core import Units
+from SUAVE.Core import (
     Data, Container, Data_Exception, Data_Warning,
 )
 
@@ -67,4 +67,5 @@ def convert_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction = 0.2
     new_sweep = np.arctan(np.tan(sweep_LE)-4*new_ref_chord_fraction*
                           (1-taper)/(ar*(1+taper)))  #Compute sweep referenced 
                                                      #to new chord-fraction
+
     return new_sweep

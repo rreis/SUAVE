@@ -13,8 +13,7 @@
 #
 
 # suave imports
-#from SUAVE.Attributes.Gases.Air import compute_speed_of_sound
-from SUAVE.Attributes.Results import Result
+from SUAVE.Core import Results
 
 # python imports
 import os, sys, shutil
@@ -68,12 +67,12 @@ def miscellaneous_drag_aircraft(conditions,configuration,geometry):
     #   Nacelle base drag
     # ------------------------------------------------------------------
     total_nacelle_base_drag = 0.0
-    nacelle_base_drag_results = Result()
+    nacelle_base_drag_results = Results()
     
     for propulsor in propulsors.values():
         
         # calculate
-        nacelle_base_drag = 0.5/12. * np.pi * propulsor.nacelle_dia * 0.2/vehicle_reference_area
+        nacelle_base_drag = 0.5/12. * np.pi * propulsor.nacelle_diameter * 0.2/vehicle_reference_area
         
         # dump
         nacelle_base_drag_results[propulsor.tag] = nacelle_base_drag * ones_1col
@@ -103,7 +102,7 @@ def miscellaneous_drag_aircraft(conditions,configuration,geometry):
     
     
     # dump to results
-    conditions.aerodynamics.drag_breakdown.miscellaneous = Result(
+    conditions.aerodynamics.drag_breakdown.miscellaneous = Results(
         fuselage_upsweep = fuselage_upsweep_drag     *ones_1col, 
         nacelle_base     = nacelle_base_drag_results ,
         fuselage_base    = fuselage_base_drag        *ones_1col,

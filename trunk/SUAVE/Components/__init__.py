@@ -7,8 +7,9 @@ from Mass_Properties import Mass_Properties
 from Physical_Component import Physical_Component
 
 from Lofted_Body import Lofted_Body
-from Envelope import Envelope
 from Cost import Cost
+
+from Envelope import Envelope
 
 # packages
 import Wings
@@ -18,3 +19,4 @@ import Payloads
 import Energy
 import Systems
 import Energy_old
+import Configs
