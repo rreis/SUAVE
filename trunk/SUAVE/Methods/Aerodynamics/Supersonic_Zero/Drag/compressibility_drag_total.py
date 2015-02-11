@@ -62,6 +62,9 @@ def compressibility_drag_total(conditions,configuration,geometry):
 
     # Initialize result
     drag_breakdown.compressible = Results()
+    
+    # Base total comp drag
+    total_compressibility_drag = 0.0    
 
     # Iterate through wings
     for i_wing, wing, in enumerate(wings.values()):
@@ -120,16 +123,11 @@ def compressibility_drag_total(conditions,configuration,geometry):
             divergence_mach           = MDiv    ,
         )
         drag_breakdown.compressible[wing.tag] = wing_results
+        
+        total_compressibility_drag += cd_c
 
     #: for each wing
 
-    # Dump total comp drag
-    total_compressibility_drag = 0.0
-
-    # Begin with 1 because 0th index is the tag
-    # End with i_wing+2 because i_wing begins at 0 and range(1,3) gives [1, 2]
-    for jj in range(1,i_wing+2):
-        total_compressibility_drag = drag_breakdown.compressible[jj].compressibility_drag + total_compressibility_drag
     drag_breakdown.compressible.total = total_compressibility_drag
 
     return total_compressibility_drag
@@ -235,7 +233,7 @@ def wave_drag(conditions,configuration,main_fuselage,propulsor,wing,num_engines,
             raise ValueError('Main fuselage does not have a total length')
 
         # Propulsor wave drag	
-        prop_drag[mach >= 1.05] = wave_drag_body_of_rev(propulsor.lengths.engine_total,propulsor.nacelle_dia/2.0,Sref_main)*propulsor.number_of_engines
+        prop_drag[mach >= 1.05] = wave_drag_body_of_rev(propulsor.engine_length,propulsor.nacelle_dia/2.0,Sref_main)*propulsor.number_of_engines
 
         # Pack values
         cd_c[mach >= 1.05] = cd_c[mach >= 1.05] + fuse_drag[mach >= 1.05]

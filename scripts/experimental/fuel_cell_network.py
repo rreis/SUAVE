@@ -1,6 +1,6 @@
 # fuel_cell_network.py
 # 
-# Created:  Tim MacDonald, Jul 2014
+# Created:  Tim MacDonald, Feb 2015
 # Modified:  
 # Adapted from solar_enery_network_5.py
 
@@ -14,13 +14,20 @@ import SUAVE
 # package imports
 import numpy as np
 import scipy as sp
-from scipy import optimize
-from SUAVE.Attributes import Units
-import copy
+import datetime
+import time
+from SUAVE.Core import Units
 
-from SUAVE.Structure import (
-Data, Container, Data_Exception, Data_Warning,
-)
+# python imports
+import os, sys, shutil
+from copy import deepcopy
+from warnings import warn
+
+
+from SUAVE.Core import Data, Data_Exception, Data_Warning
+from SUAVE.Components import Component, Physical_Component, Lofted_Body
+from SUAVE.Components import Component_Exception
+from SUAVE.Components.Propulsors.Propulsor import Propulsor
 
 # ----------------------------------------------------------------------
 #   Alternate Approach 

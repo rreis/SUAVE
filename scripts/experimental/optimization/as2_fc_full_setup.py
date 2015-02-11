@@ -14,8 +14,6 @@
 import SUAVE
 import time
 from SUAVE.Core import Units
-from fuel_cell_network import Network
-import fuel_cell_network
 
 import numpy as np
 import scipy as sp
@@ -156,6 +154,7 @@ def vehicle_setup():
     wing.vortex_lift  = False
     wing.transition_x_upper = 0.9
     wing.transition_x_lower = 0.9
+    wing.dynamic_pressure_ratio  = 1.0
     
     #print wing
     # add to vehicle
@@ -193,6 +192,7 @@ def vehicle_setup():
     wing.vortex_lift  = False
     wing.transition_x_upper = 0.9
     wing.transition_x_lower = 0.9
+    wing.dynamic_pressure_ratio  = 1.0
     
     #print wing
     # add to vehicle
@@ -233,7 +233,8 @@ def vehicle_setup():
     wing.vortex_lift  = False
     wing.vertical = True
     wing.transition_x_upper = 0.9
-    wing.transition_x_lower = 0.9    
+    wing.transition_x_lower = 0.9 
+    wing.dynamic_pressure_ratio  = 1.0
     
         
     # add to vehicle
@@ -256,6 +257,16 @@ def vehicle_setup():
     fuselage.lengths.aft_space  = 16.3
     fuselage.width = 2.35
     fuselage.heights.maximum = 2.55
+    fuselage.heights.at_quarter_length          = 4. # Not correct
+    fuselage.heights.at_three_quarters_length   = 4. # Not correct
+    fuselage.heights.at_wing_root_quarter_chord = 4. # Not correct
+
+    fuselage.areas.side_projected  = 4.* 59.8 #  Not correct
+    fuselage.areas.front_projected = 12.57
+    
+    fuselage.effective_diameter    = 4.0
+    
+    fuselage.differential_pressure = 10**5 * Units.pascal    # Maximum differential pressure
     
     # size fuselage planform
     SUAVE.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
@@ -270,62 +281,30 @@ def vehicle_setup():
     # Ducted Fan / Fuel Cell Model
     # ------------------------------------------------------------------
     
-    ductedfan = SUAVE.Components.Propulsors.Turbojet_SupersonicPASS()
-    ductedfan.tag = 'Ducted Fan'
-    ductedfan.nacelle_dia = (.5)*2
-    ductedfan.engine_length = 10.0
-    #ductedfan.no_of_engines = 3.0
-    ductedfan.propellant = vehicle_propellant
-    
-    ductedfan.thrust.design                 = 15000.0 * Units.lb  # 31350 lbs
-    ductedfan.number_of_engines             = 3.0      #
-    ductedfan.lengths = Data()
-    ductedfan.lengths.engine_total          = 8.0    
-    
-    # add to vehicle
-    vehicle.append_component(ductedfan)
-    
-    net = Network()
+    net = SUAVE.Components.Energy.Networks.Fuel_Cell_Network()
 
+    net.tag        = 'turbo_fan'
+    net.fuel_cell  = Data()
+    net.motor	   = Data()
+    net.propulsor  = Data()
     net.propellant = vehicle_propellant
-    net.fuel_cell = fuel_cell_network.Fuel_Cell()
-    net.fuel_cell.inputs.propellant = vehicle_propellant
+    net.fuel_cell.propellant = vehicle_propellant
     net.fuel_cell.efficiency = 0.8
     net.fuel_cell.max_mdot = 1.0
-    net.motor = fuel_cell_network.Motor()
     net.motor.efficiency = 0.95
-    net.propulsor = fuel_cell_network.Propulsor()
     net.propulsor.A0 = (.5)**2*np.pi
+    net.engine_length = 8.0
+    net.number_of_engines    = 3.0
+    net.nacelle_diameter = (.5)*2
     
     # vehicle.append_component(net)
-
-
-    # ------------------------------------------------------------------
-    #   Simple Aerodynamics Model
-    # ------------------------------------------------------------------ 
-    
-    aerodynamics = SUAVE.Attributes.Aerodynamics.Supersonic_Zero()
-    aerodynamics.initialize(vehicle)
-
-    vehicle.aerodynamics_model = aerodynamics
     
     # ------------------------------------------------------------------
     #   Simple Propulsion Model
     # ------------------------------------------------------------------     
     
-    vehicle.propulsion_model = net
-
-    # ------------------------------------------------------------------
-    #   Define Configurations
-    # ------------------------------------------------------------------
-
-    # --- Takeoff Configuration ---
-    config = vehicle.new_configuration("takeoff")
-    # this configuration is derived from the baseline vehicle
-
-    # --- Cruise Configuration ---
-    config = vehicle.new_configuration("cruise")
-    # this configuration is derived from vehicle.Configs.takeoff
+    vehicle.propulsors.append(net)
+    #vehicle.propulsion_model = net
     
 
     # ------------------------------------------------------------------
@@ -533,7 +512,7 @@ def mission_setup(analyses):
     #   Initialize the Mission
     # ------------------------------------------------------------------
 
-    mission = SUAVE.Attributes.Missions.Mission()
+    mission = SUAVE.Analyses.Missions.Mission()
     mission.tag = 'the_mission'
  
     #airport
@@ -541,6 +520,8 @@ def mission_setup(analyses):
     airport.altitude   =  0.0  * Units.ft
     airport.delta_isa  =  0.0
     airport.atmosphere = SUAVE.Attributes.Atmospheres.Earth.US_Standard_1976()
+
+    mission.airport = airport    
 
     # unpack Segments module
     Segments = SUAVE.Analyses.Missions.Segments
@@ -572,7 +553,7 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------    
     # was previously climb 7
     segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
-    segment.tag = "climb_1"
+    segment.tag = "climb_2"
 
     
     # connect vehicle configuration
@@ -589,7 +570,7 @@ def mission_setup(analyses):
     #   Third Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------    
     # was previously climb 8
-	segment = Segments.Climb.Linear_Mach_Constant_Rate(base_segment)
+    segment = Segments.Climb.Linear_Mach_Constant_Rate(base_segment)
     #segment = SUAVE.Attributes.Missions.Segments.Climb.Linear_Mach_Constant_Rate()
     segment.tag = "climb_3"
     
@@ -646,7 +627,7 @@ def mission_setup(analyses):
     #   Cruise Segment: constant speed, constant altitude
     # ------------------------------------------------------------------    
     
-	segment = Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
+    segment = Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
     #segment = SUAVE.Attributes.Missions.Segments.Cruise.Constant_Mach_Constant_Altitude()
     segment.tag = "cruise"
     
@@ -667,7 +648,7 @@ def mission_setup(analyses):
     #   First Descent Segment: constant mach, constant descent rate
     # ------------------------------------------------------------------    
 
-	segment = Segments.Descent.Linear_Mach_Constant_Rate(base_segment)
+    segment = Segments.Descent.Linear_Mach_Constant_Rate(base_segment)
     #segment = SUAVE.Attributes.Missions.Segments.Descent.Linear_Mach_Constant_Rate()
     segment.tag = "descent_1"
     
@@ -688,7 +669,7 @@ def mission_setup(analyses):
     #   Second Descent Segment: constant mach, constant descent rate
     # ------------------------------------------------------------------    
 
-	segment = Segments.Descent.Linear_Mach_Constant_Rate(base_segment)
+    segment = Segments.Descent.Linear_Mach_Constant_Rate(base_segment)
     #segment = SUAVE.Attributes.Missions.Segments.Descent.Linear_Mach_Constant_Rate()
     segment.tag = "descent_2"
     
@@ -731,3 +712,48 @@ def mission_setup(analyses):
     return mission
 
 #: def define_mission()    
+
+def missions_setup(base_mission):
+
+    # the mission container
+    missions = SUAVE.Analyses.Missions.Mission.Container()
+    
+    # ------------------------------------------------------------------
+    #   Base Mission
+    # ------------------------------------------------------------------
+    
+    missions.base = base_mission
+    
+    
+    # ------------------------------------------------------------------
+    #   Mission for Constrained Fuel
+    # ------------------------------------------------------------------    
+    
+    fuel_mission = SUAVE.Analyses.Missions.Mission() #Fuel_Constrained()
+    fuel_mission.tag = 'fuel'
+    fuel_mission.mission = base_mission
+    missions.append(fuel_mission)
+    
+    
+    # ------------------------------------------------------------------
+    #   Mission for Constrained Short Field
+    # ------------------------------------------------------------------
+    
+    short_field = SUAVE.Analyses.Missions.Mission() #Short_Field_Constrained()
+    short_field.tag = 'short_field'
+    short_field.mission = base_mission
+    missions.append(short_field)
+
+    
+    # ------------------------------------------------------------------
+    #   Mission for Fixed Payload
+    # ------------------------------------------------------------------    
+
+    payload = SUAVE.Analyses.Missions.Mission() #Payload_Constrained()
+    payload.tag = 'payload'
+    payload.mission = base_mission
+    missions.append(payload)
+    
+    
+    # done!
+    return missions    

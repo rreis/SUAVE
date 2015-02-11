@@ -56,16 +56,11 @@ def parasite_drag_propulsor(conditions,configuration,propulsor):
         
     freestream = conditions.freestream
     
-<<<<<<< HEAD
-    Sref        = propulsor.nacelle_dia**2 / 4 * np.pi 
-    Swet        = propulsor.nacelle_dia * np.pi * propulsor.lengths.engine_total * 0.9
-=======
-    Sref        = propulsor.nacelle_dia**2 / 4 * np.pi
-    Swet        = propulsor.nacelle_dia * np.pi * propulsor.engine_length
->>>>>>> d48886844e81e6f706661c65d1459c32af15ba7e
+    Sref        = propulsor.nacelle_diameter**2 / 4 * np.pi 
+    Swet        = propulsor.nacelle_diameter * np.pi * propulsor.engine_length * 0.9
     
     l_prop  = propulsor.engine_length
-    d_prop  = propulsor.nacelle_dia
+    d_prop  = propulsor.nacelle_diameter
     
     # conditions
     Mc  = freestream.mach_number
