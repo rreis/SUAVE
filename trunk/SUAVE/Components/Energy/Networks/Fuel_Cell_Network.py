@@ -110,18 +110,18 @@ class Fuel_Cell_Network(Propulsor):
         air_vol = air_kg/f_density
         air_A   = air_vol/f_velocity
         added_drag = air_kg*f_velocity
-        added_drag=added_drag[0]
+        #added_drag=added_drag[0]
         
-        #base_drag_force = conditions.frames.wind.drag_force_vector
-        #base_drag_force[:,0] = base_drag_force[:,0] - added_drag
+        base_drag_force = conditions.frames.wind.drag_force_vector
+        base_drag_force[:,0] = base_drag_force[:,0] - added_drag[:,0]
         
         
-        #ref_area = conditions.aerodynamics.drag_breakdown.parasite.turbo_fan.reference_area
-        #intake_cd = added_drag/ref_area
+        ref_area = conditions.aerodynamics.drag_breakdown.parasite.main_wing.reference_area
+        intake_cd = added_drag/(0.5*f_density*f_velocity**2*ref_area)
         
-        #cell_drag = conditions.aerodynamics.drag_breakdown.parasite.turbo_fan.parasite_drag_coefficient
-        #cell_drag = cell_drag + intake_cd
-        
+        cell_drag = conditions.aerodynamics.drag_breakdown.parasite.turbo_fan.parasite_drag_coefficient
+        cell_drag = cell_drag + intake_cd
+        conditions.aerodynamics.drag_breakdown.parasite.turbo_fan.intake_cd = intake_cd
         
         
         return F, mdot, P

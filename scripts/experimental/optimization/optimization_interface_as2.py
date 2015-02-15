@@ -308,7 +308,7 @@ def summarize(interface):
     print printme
 
     
-    post_process(vehicle,mission_profile)
+    #post_process(vehicle,mission_profile)
     
     return summary
 

@@ -292,6 +292,7 @@ def post_process(vehicle,mission_profile):
         cdc = drag_breakdown.compressible.total[:,0]
         cdm = drag_breakdown.miscellaneous.total[:,0]
         cd  = drag_breakdown.total[:,0]
+        cd_intake = drag_breakdown.parasite.turbo_fan.intake_cd[:,0]
         
         
         axes.plot( time , cdp , 'ko-', label='CD_P' )
@@ -299,6 +300,7 @@ def post_process(vehicle,mission_profile):
         axes.plot( time , cdc , 'go-', label='CD_C' )
         axes.plot( time , cdm , 'yo-', label='CD_M' )
         axes.plot( time , cd  , 'ro-', label='CD'   )
+        axes.plot( time , cd_intake , 'mo-' , label='CD_INT' )
         
         if i == 0:
             axes.legend(loc='upper center')
@@ -306,6 +308,7 @@ def post_process(vehicle,mission_profile):
     axes.set_xlabel('Time (min)')
     axes.set_ylabel('CD')
     axes.grid(True)
+    
     
     base_weight = 22500.0
     base_weight_str = 'Base Weight = ' + '%.0f' % base_weight + ' kg\n'
