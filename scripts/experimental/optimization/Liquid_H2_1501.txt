@@ -1,0 +1,10 @@
+Propellant Type = Liquid_H2
+Range = 1501 nmi
+Fuel Weight = 5585 kg
+Takeoff Weight = 55475 kg
+Empty Weight = 49889 kg
+Fuel Cell Weight = 27389 kg
+Base Weight = 22500 kg
+Reserve Fuel = 1000 kg
+Cell Volume = 21 m^3
+Fuel Volume = 93 m^3

@@ -30,8 +30,14 @@ def main():
     
     # quick test
     inputs = Data()
-    inputs.operating_empty = 44811
-    inputs.takeoff         = 52283
+    #inputs.operating_empty = 44811 # 2500 nmi without fuel cell drag
+    #inputs.takeoff         = 52283
+    #inputs.operating_empty = 57792 # 2500 nmi with fuel cell drag
+    #inputs.takeoff         = 71424    
+    inputs.operating_empty = 54118 # 2000 nmi with fuel cell drag
+    inputs.takeoff         = 63521        
+    #inputs.operating_empty = 49889.4 # 1500 nmi with fuel cell drag
+    #inputs.takeoff         = 55474.7  
     
     # evalute!
     results = interface.evaluate(inputs)
@@ -308,7 +314,7 @@ def summarize(interface):
     print printme
 
     
-    #post_process(vehicle,mission_profile)
+    post_process(vehicle,mission_profile)
     
     return summary
 
