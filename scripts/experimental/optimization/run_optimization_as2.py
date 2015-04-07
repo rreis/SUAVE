@@ -1,3 +1,8 @@
+# run_optimization_as2.py
+# 
+# Created:  SUave Team, Aug 2014
+# Modified: Tim MacDonald, 3/19/15
+
 
 # ----------------------------------------------------------------------
 #   Imports
@@ -68,6 +73,7 @@ def setup_problem(interface):
     #   [ 'tag'             ,  x0, (lb , ub) , scl      ],
         [ 'operating_empty'    , 40000., (10000.,100000.) , 'bounds' ],
         [ 'takeoff'  , 53000., (10000.,100000.) , 'bounds' ], 
+        [ 'SH_diameter' , 2.45 , (2.45,10) , 'bounds' ],  
     ]
     
     # remember avoids calling the function twice for same inputs
@@ -84,6 +90,7 @@ def setup_problem(interface):
     #   [ func     , ('tag'         , '><=', val   ), scl ] ,
         [ evaluator, ('excess_power', '>'  , 0.), 10000000. ],
         [ evaluator, ('weight_balance', '=' , 0.), 10000. ],
+        [ evaluator, ('excess_volume', '>' , 0.), 100. ],
     ]
     
     # done!

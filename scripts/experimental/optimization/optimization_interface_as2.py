@@ -1,3 +1,8 @@
+# optimization_interface_as2.py
+# 
+# Created:  SUave Team, Aug 2014
+# Modified: Tim MacDonald, 3/19/15
+
 
 # ----------------------------------------------------------------------
 #   Imports
@@ -34,10 +39,13 @@ def main():
     #inputs.takeoff         = 52283
     #inputs.operating_empty = 57792 # 2500 nmi with fuel cell drag
     #inputs.takeoff         = 71424    
-    inputs.operating_empty = 54118 # 2000 nmi with fuel cell drag
-    inputs.takeoff         = 63521        
+    #inputs.operating_empty = 54118 # 2000 nmi with fuel cell drag
+    #inputs.takeoff         = 63521        
     #inputs.operating_empty = 49889.4 # 1500 nmi with fuel cell drag
     #inputs.takeoff         = 55474.7  
+    inputs.operating_empty = 56956.0 # 2000 nmi with fuel cell drag and Rmax = 2.76
+    inputs.takeoff         = 67612.5  
+    inputs.SH_diameter     = 2.76
     
     # evalute!
     results = interface.evaluate(inputs)
@@ -134,6 +142,7 @@ def unpack_inputs(interface):
     vehicle.mass_properties.takeoff = inputs.takeoff
     vehicle.mass_properties.max_takeoff = inputs.takeoff
     vehicle.mass_properties.operating_empty  = inputs.operating_empty
+    vehicle.fuselages.fuselage.effective_diameter = inputs.SH_diameter
 
     vehicle.store_diff()
      
@@ -307,14 +316,22 @@ def summarize(interface):
     
     summary.weight_balance  = summary.weight_takeoff - summary.weight_empty - summary.fuel_burn
     
+    cell_density = 1.9e6 # W/m^3
+    cell_volume = max_power_req/cell_density
+    prop_density = vehicle.propulsors.turbo_fan.propellant.density
+    fuel_volume = summary.fuel_burn/prop_density
+    SH_V = 3.*np.pi**2/16.*vehicle.fuselages.fuselage.effective_diameter**2/4*vehicle.fuselages.fuselage.lengths.total
+    summary.excess_volume = SH_V - fuel_volume -cell_volume
+    
     printme = Data()
     printme.fuel_burn = summary.fuel_burn
     printme.weight_empty = summary.weight_empty
+    printme.excess_volume = summary.excess_volume
     print "RESULTS"
     print printme
 
     
-    post_process(vehicle,mission_profile)
+    #post_process(vehicle,mission_profile)
     
     return summary
 

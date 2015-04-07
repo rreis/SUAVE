@@ -264,14 +264,13 @@ def vehicle_setup():
     fuselage.areas.side_projected  = 4.* 59.8 #  Not correct
     fuselage.areas.front_projected = 12.57
 
-    fuselage.effective_diameter    = 4.0
-
     fuselage.differential_pressure = 10**5 * Units.pascal    # Maximum differential pressure
 
     # size fuselage planform
     SUAVE.Geometry.Two_Dimensional.Planform.fuselage_planform(fuselage)
 
     fuselage.areas.wetted = 615.0
+    fuselage.effective_diameter    = 2.76
 
     # add to vehicle
     vehicle.append_component(fuselage)
