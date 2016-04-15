@@ -1263,7 +1263,7 @@ g281
 sg228
 g283
 sbtp292
-a(S'turbo_fan'
+a(S'turbofan'
 p293
 g1
 (g2
