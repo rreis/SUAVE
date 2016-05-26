@@ -2,24 +2,22 @@
 #
 #Created:  May 2016 by M. Vegh
 
-# compute_chord_length_from_span_location.py
+
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-
-
 import numpy as np
+
+
 # ----------------------------------------------------------------------
-#  Compute Chord Length from Span Location
+#  find_tip_chord_leading_edge
 # ---------------------------------------------------------------------- 
-
-
 
 def find_tip_chord_leading_edge(wing):
     '''
-    Computes the chord length given a location along the half-span.
-    Assumes linear variation of chord with span
+    Computes the location of the leading edge of the tip chord relative to the
+    leading edge of the wing
     '''    
     rc    = wing.chords.root
     tc    = wing.chords.tip
