@@ -42,7 +42,18 @@ def main():
 
     configs.finalize()
     analyses.finalize()    
+    
 
+    # mission analysis
+    mission = analyses.missions
+    #results = mission.evaluate()
+    
+    configs.base.type ='Conventional'
+    
+    geomach_geometry(configs.base,'B737.stl')
+
+    # plt the old results
+    plot_mission(results)
     
 
     return
@@ -257,6 +268,8 @@ def vehicle_setup():
 
     wing.origin                  = [35,0,0]
     wing.aerodynamic_center      = [2,0,0]
+    
+    wing.tip_location            = find_tip_chord_leading_edge(wing)
 
     wing.vertical                = False
     wing.symmetric               = True
@@ -292,6 +305,8 @@ def vehicle_setup():
 
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
+    
+    wing.tip_location            = find_tip_chord_leading_edge(wing)
 
     wing.origin                  = [35,0,0]
     wing.aerodynamic_center      = [2,0,0]
