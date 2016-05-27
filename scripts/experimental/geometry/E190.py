@@ -50,10 +50,10 @@ def main():
     
     configs.base.type ='Conventional'
     
-    geomach_geometry(configs.base,'B737.stl')
+    geomach_geometry(configs.base,'E190.stl')
 
     # plt the old results
-    plot_mission(results)
+    #plot_mission(results)
     
 
     return

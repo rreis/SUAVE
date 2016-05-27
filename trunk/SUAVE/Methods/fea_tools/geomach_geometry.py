@@ -19,29 +19,43 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         
         pgm.comps['lwing'].set_airfoil('rae2822.dat')
         pgm.comps['ltail'].set_airfoil()
+
+        #pgm.dvs['lwing_root_x'].data[0] = 16.
+        #pgm.dvs['lwing_root_y'].data[0] = -1.
+        #pgm.dvs['lwing_root_z'].data[0] = 2.6
+        
+        ##relative to the root
+        #pgm.dvs['lwing_tip_x'].data[0] = 16.5
+        #pgm.dvs['lwing_tip_y'].data[0] = 4.4
+        #pgm.dvs['lwing_tip_z'].data[0] = 23.3
+        
+        #pgm.dvs['lwing_root_chord'].data[0] = 10.
+        #pgm.dvs['lwing_mid_chord'].data[0] = 10. # this seems like a questionable value for mid chord
+        #pgm.dvs['lwing_tip_chord'].data[0] = 1.2      
+        
         pgm.dvs['lwing_root_x'].data[0] = aircraft.wings.main_wing.origin[0]
-        pgm.dvs['lwing_root_y'].data[0] = aircraft.wings.main_wing.origin[1]
-        pgm.dvs['lwing_root_z'].data[0] = aircraft.wings.main_wing.origin[2]
+        pgm.dvs['lwing_root_y'].data[0] = aircraft.wings.main_wing.origin[2]
+        pgm.dvs['lwing_root_z'].data[0] = aircraft.fuselages.fuselage.effective_diameter/2.
         
         #relative to the root
-        pgm.dvs['lwing_tip_x'].data[0] = aircraft.wings.main_wing.tip_location[0] + aircraft.wings.main_wing.origin[0]
-        pgm.dvs['lwing_tip_y'].data[0] = aircraft.wings.main_wing.tip_location[1] + aircraft.wings.main_wing.origin[1]
-        pgm.dvs['lwing_tip_z'].data[0] = aircraft.wings.main_wing.tip_location[2] + aircraft.wings.main_wing.origin[2]
+        pgm.dvs['lwing_tip_x'].data[0] = aircraft.wings.main_wing.tip_location[0]
+        pgm.dvs['lwing_tip_y'].data[0] = aircraft.wings.main_wing.tip_location[2]
+        pgm.dvs['lwing_tip_z'].data[0] = aircraft.wings.main_wing.tip_location[1]
         
         pgm.dvs['lwing_root_chord'].data[0] = aircraft.wings.main_wing.chords.root
-        pgm.dvs['lwing_mid_chord'].data[0] = aircraft.wings.main_wing.chords.root # this seems like a questionable value for mid chord
+        pgm.dvs['lwing_mid_chord'].data[0] = .5*(aircraft.wings.main_wing.chords.root + aircraft.wings.main_wing.chords.tip) # this seems like a questionable value for mid chord
         pgm.dvs['lwing_tip_chord'].data[0] = aircraft.wings.main_wing.chords.tip
         
         
-        #horz tail
+        ##horz tail
         
         pgm.dvs['ltail_root_x'].data[0] = aircraft.wings.horizontal_stabilizer.origin[0]
-        pgm.dvs['ltail_root_y'].data[0] = aircraft.wings.horizontal_stabilizer.origin[1]
-        pgm.dvs['ltail_root_z'].data[0] = aircraft.wings.horizontal_stabilizer.origin[2]
+        pgm.dvs['ltail_root_y'].data[0] = aircraft.wings.horizontal_stabilizer.origin[2]
+        pgm.dvs['ltail_root_z'].data[0] = aircraft.wings.horizontal_stabilizer.origin[1]
         
-        pgm.dvs['ltail_tip_x'].data[0] = aircraft.wings.horizontal_stabilizer.tip_location[0] + aircraft.wings.horizontal_stabilizer.origin[0]
-        pgm.dvs['ltail_tip_y'].data[0] = aircraft.wings.horizontal_stabilizer.tip_location[1] + aircraft.wings.horizontal_stabilizer.origin[1]
-        pgm.dvs['ltail_tip_z'].data[0] = aircraft.wings.horizontal_stabilizer.tip_location[2] + aircraft.wings.horizontal_stabilizer.origin[2]
+        pgm.dvs['ltail_tip_x'].data[0] = aircraft.wings.horizontal_stabilizer.tip_location[0]
+        pgm.dvs['ltail_tip_y'].data[0] = aircraft.wings.horizontal_stabilizer.tip_location[2]
+        pgm.dvs['ltail_tip_z'].data[0] = aircraft.wings.horizontal_stabilizer.tip_location[1]
         
         pgm.dvs['ltail_root_chord'].data[0] = aircraft.wings.horizontal_stabilizer.chords.root
         #pgm.dvs['ltail_mid_chord'].data[0] = 4.5
@@ -52,12 +66,12 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         
         
         pgm.dvs['vtail_root_x'].data[0] = aircraft.wings.vertical_stabilizer.origin[0]
-        pgm.dvs['vtail_root_y'].data[0] = aircraft.wings.vertical_stabilizer.origin[1]
-        pgm.dvs['vtail_root_z'].data[0] = aircraft.wings.vertical_stabilizer.origin[2]
+        pgm.dvs['vtail_root_y'].data[0] = aircraft.wings.vertical_stabilizer.origin[2]
+        pgm.dvs['vtail_root_z'].data[0] = aircraft.wings.vertical_stabilizer.origin[1]
         
-        pgm.dvs['vtail_tip_x'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[0] + aircraft.wings.vertical_stabilizer.origin[0]
-        pgm.dvs['vtail_tip_y'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[1] + aircraft.wings.vertical_stabilizer.origin[1]
-        pgm.dvs['vtail_tip_z'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[2] + aircraft.wings.vertical_stabilizer.origin[2]
+        pgm.dvs['vtail_tip_x'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[0]
+        pgm.dvs['vtail_tip_y'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[2]
+        pgm.dvs['vtail_tip_z'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[1]
         
         pgm.dvs['vtail_root_chord'].data[0] = aircraft.wings.vertical_stabilizer.chords.root
         #pgm.dvs['vtail_mid_chord'].data[0] = 4.5
@@ -86,4 +100,4 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         bse.vec['cp_str'].export_IGES()
         bse.vec['cp_str'].export_STL(stl_mesh_filename)
         
-        pgm.meshStructure()
+        #pgm.meshStructure()

@@ -431,9 +431,9 @@ if __name__ == '__main__':
 
     #bse.vec['pt_str']._hidden[:] = False
     bse.vec['pt_str'].export_tec_str()
-    bse.vec['df'].export_tec_scatter()
-    bse.vec['cp'].export_tec_scatter()
-    bse.vec['pt'].export_tec_scatter()
+    #bse.vec['df'].export_tec_scatter()
+    #bse.vec['cp'].export_tec_scatter()
+    #bse.vec['pt'].export_tec_scatter()
     #bse.vec['cp_str'].export_IGES()
     bse.vec['cp_str'].export_STL('conventional_airc.stl')
 
