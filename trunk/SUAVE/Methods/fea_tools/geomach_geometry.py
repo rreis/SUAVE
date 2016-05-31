@@ -70,8 +70,8 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         pgm.dvs['vtail_root_z'].data[0] = aircraft.wings.vertical_stabilizer.origin[1]
         
         pgm.dvs['vtail_tip_x'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[0]
-        pgm.dvs['vtail_tip_y'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[2]
-        pgm.dvs['vtail_tip_z'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[1]
+        pgm.dvs['vtail_tip_y'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[1]
+        pgm.dvs['vtail_tip_z'].data[0] = aircraft.wings.vertical_stabilizer.tip_location[2]
         
         pgm.dvs['vtail_root_chord'].data[0] = aircraft.wings.vertical_stabilizer.chords.root
         #pgm.dvs['vtail_mid_chord'].data[0] = 4.5
@@ -88,7 +88,7 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         pgm.dvs['fus_tip_y'].data[0] = 0.
         pgm.dvs['fus_tip_z'].data[0] = 0.
         
-        pgm.dvs['diameter'].data[0] = aircraft.fuselages.fuselage.effective_diameter
+        pgm.dvs['diameter'].data[0] = aircraft.fuselages.fuselage.effective_diameter/2.
 
         pgm.compute_all()
 
