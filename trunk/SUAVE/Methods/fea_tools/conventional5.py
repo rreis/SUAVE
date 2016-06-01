@@ -22,7 +22,7 @@ class Conventional5(PGMconfiguration):
         self.comps['vtail'] = PGMwing(num_x=2, left_closed=True)
 
         self.comps['fuse_f'] = PGMcone(self, 'fuse', 'front', 2)
-        self.comps['fuse_r'] = PGMcone(self, 'fuse', 'rear', 2)
+        self.comps['fuse_r'] = PGMcone(self, 'fuse', 'rear', 1)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
         #self.comps['rwing_t'] = PGMtip(self, 'rwing', 'right', 0.1)
         self.comps['ltail_t'] = PGMtip(self, 'ltail', 'left', 0.1)
@@ -99,7 +99,7 @@ class Conventional5(PGMconfiguration):
     def _define_dvs(self):
         dvs = self.dvs
 
-#main wing
+	#main wing
 
         dvs['lwing_root_x'] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', '', (0,0))
         dvs['lwing_root_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
@@ -152,23 +152,23 @@ class Conventional5(PGMconfiguration):
         dvs['fus_root_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,1))
         dvs['fus_root_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,2))
         
-        dvs['fus_tip_x'] = PGMdv((1), 50.).set_identity_param('fuse', 'pos', '', (1,0))
+        dvs['fus_tip_x'] = PGMdv((1), 36.).set_identity_param('fuse', 'pos', '', (1,0))
         dvs['fus_tip_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,1))
         dvs['fus_tip_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,2))
         
-        dvs['diameter'] = PGMdv((1), 2.6).set_identity_param('fuse', 'scl', '', (0,0))
+        dvs['diameter']  = PGMdv((1), 3.0).set_identity_param('fuse', 'scl', '', (0,0))
     
     
 
     def _compute_params(self):
         fuse = self.comps['fuse'].props
-        fuse['pos'].params[''].val([[0,0,0],[50,0,0]])
+        fuse['pos'].params[''].val([[0,0,0],[36,0,0]])
         fuse['nor'].params[''].val([1.0])
         fuse['scl'].params[''].val([2.6])
         fuse['flt'].params[''].val([[0,0,0.5,0.5],[0,0,0.5,0.5]])
         fuse['pos'].params['nose'].val([[0,-1.1,0],[0,0,0],[0,0,0]])
-        fuse['scl'].params['nose'].val([-2, 0, 0])
-        fuse['scl'].params['tail'].val([0, -2.3])
+        fuse['scl'].params['nose'].val([-1.6, 0, 0])
+        fuse['scl'].params['tail'].val([0, -1.5])
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
@@ -226,133 +226,133 @@ class Conventional5(PGMconfiguration):
         comps['fuse'].faces['top'].set_option('num_cp', 'u', [24,24]) #8,8
         comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120]) #[6,4,4,20]
 
-    def meshStructure(self):
-        afm = Airframe(self, 1) #0.2)
+    #def meshStructure(self):
+        #afm = Airframe(self, 1) #0.2)
 
 
-    #main wing leading section ribs
-        idims = numpy.linspace(0.45,0.9,7)
-        jdims = numpy.linspace(0,1,16)
-        for i in range(idims.shape[0]-1):
-            for j in range(jdims.shape[0]):
-                afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
-        #afm.addVertFlip('rwing_i_r::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i+1],1-jdims[j]])
+    ##main wing leading section ribs
+        #idims = numpy.linspace(0.45,0.9,7)
+        #jdims = numpy.linspace(0,1,16)
+        #for i in range(idims.shape[0]-1):
+            #for j in range(jdims.shape[0]):
+                #afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
+        ##afm.addVertFlip('rwing_i_r::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i+1],1-jdims[j]])
         
         
         
         
-        #main wing leading section spars
+        ##main wing leading section spars
         
-        for i in range(idims.shape[0]):
-            for j in range(jdims.shape[0]-1):
-                if i is 0 or i is idims.shape[0]-1:
-                    afm.addVertFlip('lwing_s::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
-                #afm.addVertFlip('rwing_i_s::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]])
-                else:
-#                    afm.addVertFlip('lwing_i_sa::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1,0.85])
-#                    afm.addVertFlip('lwing_i_sb::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[0.15,0])
-                    afm.addVertFlip('lwing_s::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
+        #for i in range(idims.shape[0]):
+            #for j in range(jdims.shape[0]-1):
+                #if i is 0 or i is idims.shape[0]-1:
+                    #afm.addVertFlip('lwing_s::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
+                ##afm.addVertFlip('rwing_i_s::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]])
+                #else:
+##                    afm.addVertFlip('lwing_i_sa::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1,0.85])
+##                    afm.addVertFlip('lwing_i_sb::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[0.15,0])
+                    #afm.addVertFlip('lwing_s::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
 
 
 
-#                    afm.addVertFlip('rwing_i_sa::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]],w=[1,0.85])
-#                    afm.addVertFlip('rwing_i_sb::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]],w=[0.15,0])
+##                    afm.addVertFlip('rwing_i_sa::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]],w=[1,0.85])
+##                    afm.addVertFlip('rwing_i_sb::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]],w=[0.15,0])
 
 
 
 
 
 
-        #wing box lower/back edge
-        idims = numpy.linspace(0.18,0.45,6)
-        for j in range(idims.shape[0]-1):
-            afm.addVertFlip('lwing_i_i1::'+str(j)+':0','lwing',[idims[j],jdims[j]],[idims[j+1],jdims[j+1]])
-            #afm.addVertFlip('rwing_i_i1::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[idims[j+1],1-jdims[j+1]])
-            afm.addVertFlip('lwing_i_i2::'+str(j)+':0','lwing',[idims[j],jdims[j]],[0.45,jdims[j]])
-        #afm.addVertFlip('rwing_i_i2::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[0.45,1-jdims[j]])
+        ##wing box lower/back edge
+        #idims = numpy.linspace(0.18,0.45,6)
+        #for j in range(idims.shape[0]-1):
+            #afm.addVertFlip('lwing_i_i1::'+str(j)+':0','lwing',[idims[j],jdims[j]],[idims[j+1],jdims[j+1]])
+            ##afm.addVertFlip('rwing_i_i1::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[idims[j+1],1-jdims[j+1]])
+            #afm.addVertFlip('lwing_i_i2::'+str(j)+':0','lwing',[idims[j],jdims[j]],[0.45,jdims[j]])
+        ##afm.addVertFlip('rwing_i_i2::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[0.45,1-jdims[j]])
         
         
-        #wing box connection inside fuselage spars
-#        idims = numpy.linspace(0.45,0.85,7)
-#        jdims = numpy.linspace(0,1,16)
-#        for i in range(idims.shape[0]):
-#            if i is 0 or i is idims.shape[0]-1:
-#                afm.addCtrVert('lwing_Misc_1::'+str(i)+':'+str(j),'lwing','rwing',idims[i])
-#            else:
-#                afm.addCtrVert('lwing_Misc_2::'+str(i)+':'+str(j),'lwing','rwing',idims[i],w=[1,0.85])
-#                afm.addCtrVert('lwing_Misc_3::'+str(i)+':'+str(j),'lwing','rwing',idims[i],w=[0.15,0])
-#        for i in range(idims.shape[0]-1):
-#            afm.addCtr('lwing_Misc_4::','lwing','rwing',0,[idims[i],idims[i+1]])
-#        for i in range(idims.shape[0]-1):
-#            afm.addCtr('lwing_Misc_5::','lwing','rwing',1,[1-idims[i],1-idims[i+1]])
-#        afm.addCtrVert('lwing_Misc_6::'+str(i)+':'+str(j),'lwing','rwing',0.18)
+        ##wing box connection inside fuselage spars
+##        idims = numpy.linspace(0.45,0.85,7)
+##        jdims = numpy.linspace(0,1,16)
+##        for i in range(idims.shape[0]):
+##            if i is 0 or i is idims.shape[0]-1:
+##                afm.addCtrVert('lwing_Misc_1::'+str(i)+':'+str(j),'lwing','rwing',idims[i])
+##            else:
+##                afm.addCtrVert('lwing_Misc_2::'+str(i)+':'+str(j),'lwing','rwing',idims[i],w=[1,0.85])
+##                afm.addCtrVert('lwing_Misc_3::'+str(i)+':'+str(j),'lwing','rwing',idims[i],w=[0.15,0])
+##        for i in range(idims.shape[0]-1):
+##            afm.addCtr('lwing_Misc_4::','lwing','rwing',0,[idims[i],idims[i+1]])
+##        for i in range(idims.shape[0]-1):
+##            afm.addCtr('lwing_Misc_5::','lwing','rwing',1,[1-idims[i],1-idims[i+1]])
+##        afm.addCtrVert('lwing_Misc_6::'+str(i)+':'+str(j),'lwing','rwing',0.18)
 
 
 
-        #ribs for horizontal and vertical tail
-        idims = numpy.linspace(0.25,0.65,2)
-        jdims = numpy.linspace(0,0.9,10)
-        for i in range(idims.shape[0]-1):
-            for j in range(jdims.shape[0]):
-                afm.addVertFlip('ltail_r::'+str(i)+':'+str(j),'ltail',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
-                #afm.addVertFlip('rtail_i_r::'+str(i)+':'+str(j),'rtail',[idims[i],1-jdims[j]],[idims[i+1],1-jdims[j]])
-                afm.addVertFlip('vtail_r::'+str(i)+':'+str(j),'vtail',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
+        ##ribs for horizontal and vertical tail
+        #idims = numpy.linspace(0.25,0.65,2)
+        #jdims = numpy.linspace(0,0.9,10)
+        #for i in range(idims.shape[0]-1):
+            #for j in range(jdims.shape[0]):
+                #afm.addVertFlip('ltail_r::'+str(i)+':'+str(j),'ltail',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
+                ##afm.addVertFlip('rtail_i_r::'+str(i)+':'+str(j),'rtail',[idims[i],1-jdims[j]],[idims[i+1],1-jdims[j]])
+                #afm.addVertFlip('vtail_r::'+str(i)+':'+str(j),'vtail',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
 
 
 
-        #spars for horizontal and vertical tail
-        for i in range(idims.shape[0]):
-            for j in range(jdims.shape[0]-1):
-                afm.addVertFlip('ltail_s::'+str(i)+':'+str(j),'ltail',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
-                #afm.addVertFlip('rtail_i_s::'+str(i)+':'+str(j),'rtail',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]])
-                afm.addVertFlip('vtail_s::'+str(i)+':'+str(j),'vtail',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
+        ##spars for horizontal and vertical tail
+        #for i in range(idims.shape[0]):
+            #for j in range(jdims.shape[0]-1):
+                #afm.addVertFlip('ltail_s::'+str(i)+':'+str(j),'ltail',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
+                ##afm.addVertFlip('rtail_i_s::'+str(i)+':'+str(j),'rtail',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]])
+                #afm.addVertFlip('vtail_s::'+str(i)+':'+str(j),'vtail',[idims[i],jdims[j]],[idims[i],jdims[j+1]])
 
 
 
-       #i think internal components for tails
-#        for i in range(idims.shape[0]):
-#                afm.addCtrVert('ltail_Misc_1::'+str(i)+':'+str(j),'ltail','rtail',idims[i])
-#        for i in range(idims.shape[0]-1):
-#            afm.addCtr('ltail_Misc_2::'+str(i)+':0','ltail','rtail',0,[idims[i],idims[i+1]])
-#        for i in range(idims.shape[0]-1):
-#            afm.addCtr('ltail_Misc_3::+str(i)'+':0','ltail','rtail',1,[1-idims[i],1-idims[i+1]])
-
-
-
-
-        #fuselage rings
-        idims = numpy.linspace(0,1,4)
-        jdims = numpy.linspace(0,1,20)
-        for i in range(idims.shape[0]-1):
-            for j in range(jdims.shape[0]):
-                afm.addVert('fuse_r1::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[0,2])
-                afm.addVert('fuse_r2::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[1,3])
-                afm.addVert('fuse_r3::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[2,0])
-                afm.addVert('fuse_r4::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[3,1])
-
-
-
-        #fuselage longerons
-        for i in range(idims.shape[0]-1):
-            for j in range(jdims.shape[0]-1):
-                afm.addVert('fuse_l1::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[0,2])
-                afm.addVert('fuse_l2::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[1,3])
-                afm.addVert('fuse_l3::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[2,0])
-                afm.addVert('fuse_l4::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[3,1])
-
-
-
-        #probably intersection
-        for j in range(jdims.shape[0]-1):
-            afm.addVertFlip('fus_Misc_1::'+str(j)+':0','fuse',[0.4,jdims[j]],[0.4,jdims[j+1]],w=[1.0,0.5],i=[0,2])
-            afm.addVertFlip('fus_Misc_2::'+str(j)+':0','fuse',[0.4,jdims[j]],[0.4,jdims[j+1]],w=[0.5,0.0],i=[0,2])
+       ##i think internal components for tails
+##        for i in range(idims.shape[0]):
+##                afm.addCtrVert('ltail_Misc_1::'+str(i)+':'+str(j),'ltail','rtail',idims[i])
+##        for i in range(idims.shape[0]-1):
+##            afm.addCtr('ltail_Misc_2::'+str(i)+':0','ltail','rtail',0,[idims[i],idims[i+1]])
+##        for i in range(idims.shape[0]-1):
+##            afm.addCtr('ltail_Misc_3::+str(i)'+':0','ltail','rtail',1,[1-idims[i],1-idims[i+1]])
 
 
 
 
-        afm.preview('conventional_pvw.dat')
-        afm.mesh()
-        afm.computeMesh('conventional_str')
+        ##fuselage rings
+        #idims = numpy.linspace(0,1,4)
+        #jdims = numpy.linspace(0,1,20)
+        #for i in range(idims.shape[0]-1):
+            #for j in range(jdims.shape[0]):
+                #afm.addVert('fuse_r1::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[0,2])
+                #afm.addVert('fuse_r2::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[1,3])
+                #afm.addVert('fuse_r3::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[2,0])
+                #afm.addVert('fuse_r4::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i+1],jdims[j]],w=[1.0,0.94],i=[3,1])
+
+
+
+        ##fuselage longerons
+        #for i in range(idims.shape[0]-1):
+            #for j in range(jdims.shape[0]-1):
+                #afm.addVert('fuse_l1::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[0,2])
+                #afm.addVert('fuse_l2::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[1,3])
+                #afm.addVert('fuse_l3::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[2,0])
+                #afm.addVert('fuse_l4::'+str(i)+':'+str(j),'fuse',[idims[i],jdims[j]],[idims[i],jdims[j+1]],w=[1.0,0.97],i=[3,1])
+
+
+
+        ##probably intersection
+        #for j in range(jdims.shape[0]-1):
+            #afm.addVertFlip('fus_Misc_1::'+str(j)+':0','fuse',[0.4,jdims[j]],[0.4,jdims[j+1]],w=[1.0,0.5],i=[0,2])
+            #afm.addVertFlip('fus_Misc_2::'+str(j)+':0','fuse',[0.4,jdims[j]],[0.4,jdims[j+1]],w=[0.5,0.0],i=[0,2])
+
+
+
+
+        #afm.preview('conventional_pvw.dat')
+        #afm.mesh()
+        #afm.computeMesh('conventional_str')
         
 
 

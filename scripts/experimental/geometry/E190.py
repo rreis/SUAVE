@@ -185,10 +185,7 @@ def vehicle_setup():
     vehicle.mass_properties.cargo                     = 0.0 * Units.kg
     vehicle.mass_properties.max_payload               = 13063. * Units.kg
     vehicle.mass_properties.max_fuel                  = 12971.
-
-    vehicle.mass_properties.center_of_gravity         = [60 * Units.feet, 0, 0]  # Not correct
-    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] # Not Correct
-
+    
     # envelope properties
     vehicle.envelope.ultimate_load = 3.5
     vehicle.envelope.limit_load    = 1.5
@@ -226,7 +223,7 @@ def vehicle_setup():
     wing.twists.root             = 2.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
 
-    wing.origin                  = [14.5,0,0]
+    wing.origin                  = [14.5,0,-0.5]
     wing.aerodynamic_center      = [3,0,0]
 
     wing.tip_location            = find_tip_chord_leading_edge(wing)
@@ -308,7 +305,7 @@ def vehicle_setup():
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
 
-    wing.origin                  = [30,0,0]
+    wing.origin                  = [28,0,1.]
     wing.aerodynamic_center      = [2,0,0]
 
     wing.vertical                = True
@@ -333,19 +330,20 @@ def vehicle_setup():
     fuselage.fineness.nose         = 2.0
     fuselage.fineness.tail         = 3.0
 
-    fuselage.lengths.nose          = 6.0
-    fuselage.lengths.tail          = 9.0
-    fuselage.lengths.cabin         = 21.24
+    fuselage.lengths.nose          = 4.27
+    fuselage.lengths.tail          = 36.24-24.57
+    #fuselage.lengths.cabin         = 21.24
+    fuselage.lengths.cabin         = 25.91
     fuselage.lengths.total         = 36.24
     fuselage.lengths.fore_space    = 0.
     fuselage.lengths.aft_space     = 0.
 
     fuselage.width                 = 3.18
 
-    fuselage.heights.maximum       = 4.18    #
-    fuselage.heights.at_quarter_length          = 3.18 # Not correct
-    fuselage.heights.at_three_quarters_length   = 3.18 # Not correct
-    fuselage.heights.at_wing_root_quarter_chord = 4.00 # Not correct
+    fuselage.heights.maximum       = 3.35    #
+    fuselage.heights.at_quarter_length          =  3.35
+    fuselage.heights.at_three_quarters_length   =  3.35
+    fuselage.heights.at_wing_root_quarter_chord = 3.35 
 
     fuselage.areas.side_projected  = 239.20
     fuselage.areas.wetted          = 327.01
