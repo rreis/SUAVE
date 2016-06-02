@@ -12,7 +12,7 @@ import numpy
 class Conventional5(PGMconfiguration):
 
     def _define_comps(self):
-        self.comps['fuse'] = PGMbody(num_x=12, num_y=4, num_z=2)
+        self.comps['fuse'] = PGMbody(num_x=24, num_y=4, num_z=2)
         self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=True)
         #self.comps['rwing'] = PGMwing(num_x=4, num_z=4, right_closed=True)
         #self.comps['lpylon'] = PGMwing()
@@ -29,23 +29,23 @@ class Conventional5(PGMconfiguration):
         #self.comps['rtail_t'] = PGMtip(self, 'rtail', 'right', 0.1)
         self.comps['vtail_t'] = PGMtip(self, 'vtail', 'left', 0.1)
 
-        self.comps['lwing_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [2,3], 'lwing', 'right')
+        self.comps['lwing_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [2,7], 'lwing', 'right')
         #self.comps['rwing_fuse'] = PGMjunction(self, 'fuse', 'rgt', 'W', [2,5], 'rwing', 'left')
 #        self.comps['lpylon_lwing'] = PGMjunction(self, 'lwing', 'low', 'N', [1,0], 'lpylon', 'right')
 #        self.comps['lpylon_lnac'] = PGMjunction(self, 'lnac', 'tp0', 'W', [1,0], 'lpylon', 'left')
-        self.comps['ltail_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [1,9], 'ltail', 'right')
+        self.comps['ltail_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [1,20], 'ltail', 'right')
         #self.comps['rtail_fuse'] = PGMjunction(self, 'fuse', 'rgt', 'W', [1,0], 'rtail', 'left')
-        self.comps['vtail_fuse'] = PGMjunction(self, 'fuse', 'top', 'E', [0,8], 'vtail', 'right')
+        self.comps['vtail_fuse'] = PGMjunction(self, 'fuse', 'top', 'E', [0,19], 'vtail', 'right')
 
     def _define_params(self):
         fuse = self.comps['fuse'].props
         fuse['pos'].params[''] = PGMparameter(2, 3)
         fuse['nor'].params[''] = PGMparameter(1, 1)
         fuse['scl'].params[''] = PGMparameter(1, 1)
-        fuse['flt'].params[''] = PGMparameter(2, 4, pos_u=[0.39,0.55])
+        #fuse['flt'].params[''] = PGMparameter(2, 4, pos_u=[0.39,0.55])
         fuse['pos'].params['nose'] = PGMparameter(3, 3, pos_u=[0,0.065,0.13], order_u=3)
         fuse['scl'].params['nose'] = PGMparameter(3, 1, pos_u=[0,0.07,0.14], order_u=3)
-        fuse['scl'].params['tail'] = PGMparameter(2, 1, pos_u=[0.7,1.0])
+        fuse['scl'].params['tail'] = PGMparameter(2, 1, pos_u=[0.9,1.0])
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
@@ -165,7 +165,7 @@ class Conventional5(PGMconfiguration):
         fuse['pos'].params[''].val([[0,0,0],[36,0,0]])
         fuse['nor'].params[''].val([1.0])
         fuse['scl'].params[''].val([2.6])
-        fuse['flt'].params[''].val([[0,0,0.5,0.5],[0,0,0.5,0.5]])
+        #fuse['flt'].params[''].val([[0,0,0.5,0.5],[0,0,0.5,0.5]])
         fuse['pos'].params['nose'].val([[0,-1.1,0],[0,0,0],[0,0,0]])
         fuse['scl'].params['nose'].val([-1.5, 0, 0])
         fuse['scl'].params['tail'].val([0, -1.4])
@@ -221,8 +221,8 @@ class Conventional5(PGMconfiguration):
         comps = self.comps
 
         comps['fuse'].faces['rgt'].set_option('num_cp', 'u', [12,12,12,12])#[4,4,4,4]
-        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [54,12,12,12,12,24,12,45,12,12,30,12])#[18,4,4,4,4,8,4,15,4,4,10,4]
-        comps['fuse'].faces['rgt'].set_option('num_pt', 'v', [120,48,48,48,48,180,48,120,48,48,210,48], both=False)#40,16,16,16,16,60,16,60,16,16,70,16
+        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [54,12,12,12,12,24,12,45,12,12,30,12,54,12,12,12,12,24,12,45,12,40,40,12])#[18,4,4,4,4,8,4,15,4,4,10,4]
+        comps['fuse'].faces['rgt'].set_option('num_pt', 'v', [120,48,48,48,48,180,48,120,48,48,210,48,120,48,48,48,48,180,48,120,48,48,210,48], both=False)#40,16,16,16,16,60,16,60,16,16,70,16
         comps['fuse'].faces['top'].set_option('num_cp', 'u', [24,24]) #8,8
         comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120]) #[6,4,4,20]
 
