@@ -15,7 +15,7 @@ import numpy
 
 
 
-def read_geomach_structural_file(mesh_filename,scaling_factor,no_of_materials,no_of_shell_elements,no_of_points,no_of_elements,no_of_constraint_points,no_of_dvs_scale):
+def read_geomach_structural_file(mesh_filename,scaling_factor):
     
     
     max_glob_point=0;
@@ -239,28 +239,6 @@ def read_geomach_structural_file(mesh_filename,scaling_factor,no_of_materials,no
 
     file.close()
 
-
-
-
-    no_of_loc_shell_elements = no_of_shell_elements/no_of_dvs_scale
-    rem_no =  no_of_shell_elements % no_of_dvs_scale
-    if (rem_no != 0 ):
-        no_of_loc_shell_elements = no_of_loc_shell_elements+1
-
-    no_of_shell_elements = no_of_loc_shell_elements
-
-
-
-    loc_element_no = 0
-    element_loc_count =0
-    local_pid = 0
-
-    for i in range(0,no_of_elements):
-
-        local_pid = elemlist[i].pid
-#        if(local_pid % 10 == 0):
-        loc_element_no = local_pid/no_of_dvs_scale +1
-        elemlist[i].pid=loc_element_no
 
 
 
