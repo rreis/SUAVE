@@ -1,3 +1,5 @@
+import numpy as np
+
 #---Class structure for this----------------------
 class grid:
     def __init__(self):

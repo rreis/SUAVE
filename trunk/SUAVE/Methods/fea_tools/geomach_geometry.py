@@ -93,8 +93,8 @@ def geomach_geometry(aircraft,stl_mesh_filename):
 
         pgm.compute_all()
 
-        #bse.vec['pt_str']._hidden[:] = False
-        #bse.vec['pt_str'].export_tec_str()
+        bse.vec['pt_str']._hidden[:] = False
+        bse.vec['pt_str'].export_tec_str()
         #bse.vec['df'].export_tec_scatter()
         #bse.vec['cp'].export_tec_scatter()
         #bse.vec['pt'].export_tec_scatter()
@@ -103,4 +103,4 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         
         pgm.meshStructure()
         
-        visual_geomach_bdf('conventional_str.bdf','conventional_str.plt')
+        visualize_geomach_geometry('conventional_str.bdf','conventional_str.plt')

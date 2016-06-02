@@ -86,9 +86,9 @@ def read_geomach_structural_file(mesh_filename,scaling_factor):
     
     pointlist = [ grid() for i in range(no_of_points)]
     elemlist = [ CTRIA3() for i in range(no_of_elements)]
-    material_list = [ MAT1() for i in range(no_of_materials)]
-    shell_element_list = [ PSHELL() for i in range(no_of_shell_elements)]
-    constrained_grid_point_list = [ SPC() for i in range(no_of_constraint_points)]
+    #material_list = [ MAT1() for i in range(no_of_materials)]
+    #shell_element_list = [ PSHELL() for i in range(no_of_shell_elements)]
+    #constrained_grid_point_list = [ SPC() for i in range(no_of_constraint_points)]
     
 
     
@@ -193,46 +193,46 @@ def read_geomach_structural_file(mesh_filename,scaling_factor):
 
 
 
-        if (line[0:4]=='MAT1'):
+        #if (line[0:4]=='MAT1'):
     
         
-            material_list[material_count].type='MAT1'
-            material_list[material_count].mid=material_count+1
-            material_list[material_count].e=line[14:24]
-            material_list[material_count].nu=element_break[31:40]
-            material_list[material_count].rho=element_break[41:48]
+            #material_list[material_count].type='MAT1'
+            #material_list[material_count].mid=material_count+1
+            #material_list[material_count].e=line[14:24]
+            #material_list[material_count].nu=element_break[31:40]
+            #material_list[material_count].rho=element_break[41:48]
 
             
-            material_count = material_count +1
+            #material_count = material_count +1
 
 
-        if (line[0:8]=='$CDSCRPT'):
+        #if (line[0:8]=='$CDSCRPT'):
     
     
-            shell_element_list[shell_count].type='PSHELL'
-            shell_element_list[shell_count].pid=shell_count+1
-#            material_list[element_count].mid1=line[14:24]
-#            material_list[element_count].t=element_break[31:40]
-#            material_list[element_count].rho=element_break[41:48]
+            #shell_element_list[shell_count].type='PSHELL'
+            #shell_element_list[shell_count].pid=shell_count+1
+##            material_list[element_count].mid1=line[14:24]
+##            material_list[element_count].t=element_break[31:40]
+##            material_list[element_count].rho=element_break[41:48]
 
             
-            shell_count = shell_count +1
+            #shell_count = shell_count +1
 
 
 
-        if (line[0:3]=='SPC'):
+        #if (line[0:3]=='SPC'):
     
     
-            constrained_grid_point_list[constraint_count].type='SPC1'
-            constrained_grid_point_list[constraint_count].sid=int(line[9:16])
-            constrained_grid_point_list[constraint_count].g1=int(line[17:24])
-            constrained_grid_point_list[constraint_count].c1=int(line[25:32])
-            constrained_grid_point_list[constraint_count].d1=float(line[33:40])
+            #constrained_grid_point_list[constraint_count].type='SPC1'
+            #constrained_grid_point_list[constraint_count].sid=int(line[9:16])
+            #constrained_grid_point_list[constraint_count].g1=int(line[17:24])
+            #constrained_grid_point_list[constraint_count].c1=int(line[25:32])
+            #constrained_grid_point_list[constraint_count].d1=float(line[33:40])
             
 
             
             
-            constraint_count = constraint_count +1
+            #constraint_count = constraint_count +1
 
 
 
@@ -245,14 +245,12 @@ def read_geomach_structural_file(mesh_filename,scaling_factor):
 
     print 'no of points ' , no_of_points
     print 'no of elements ' , no_of_elements
-    print 'no of materials ' , no_of_materials
-    print 'no of shell elements ' , no_of_shell_elements
-    print 'no of constraints ' , no_of_constraint_points
+
 
 
 #return elemlist
 
-    return elemlist,pointlist,no_of_points,no_of_elements,material_list,no_of_materials,shell_element_list,no_of_shell_elements,constrained_grid_point_list,no_of_constraint_points
+    return elemlist,pointlist,no_of_points,no_of_elements
 
 
 
