@@ -8,6 +8,7 @@ import numpy as np
 
 #import GeoMACH models
 from conventional5 import Conventional5
+from visualize_geomach_bdf import visualize_geomach_geometry
 
 def geomach_geometry(aircraft,stl_mesh_filename):
 
@@ -100,4 +101,6 @@ def geomach_geometry(aircraft,stl_mesh_filename):
         #bse.vec['cp_str'].export_IGES()
         bse.vec['cp_str'].export_STL(stl_mesh_filename)
         
-        #pgm.meshStructure()
+        pgm.meshStructure()
+        
+        visual_geomach_bdf('conventional_str.bdf','conventional_str.plt')

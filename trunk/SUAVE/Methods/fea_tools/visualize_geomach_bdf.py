@@ -10,7 +10,7 @@ from read_geomach_structural_file import read_geomach_structural_file
 
 
 
-def visualize_geomach_geometry(self,bdf_filename,tecplot_filename):
+def visualize_geomach_geometry(bdf_filename,tecplot_filename):
 
     elemlist,pointlist,no_of_points,no_of_elements,material_list,no_of_materials,shell_element_list,no_of_shell_elements,constrained_grid_point_list,no_of_constraint_points = read_geomach_structural_file(bdf_filename,scaling_factor,no_of_materials,no_of_shell_elements,no_of_points,no_of_elements,no_of_constraint_points,no_of_dvs_scale)
 
