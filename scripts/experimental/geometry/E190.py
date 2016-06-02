@@ -251,7 +251,7 @@ def vehicle_setup():
 
     wing.spans.projected         = 11.958
 
-    wing.chords.root             = 3.030
+    wing.chords.root             = 3.5
     wing.chords.tip              = 0.883
     wing.chords.mean_aerodynamic = 2.3840
 
@@ -303,13 +303,14 @@ def vehicle_setup():
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
     
-    wing.tip_location            = find_tip_chord_leading_edge(wing)
 
-    wing.origin                  = [28,0,1.]
+    wing.origin                  = [31,0,1.]
     wing.aerodynamic_center      = [2,0,0]
 
     wing.vertical                = True
     wing.symmetric               = False
+    
+    wing.tip_location            = find_tip_chord_leading_edge(wing)
 
     wing.dynamic_pressure_ratio                     = 1.0
 

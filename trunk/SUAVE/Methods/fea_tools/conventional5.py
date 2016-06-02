@@ -51,8 +51,8 @@ class Conventional5(PGMconfiguration):
         lwing['pos'].params[''] = PGMparameter(1, 3)
         lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
         lwing['pos'].params['lin'] = PGMparameter(2, 3)
-	lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
-	lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
 #        rwing = self.comps['rwing'].props
 #        rwing['pos'].params[''] = PGMparameter(1, 3)
@@ -99,66 +99,66 @@ class Conventional5(PGMconfiguration):
     def _define_dvs(self):
         dvs = self.dvs
 
-	#main wing
+        #main wing
 
         dvs['lwing_root_x'] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', '', (0,0))
         dvs['lwing_root_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
         dvs['lwing_root_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
-        
+
         #relative to the root
         dvs['lwing_tip_x'] = PGMdv((1), 16.5).set_identity_param('lwing', 'pos', 'lin', (1,0))
         dvs['lwing_tip_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin', (1,1))
         dvs['lwing_tip_z'] = PGMdv((1), 23.3).set_identity_param('lwing', 'pos', 'lin', (1,2))
-        
+
         dvs['lwing_root_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
         dvs['lwing_mid_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
         dvs['lwing_tip_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
-        
-        
+
+
         #horz tail
-        
+
         dvs['ltail_root_x'] = PGMdv((1), 44.0).set_identity_param('ltail', 'pos', '', (0,0))
         dvs['ltail_root_y'] = PGMdv((1), 0.).set_identity_param('ltail', 'pos', '', (0,1))
         dvs['ltail_root_z'] = PGMdv((1), 1.3).set_identity_param('ltail', 'pos', '', (0,2))
-        
+
         dvs['ltail_tip_x'] = PGMdv((1), 6.0).set_identity_param('ltail', 'pos', 'lin', (1,0))
         dvs['ltail_tip_y'] = PGMdv((1), 1.4).set_identity_param('ltail', 'pos', 'lin', (1,1))
         dvs['ltail_tip_z'] = PGMdv((1), 8.0).set_identity_param('ltail', 'pos', 'lin', (1,2))
-        
+
         dvs['ltail_root_chord'] = PGMdv((1), 4.).set_identity_param('ltail', 'scl', '', (0,0))
         #dvs['ltail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('ltail', 'scl', '', (1,0))
         dvs['ltail_tip_chord'] = PGMdv((1), 1.).set_identity_param('ltail', 'scl', '', (1,0))
-        
-        
+
+
         #vertical tail
-        
-        
+
+
         dvs['vtail_root_x'] = PGMdv((1), 42.).set_identity_param('vtail', 'pos', '', (0,0))
         dvs['vtail_root_y'] = PGMdv((1), 1.7).set_identity_param('vtail', 'pos', '', (0,1))
         dvs['vtail_root_z'] = PGMdv((1), 0.0).set_identity_param('vtail', 'pos', '', (0,2))
-        
+
         dvs['vtail_tip_x'] = PGMdv((1), 6.).set_identity_param('vtail', 'pos', 'lin', (1,0))
         dvs['vtail_tip_y'] = PGMdv((1), 8.).set_identity_param('vtail', 'pos', 'lin', (1,1))
         dvs['vtail_tip_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (1,2))
-        
+
         dvs['vtail_root_chord'] = PGMdv((1), 5.8).set_identity_param('vtail', 'scl', '', (0,0))
         #dvs['vtail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
         dvs['vtail_tip_chord'] = PGMdv((1), 2.0).set_identity_param('vtail', 'scl', '', (1,0))
-        
-        
+
+
         #fuselage
-        
+
         dvs['fus_root_x'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,0))
         dvs['fus_root_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,1))
         dvs['fus_root_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,2))
-        
+
         dvs['fus_tip_x'] = PGMdv((1), 36.).set_identity_param('fuse', 'pos', '', (1,0))
         dvs['fus_tip_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,1))
         dvs['fus_tip_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,2))
-        
+
         dvs['diameter']  = PGMdv((1), 3.0).set_identity_param('fuse', 'scl', '', (0,0))
-    
-    
+
+
 
     def _compute_params(self):
         fuse = self.comps['fuse'].props
@@ -167,8 +167,8 @@ class Conventional5(PGMconfiguration):
         fuse['scl'].params[''].val([2.6])
         fuse['flt'].params[''].val([[0,0,0.5,0.5],[0,0,0.5,0.5]])
         fuse['pos'].params['nose'].val([[0,-1.1,0],[0,0,0],[0,0,0]])
-        fuse['scl'].params['nose'].val([-1.6, 0, 0])
-        fuse['scl'].params['tail'].val([0, -1.5])
+        fuse['scl'].params['nose'].val([-1.5, 0, 0])
+        fuse['scl'].params['tail'].val([0, -1.4])
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
@@ -220,8 +220,8 @@ class Conventional5(PGMconfiguration):
     def _set_bspline_options(self):
         comps = self.comps
 
-	comps['fuse'].faces['rgt'].set_option('num_cp', 'u', [12,12,12,12])#[4,4,4,4]
-	comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [54,12,12,12,12,24,12,45,12,12,30,12])#[18,4,4,4,4,8,4,15,4,4,10,4]
+        comps['fuse'].faces['rgt'].set_option('num_cp', 'u', [12,12,12,12])#[4,4,4,4]
+        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [54,12,12,12,12,24,12,45,12,12,30,12])#[18,4,4,4,4,8,4,15,4,4,10,4]
         comps['fuse'].faces['rgt'].set_option('num_pt', 'v', [120,48,48,48,48,180,48,120,48,48,210,48], both=False)#40,16,16,16,16,60,16,60,16,16,70,16
         comps['fuse'].faces['top'].set_option('num_cp', 'u', [24,24]) #8,8
         comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120]) #[6,4,4,20]
@@ -237,12 +237,12 @@ class Conventional5(PGMconfiguration):
             #for j in range(jdims.shape[0]):
                 #afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
         ##afm.addVertFlip('rwing_i_r::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i+1],1-jdims[j]])
-        
-        
-        
-        
+
+
+
+
         ##main wing leading section spars
-        
+
         #for i in range(idims.shape[0]):
             #for j in range(jdims.shape[0]-1):
                 #if i is 0 or i is idims.shape[0]-1:
@@ -270,8 +270,8 @@ class Conventional5(PGMconfiguration):
             ##afm.addVertFlip('rwing_i_i1::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[idims[j+1],1-jdims[j+1]])
             #afm.addVertFlip('lwing_i_i2::'+str(j)+':0','lwing',[idims[j],jdims[j]],[0.45,jdims[j]])
         ##afm.addVertFlip('rwing_i_i2::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[0.45,1-jdims[j]])
-        
-        
+
+
         ##wing box connection inside fuselage spars
 ##        idims = numpy.linspace(0.45,0.85,7)
 ##        jdims = numpy.linspace(0,1,16)
@@ -309,7 +309,7 @@ class Conventional5(PGMconfiguration):
 
 
 
-       ##i think internal components for tails
+        ##i think internal components for tails
 ##        for i in range(idims.shape[0]):
 ##                afm.addCtrVert('ltail_Misc_1::'+str(i)+':'+str(j),'ltail','rtail',idims[i])
 ##        for i in range(idims.shape[0]-1):
@@ -353,7 +353,7 @@ class Conventional5(PGMconfiguration):
         #afm.preview('conventional_pvw.dat')
         #afm.mesh()
         #afm.computeMesh('conventional_str')
-        
+
 
 
     def aircraft_params(self,aircraft):
@@ -370,62 +370,62 @@ if __name__ == '__main__':
     pgm.comps['lwing'].set_airfoil('rae2822.dat')
     pgm.comps['ltail'].set_airfoil()
     #main wing
-    
+
     pgm.dvs['lwing_root_x'].data[0] = 16.
     pgm.dvs['lwing_root_y'].data[0] = -1.
     pgm.dvs['lwing_root_z'].data[0] = 2.6
-    
+
     #relative to the root
     pgm.dvs['lwing_tip_x'].data[0] = 16.5
     pgm.dvs['lwing_tip_y'].data[0] = 4.4
     pgm.dvs['lwing_tip_z'].data[0] = 23.3
-    
+
     pgm.dvs['lwing_root_chord'].data[0] = 10.
     pgm.dvs['lwing_mid_chord'].data[0] = 4.5
     pgm.dvs['lwing_tip_chord'].data[0] = 1.2
-    
-    
+
+
     #horz tail
-    
+
     pgm.dvs['ltail_root_x'].data[0] = 44.0
     pgm.dvs['ltail_root_y'].data[0] = 0.
     pgm.dvs['ltail_root_z'].data[0] = 1.3
-    
+
     pgm.dvs['ltail_tip_x'].data[0] = 6.0
     pgm.dvs['ltail_tip_y'].data[0] = 1.4
     pgm.dvs['ltail_tip_z'].data[0] = 8.0
-    
+
     pgm.dvs['ltail_root_chord'].data[0] = 4.
     #pgm.dvs['ltail_mid_chord'].data[0] = 4.5
     pgm.dvs['ltail_tip_chord'].data[0] = 1.
-    
-    
+
+
     #vertical tail
-    
-    
+
+
     pgm.dvs['vtail_root_x'].data[0] = 42.
     pgm.dvs['vtail_root_y'].data[0] = 1.7
     pgm.dvs['vtail_root_z'].data[0] = 0.0
-    
+
     pgm.dvs['vtail_tip_x'].data[0] = 6.
     pgm.dvs['vtail_tip_y'].data[0] = 8.
     pgm.dvs['vtail_tip_z'].data[0] = 0.
-    
+
     pgm.dvs['vtail_root_chord'].data[0] = 5.8
     #pgm.dvs['vtail_mid_chord'].data[0] = 4.5
     pgm.dvs['vtail_tip_chord'].data[0] = 2.0
-    
-    
+
+
     #fuselage
-    
+
     pgm.dvs['fus_root_x'].data[0] = 0.
     pgm.dvs['fus_root_y'].data[0] = 0.
     pgm.dvs['fus_root_z'].data[0] = 0.
-    
+
     pgm.dvs['fus_tip_x'].data[0] = 50.
     pgm.dvs['fus_tip_y'].data[0] = 0.
     pgm.dvs['fus_tip_z'].data[0] = 0.
-    
+
     pgm.dvs['diameter'].data[0] = 2.6
     pgm.compute_all()
 

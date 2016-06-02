@@ -23,7 +23,13 @@ def find_tip_chord_leading_edge(wing):
     tc    = wing.chords.tip
     b     = wing.spans.projected
     sweep = wing.sweep
-    x_offset = (rc/4.)+(b/2.)*np.tan(sweep)-tc/4.
-    y_offset = b/2.
-    z_offset = 0.
+    if wing.vertical:
+        x_offset = (rc/4.)+b*np.tan(sweep)-tc/4.
+        y_offset = 0.
+        z_offset = b
+    else:
+        x_offset = (rc/4.)+(b/2.)*np.tan(sweep)-tc/4.
+        y_offset = b/2.
+        z_offset = 0.        
+    
     return [x_offset,y_offset,z_offset]
