@@ -129,12 +129,12 @@ def read_geomach_structural_file(mesh_filename,scaling_factor):
 
             pointlist[point_count].type = 'GRID'
             pointlist[point_count].id = point_count + 1
-            pointlist[point_count].x1 = point_1*scaling_factor
-            pointlist[point_count].x2 = point_2*scaling_factor
-            pointlist[point_count].x3 = point_3*scaling_factor
-            pointlist[point_count].t1 = 0.0
-            pointlist[point_count].t2 = 0.0
-            pointlist[point_count].t3 = 0.0
+            pointlist[point_count].x[0] = point_1*scaling_factor
+            pointlist[point_count].x[1] = point_2*scaling_factor
+            pointlist[point_count].x[2] = point_3*scaling_factor
+            pointlist[point_count].t[0] = 0.0
+            pointlist[point_count].t[1] = 0.0
+            pointlist[point_count].t[2] = 0.0
             pointlist[point_count].thickness =0.0
             pointlist[point_count].in_stress_von_mises = 0.0
             pointlist[point_count].fin_stress_von_mises = 0.0
@@ -164,9 +164,9 @@ def read_geomach_structural_file(mesh_filename,scaling_factor):
             
             elemlist[element_count].type='CTRIA3'
             elemlist[element_count].eid=element_count+1 #element_break[0] #element_count+1
-            elemlist[element_count].g1=element_break[2]
-            elemlist[element_count].g2=element_break[3]
-            elemlist[element_count].g3=element_break[4]
+            elemlist[element_count].g[0]=element_break[2]
+            elemlist[element_count].g[1]=element_break[3]
+            elemlist[element_count].g[2]=element_break[4]
             elemlist[element_count].theta=0.0
             elemlist[element_count].pid=element_break[1]
             elemlist[element_count].thickness = 0.0
@@ -181,10 +181,10 @@ def read_geomach_structural_file(mesh_filename,scaling_factor):
         
             elemlist[element_count].type='CQUAD4'
             elemlist[element_count].eid=element_count+1 #element_break[0]
-            elemlist[element_count].g1=element_break[2]
-            elemlist[element_count].g2=element_break[3]
-            elemlist[element_count].g3=element_break[4]
-            elemlist[element_count].g4=element_break[5]
+            elemlist[element_count].g[0]=element_break[2]
+            elemlist[element_count].g[1]=element_break[3]
+            elemlist[element_count].g[2]=element_break[4]
+            elemlist[element_count].g[3]=element_break[5]
             elemlist[element_count].theta=0.0
             elemlist[element_count].pid=element_break[1]
             elemlist[element_count].thickness = 0.0

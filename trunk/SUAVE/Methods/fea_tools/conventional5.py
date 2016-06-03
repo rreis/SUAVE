@@ -29,13 +29,13 @@ class Conventional5(PGMconfiguration):
         #self.comps['rtail_t'] = PGMtip(self, 'rtail', 'right', 0.1)
         self.comps['vtail_t'] = PGMtip(self, 'vtail', 'left', 0.1)
 
-        self.comps['lwing_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [2,7], 'lwing', 'right')
+        self.comps['lwing_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [2,8], 'lwing', 'right')
         #self.comps['rwing_fuse'] = PGMjunction(self, 'fuse', 'rgt', 'W', [2,5], 'rwing', 'left')
 #        self.comps['lpylon_lwing'] = PGMjunction(self, 'lwing', 'low', 'N', [1,0], 'lpylon', 'right')
 #        self.comps['lpylon_lnac'] = PGMjunction(self, 'lnac', 'tp0', 'W', [1,0], 'lpylon', 'left')
-        self.comps['ltail_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [1,20], 'ltail', 'right')
+        self.comps['ltail_fuse'] = PGMjunction(self, 'fuse', 'lft', 'E', [1,21], 'ltail', 'right')
         #self.comps['rtail_fuse'] = PGMjunction(self, 'fuse', 'rgt', 'W', [1,0], 'rtail', 'left')
-        self.comps['vtail_fuse'] = PGMjunction(self, 'fuse', 'top', 'E', [0,19], 'vtail', 'right')
+        self.comps['vtail_fuse'] = PGMjunction(self, 'fuse', 'top', 'E', [0,20], 'vtail', 'right')
 
     def _define_params(self):
         fuse = self.comps['fuse'].props
@@ -221,7 +221,7 @@ class Conventional5(PGMconfiguration):
         comps = self.comps
 
         comps['fuse'].faces['rgt'].set_option('num_cp', 'u', [12,12,12,12])#[4,4,4,4]
-        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [54,12,12,12,12,24,12,45,12,12,30,12,54,12,12,12,12,24,12,45,12,40,40,12])#[18,4,4,4,4,8,4,15,4,4,10,4]
+        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [4,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,4])#[18,4,4,4,4,8,4,15,4,4,10,4]
         comps['fuse'].faces['rgt'].set_option('num_pt', 'v', [120,48,48,48,48,180,48,120,48,48,210,48,120,48,48,48,48,180,48,120,48,48,210,48], both=False)#40,16,16,16,16,60,16,60,16,16,70,16
         comps['fuse'].faces['top'].set_option('num_cp', 'u', [24,24]) #8,8
         comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120]) #[6,4,4,20]
