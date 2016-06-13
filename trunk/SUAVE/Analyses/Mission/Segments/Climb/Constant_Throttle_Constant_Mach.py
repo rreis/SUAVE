@@ -1,3 +1,7 @@
+# Constant_Throttle_Constant_Mach.py
+#
+# Created:  
+# Modified: Feb 2016, Andrew Wendorff
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -41,7 +45,7 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         # initials and unknowns
         ones_row = self.state.ones_row
         self.state.unknowns.body_angle = ones_row(1) * 0.0 * Units.deg
-        self.state.unknowns.wind_angle = ones_row(1) * 5.0 * Units.deg
+        self.state.unknowns.wind_angle = ones_row(1) * -5.0 * Units.deg
         self.state.residuals.forces    = ones_row(2) * 0.0
         
         
@@ -59,7 +63,7 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = Methods.Climb.Constant_Throttle_Constant_Mach.initialize_conditions
         initialize.velocities              = Methods.Climb.Constant_Throttle_Constant_Mach.update_velocity_vector_from_wind_angle
-        initialize.differentials_altitude  = Methods.Climb.Constant_Throttle_Constant_Mach.update_differentials_altitude        
+        initialize.differentials_altitude  = Methods.Climb.Constant_Throttle_Constant_Mach.update_differentials_time      
         
         # --------------------------------------------------------------
         #   Converge - starts iteration
@@ -88,9 +92,8 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         # Update Conditions
         iterate.conditions = Process()
         iterate.conditions.velocities      = Methods.Climb.Constant_Throttle_Constant_Mach.update_velocity_vector_from_wind_angle
-        iterate.conditions.differentials_a = Methods.Climb.Constant_Throttle_Constant_Mach.update_differentials_altitude
-        iterate.conditions.differentials_b = Methods.Common.Numerics.update_differentials_time
-        iterate.conditions.acceleration    = Methods.Common.Frames.update_acceleration
+        iterate.conditions.differentials_a = Methods.Climb.Constant_Throttle_Constant_Mach.update_differentials_time
+        iterate.conditions.acceleration    = Methods.Climb.Constant_Throttle_Constant_Mach.update_acceleration
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
         iterate.conditions.gravity         = Methods.Common.Weights.update_gravity
@@ -99,13 +102,13 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
         iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
         iterate.conditions.propulsion      = Methods.Common.Energy.update_thrust
-        iterate.conditions.weights         = Methods.Common.Weights.update_weights
-        iterate.conditions.forces          = Methods.Common.Frames.update_forces
+        iterate.conditions.weights         = Methods.Climb.Constant_Throttle_Constant_Mach.update_weights
+        iterate.conditions.forces          = Methods.Climb.Constant_Throttle_Constant_Mach.update_forces
         iterate.conditions.planet_position = Methods.Common.Frames.update_planet_position
         
         # Solve Residuals
         iterate.residuals = Process()
-        iterate.residuals.total_forces     = Methods.Climb.Common.residual_total_forces
+        iterate.residuals.total_forces     = Methods.Climb.Constant_Throttle_Constant_Mach.residual_total_forces
         
         # --------------------------------------------------------------
         #   Finalize - after iteration

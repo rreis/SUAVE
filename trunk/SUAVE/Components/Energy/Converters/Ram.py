@@ -79,7 +79,7 @@ class Ram(Energy_Component):
         conditions.freestream.isentropic_expansion_factor          = gamma
         conditions.freestream.specific_heat_at_constant_pressure   = Cp
         conditions.freestream.universal_gas_constant               = R
-        conditions.freestream.speed_of_sound                       = ao
+        #conditions.freestream.speed_of_sound                       = ao
     
     
     
