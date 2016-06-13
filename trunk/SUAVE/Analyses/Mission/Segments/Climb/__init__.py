@@ -14,3 +14,4 @@ from Unknown_Throttle import Unknown_Throttle
 from Constant_Throttle_Constant_EAS import Constant_Throttle_Constant_EAS
 from Constant_Speed_Constant_Angle import   Constant_Speed_Constant_Angle
 from Constant_Throttle_Constant_Mach import Constant_Throttle_Constant_Mach
+from Constant_Throttle_Linear_Speed import Constant_Throttle_Linear_Speed

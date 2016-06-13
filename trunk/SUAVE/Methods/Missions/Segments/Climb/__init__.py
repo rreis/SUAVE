@@ -12,3 +12,4 @@ import Constant_Throttle_Constant_EAS
 import Constant_Speed_Constant_Angle
 import Constant_Throttle_Constant_Mach
 import Constant_Speed_Constant_Angle_Noise
+import Constant_Throttle_Linear_Speed
