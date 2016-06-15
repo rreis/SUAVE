@@ -1,7 +1,7 @@
 # Constant_Throttle_Constant_Speed.py
 # 
-# Created:  Jul 2014, SUAVE Team
-# Modified: Jan 2016, E. Botero
+# Created:  
+# Modified: Apr 2016, Emilio Botero
 
 # ----------------------------------------------------------------------
 #  Imports

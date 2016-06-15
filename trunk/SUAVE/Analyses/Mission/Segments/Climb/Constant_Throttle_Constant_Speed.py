@@ -1,7 +1,7 @@
 # Constant_Throttle_Constant_Speed.py
 #
 # Created:  
-# Modified: Feb 2016, Andrew Wendorff
+# Modified: Apr 2016, Emilio Botero
 
 # ----------------------------------------------------------------------
 #  Imports

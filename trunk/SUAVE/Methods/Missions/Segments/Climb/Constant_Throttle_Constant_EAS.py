@@ -1,7 +1,7 @@
 # Constant_Throttle_Constant_EAS.py
 # 
-# Created:  Jul 2014, SUAVE Team
-# Modified: Jan 2016, E. Botero
+# Created:  
+# Modified: Jun 2016, Tim MacDonald
 
 # ----------------------------------------------------------------------
 #  Imports
