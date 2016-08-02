@@ -166,8 +166,8 @@ class Conventional5(PGMconfiguration):
         fuse['nor'].params[''].val([1.0])
         fuse['scl'].params[''].val([2.6])
         #fuse['flt'].params[''].val([[0,0,0.5,0.5],[0,0,0.5,0.5]])
-        fuse['pos'].params['nose'].val([[0,0,0],[0,0,0],[0,0,0]])
-        fuse['scl'].params['nose'].val([-1.5, 0, 0])
+        fuse['pos'].params['nose'].val([[0,-.6,0],[-1.2,0,0],[0,0,0]]) # -.6, -1.2
+        fuse['scl'].params['nose'].val([-1.3, 0, 0]) # -1.3
         fuse['scl'].params['tail'].val([0, -1.4])
 
         lwing = self.comps['lwing'].props
