@@ -30,7 +30,7 @@ import copy, time
 
 # More basic SUAVE function
 from SUAVE.Core import (
-Data, Container, Data_Exception, Data_Warning,
+Data, Container,
 )
 
 # This is a sizing function to fill turbojet parameters
@@ -1064,22 +1064,6 @@ def check_results(new_results,old_results):
         assert np.abs(err) < 1e-6 , 'Min Check Failed : %s' % k        
 
         print ''
-
-    ## check high level outputs
-    #def check_vals(a,b):
-        #if isinstance(a,Data):
-            #for k in a.keys():
-                #err = check_vals(a[k],b[k])
-                #if err is None: continue
-                #print 'outputs' , k
-                #print 'Error:' , err
-                #print ''
-                #assert np.abs(err) < 1e-6 , 'Outputs Check Failed : %s' % k  
-        #else:
-            #return (a-b)/a
-
-    ## do the check
-    #check_vals(old_results.output,new_results.output)
 
 
     return

@@ -14,3 +14,4 @@ import Constant_Throttle_Constant_Mach
 import Constant_Speed_Constant_Angle_Noise
 import Constant_Throttle_Linear_Speed
 import Constant_CAS_Constant_Rate
+import Constant_EAS_Constant_Rate
