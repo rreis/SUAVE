@@ -23,32 +23,41 @@ def converge_root(segment,state):
     try:
         root_finder = segment.settings.root_finder
     except AttributeError:
-        #root_finder = scipy.optimize.fsolve
-        root_finder = scipy.optimize.root
+        root_finder = scipy.optimize.fsolve
     
-    sol = root_finder( iterate,
-                                         unknowns,
-                                         args = [segment,state],
-                                         tol = state.numerics.tolerance_solution,
-                                         method='lm')
-    
-    unknowns = sol.x
-    print "Status: " + str(sol.success) + " Segment: " + segment.tag + " Message: " + sol.message
-    
-    #if sol.status!=1:
-        #print "Segment did not converge. Segment Tag: " + segment.tag
-        #print "Error Message:\n" + sol.message
-        #segment.state.numerics.converged = False
-    #else:
-        #segment.state.numerics.converged = True    
+        
+    if root_finder == scipy.optimize.fsolve:
+        
+        unknowns,infodict,ier,msg = root_finder( iterate,
+                                                 unknowns,
+                                                 args = [segment,state],
+                                                 xtol = state.numerics.tolerance_solution,
+                                                 full_output=1)    
+        if ier!=1:
+            print "Segment did not converge. Segment Tag: " + segment.tag
+            print "Error Message:\n" + msg
+            segment.state.numerics.converged = False
+        else:
+            segment.state.numerics.converged = True
+            
+            
 
-    #if ier!=1:
-        #print "Segment did not converge. Segment Tag: " + segment.tag
-        #print "Error Message:\n" + msg
-        #segment.state.numerics.converged = False
-    #else:
-        #segment.state.numerics.converged = True
+    elif root_finder == scipy.optimize.root:        
+    
+        sol = root_finder(  iterate,
+                            unknowns,
+                            args = [segment,state],
+                            tol = state.numerics.tolerance_solution,
+                            method='lm') 
+        if sol.success != True:
+            print "Segment did not converge. Segment Tag: " + segment.tag
+            print "Message: " + sol.message   
+            segment.state.numerics.converged = False
+        else:
+            segment.state.numerics.converged = True
          
+    else:
+        raise ValueError('Selected root finder is not supported.')
                             
     return
     
