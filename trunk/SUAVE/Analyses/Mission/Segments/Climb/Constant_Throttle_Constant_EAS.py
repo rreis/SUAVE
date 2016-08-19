@@ -1,7 +1,7 @@
 # Constant_Throttle_Constant_EAS.py
 #
 # Created:  
-# Modified: Jun 2016, Tim MacDonald
+# Modified: Jun 2016, T. MacDonald
 
 # ----------------------------------------------------------------------
 #  Imports

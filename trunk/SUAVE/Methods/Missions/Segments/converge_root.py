@@ -1,7 +1,9 @@
 # converge_root.py
 # 
 # Created:  Jul 2014, SUAVE Team
-# Modified: Jan 2016, E. Botero
+# Modified: Aug 2016, T. MacDonald
+#
+# Added scipy.optimize.root
 
 # ----------------------------------------------------------------------
 #  Imports

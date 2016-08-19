@@ -1,7 +1,9 @@
 # compute_TAS_from_CAS.py
 #
-# Created: May 2014, SUAVE Team
-# Modified:
+# Created:  May 2014, SUAVE Team
+# Modified: Aug 2016, T. MacDonald
+#
+# Moved to Aerodynamics
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -13,7 +15,7 @@ import SUAVE
 #  Initialize Conditions
 # ----------------------------------------------------------------------
 def compute_TAS_from_CAS(CAS,conditions,atmosphere):
-##                        (segment,state):
+
     # unpack
     air_speed = CAS
 
@@ -28,7 +30,7 @@ def compute_TAS_from_CAS(CAS,conditions,atmosphere):
     # get air properties
     gamma = atmosphere.fluid_properties.compute_gamma()
 
-	# compute true airspeed based in input Calibrated Airspeed
+    # compute true airspeed based in input Calibrated Airspeed
     true_airspeed = np.sqrt( 2*gamma*p0/((gamma-1)*rho0)) * np.sqrt(theta*((1/delta*((1+(gamma-1)/2*(air_speed/vsound)**2)**(gamma/(gamma-1))-1)+1)**((gamma-1)/gamma)-1))
 
     return true_airspeed.reshape(np.shape(conditions.freestream.temperature))

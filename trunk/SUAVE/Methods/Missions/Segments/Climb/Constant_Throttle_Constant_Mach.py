@@ -1,7 +1,7 @@
 # Constant_Throttle_Constant_Mach.py
 # 
 # Created:  
-# Modified: Jun 2016, Tim MacDonald
+# Modified: Aug 2016, T. MacDonald
 
 # ----------------------------------------------------------------------
 #  Imports

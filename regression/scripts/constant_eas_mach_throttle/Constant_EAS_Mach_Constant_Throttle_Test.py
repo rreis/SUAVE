@@ -35,7 +35,7 @@ def main():
     mission = analyses.missions.base
     results = mission.evaluate()
 
-    ending_mass_expected = 74297.884798980725
+    ending_mass_expected = 74296.0549274
     ending_mass = results.segments.descent_mach_low.conditions.weights.total_mass[-1,0]
 
     error_percent = (ending_mass-ending_mass_expected)/ending_mass_expected
@@ -620,7 +620,8 @@ def plot_mission(results,line_style='bo-'):
         
     mgr = plt.get_current_fig_manager()
     mgr.window.setGeometry(675,100,600,900)      
-     
+    
+    print 'Ending Mass: ' + str(mass[-1] * Units.lb) + ' kg'
      
     plt.show()
 
@@ -750,7 +751,7 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------       
     
     segment = Segments.Descent.Constant_Throttle_Constant_Mach(base_segment)
-    segment.tag = "descent_Mach_low"
+    segment.tag = "descent_Mach_high"
     
     segment.analyses.extend( analyses.cruise )
     

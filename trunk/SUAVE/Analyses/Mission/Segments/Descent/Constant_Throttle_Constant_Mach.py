@@ -1,7 +1,7 @@
 # Constant_Throttle_Constant_Mach.py
 #
 # Created:  
-# Modified: Jun 2016, Tim MacDonald
+# Modified: Aug 2016, Tim MacDonald
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -61,9 +61,9 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
-        initialize.conditions              = Methods.Climb.Constant_Throttle_Constant_Mach.initialize_conditions
-        initialize.velocities              = Methods.Climb.Constant_Throttle_Constant_Mach.update_velocity_vector_from_wind_angle
-        initialize.differentials_altitude  = Methods.Climb.Constant_Throttle_Constant_Mach.update_differentials_time      
+        initialize.conditions              = Methods.Descent.Constant_Throttle_Constant_Mach.initialize_conditions
+        initialize.velocities              = Methods.Descent.Constant_Throttle_Constant_Mach.update_velocity_vector_from_wind_angle
+        initialize.differentials_altitude  = Methods.Descent.Constant_Throttle_Constant_Mach.update_differentials_time      
         
         # --------------------------------------------------------------
         #   Converge - starts iteration
@@ -87,13 +87,13 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unpack_unknowns            = Methods.Climb.Constant_Throttle_Constant_Mach.unpack_body_angle 
+        iterate.unpack_unknowns            = Methods.Descent.Constant_Throttle_Constant_Mach.unpack_body_angle 
         
         # Update Conditions
         iterate.conditions = Process()
-        iterate.conditions.velocities      = Methods.Climb.Constant_Throttle_Constant_Mach.update_velocity_vector_from_wind_angle
-        iterate.conditions.differentials_a = Methods.Climb.Constant_Throttle_Constant_Mach.update_differentials_time
-        iterate.conditions.acceleration    = Methods.Climb.Constant_Throttle_Constant_Mach.update_acceleration
+        iterate.conditions.velocities      = Methods.Descent.Constant_Throttle_Constant_Mach.update_velocity_vector_from_wind_angle
+        iterate.conditions.differentials_a = Methods.Descent.Constant_Throttle_Constant_Mach.update_differentials_time
+        iterate.conditions.acceleration    = Methods.Descent.Constant_Throttle_Constant_Mach.update_acceleration
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
         iterate.conditions.gravity         = Methods.Common.Weights.update_gravity
@@ -102,13 +102,13 @@ class Constant_Throttle_Constant_Mach(Aerodynamic):
         iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
         iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
         iterate.conditions.propulsion      = Methods.Common.Energy.update_thrust
-        iterate.conditions.weights         = Methods.Climb.Constant_Throttle_Constant_Mach.update_weights
-        iterate.conditions.forces          = Methods.Climb.Constant_Throttle_Constant_Mach.update_forces
+        iterate.conditions.weights         = Methods.Descent.Constant_Throttle_Constant_Mach.update_weights
+        iterate.conditions.forces          = Methods.Descent.Constant_Throttle_Constant_Mach.update_forces
         iterate.conditions.planet_position = Methods.Common.Frames.update_planet_position
         
         # Solve Residuals
         iterate.residuals = Process()
-        iterate.residuals.total_forces     = Methods.Climb.Constant_Throttle_Constant_Mach.residual_total_forces
+        iterate.residuals.total_forces     = Methods.Descent.Constant_Throttle_Constant_Mach.residual_total_forces
         
         # --------------------------------------------------------------
         #   Finalize - after iteration

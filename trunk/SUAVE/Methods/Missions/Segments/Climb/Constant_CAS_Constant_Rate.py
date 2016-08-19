@@ -1,14 +1,16 @@
 # Constant_CAS_Constant_Rate.py
 #
-# Created: Jul 2016, Tarik
-# Modified:
+# Created:  Jul 2016, Tarik
+# Modified: Aug 2016, T. MacDonald
+#
+# Moved compute_TAS_from_CAS to Aerodynamics
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
 import SUAVE
-from compute_TAS_from_CAS import compute_TAS_from_CAS
+from SUAVE.Methods.Aerodynamics.compute_TAS_from_CAS import compute_TAS_from_CAS
 
 # ----------------------------------------------------------------------
 #  Initialize Conditions
@@ -31,7 +33,7 @@ def initialize_conditions(segment,state):
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0
 
-	# get atmospheric conditions
+    # get atmospheric conditions
     conditions.freestream.altitude = alt
     SUAVE.Methods.Missions.Segments.Common.Aerodynamics.update_atmosphere(segment,state)
 
