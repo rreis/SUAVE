@@ -58,6 +58,7 @@ modules = [
     'scripts/variable_cruise_distance/variable_cruise_distance.py',
     'scripts/noise_optimization/Noise_Test.py',
     'scripts/Regional_Jet_Optimization/Optimize2.py',
+    'scripts/constant_eas_mach_throttle/Constant_EAS_Mach_Constant_Throttle_Test.py'
 ]
 
 

@@ -33,7 +33,7 @@ def initialize_conditions(segment,state):
 
     # unpack
     throttle   = segment.throttle
-    mach       = segment.mach  
+    mach       = segment.mach_number 
     alt0       = segment.altitude_start 
     altf       = segment.altitude_end
     h_nondim   = state.numerics.dimensionless.control_points
@@ -131,7 +131,7 @@ def update_velocity_vector_from_wind_angle(segment,state):
     # unpack
     conditions = state.conditions 
 
-    mach = segment.mach
+    mach = segment.mach_number
 
     a         = conditions.freestream.speed_of_sound[:,0]   
     air_speed = mach*a

@@ -7,6 +7,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
+import scipy.optimize
+
 # SUAVE imports
 from SUAVE.Analyses.Mission.Segments import Aerodynamic
 from SUAVE.Analyses.Mission.Segments import Conditions
@@ -30,10 +32,11 @@ class Constant_Throttle_Constant_EAS(Aerodynamic):
         # --------------------------------------------------------------
         #   User inputs
         # --------------------------------------------------------------
-        self.altitude_start = None # Optional
-        self.altitude_end   = 10. * Units.km
-        self.throttle       = 0.5
-        self.equivalent_air_speed      = 100 * Units.kts
+        self.altitude_start       = None # Optional
+        self.altitude_end         = 10. * Units.km
+        self.throttle             = 0.5
+        self.mach_number          = 0.7
+        self.settings.root_finder = scipy.optimize.root
         
         # --------------------------------------------------------------
         #   State
