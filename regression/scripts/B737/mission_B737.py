@@ -70,17 +70,17 @@ def main():
     #print_mission_breakdown(results,filename='B737_mission_breakdown.dat')
 
     # load older results
-    #save_results(results)
+    save_results(results)
     old_results = load_results()   
 
     # plt the old results
-    plot_mission(results)
+    #plot_mission(results)
     #plot_mission(old_results,'k-')
 
     # check the results
     check_results(results,old_results)
     
-    plt.show()
+    #plt.show()
 
     return
 
