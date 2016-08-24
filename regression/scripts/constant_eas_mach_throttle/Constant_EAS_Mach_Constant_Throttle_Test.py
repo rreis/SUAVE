@@ -618,7 +618,39 @@ def plot_mission(results,line_style='bo-'):
         axes.grid(True)        
         
     mgr = plt.get_current_fig_manager()
-    mgr.window.setGeometry(675,100,600,900)      
+    mgr.window.setGeometry(675,100,600,900)   
+    
+    fig = plt.figure("solver params",figsize=(8,10))
+    for segment in results.segments.values():       
+        
+        time     = segment.conditions.frames.inertial.time[:,0] / Units.min
+        body_angle = segment.conditions.frames.body.inertial_rotations[:,1]
+        vx = segment.conditions.frames.inertial.velocity_vector[:,0]
+        vz = segment.conditions.frames.inertial.velocity_vector[:,2]
+        gamma = np.tan(-vz/vx)   
+        theta = body_angle
+        alpha = theta-gamma   
+        
+        eta      = segment.conditions.propulsion.throttle[:,0]
+    
+        axes = fig.add_subplot(3,1,1)
+        axes.plot( time , eta , 'bo-' )
+        axes.set_ylabel('Throttle')
+        axes.grid(True)         
+        
+        axes = fig.add_subplot(3,1,2)
+        axes.plot( time , body_angle / Units.deg, 'bo-' )
+        axes.set_ylabel('Body Angle (deg)')
+        axes.grid(True)
+    
+        axes = fig.add_subplot(3,1,3)
+        axes.plot( time , alpha / Units.deg, 'bo-' )
+        axes.set_ylabel('Wing Angle (deg)')
+        axes.grid(True) 
+              
+    
+    mgr = plt.get_current_fig_manager()
+    mgr.window.setGeometry(1300,100,600,900)     
     
     print 'Ending Mass: ' + str(mass[-1] * Units.lb) + ' kg'
      
