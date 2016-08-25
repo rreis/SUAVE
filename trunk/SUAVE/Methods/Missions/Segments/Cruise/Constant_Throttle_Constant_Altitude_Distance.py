@@ -32,9 +32,12 @@ def unpack_unknowns(segment,state):
     t_final    = t_initial + time  
     time       = t_nondim * (t_final-t_initial) + t_initial     
 
+    # estimate distances for faster convergence
+    dists = t_nondim*df
+
     #apply unknowns
     conditions = state.conditions
-    conditions.frames.inertial.position_vector[-1,0] = df
+    conditions.frames.inertial.position_vector[:,0] = dists[:,0]
     conditions.frames.inertial.velocity_vector[:,0]  = velocity_x[:,0]
     conditions.frames.body.inertial_rotations[:,1]   = theta[:,0]  
     conditions.frames.inertial.time[:,0]             = time[:,0]
@@ -78,9 +81,6 @@ def initialize_conditions(segment,state):
         alt = -1.0 * state.initials.conditions.frames.inertial.position_vector[-1,2]
         segment.altitude = alt    
     
-    # Initialize the x unknowns to speed convergence:
-    state.unknowns.position_x = np.linspace(0.,df,N)
-    
     # pack conditions
     state.conditions.propulsion.throttle[:,0] = throttle  
     state.conditions.freestream.altitude[:,0] = alt
@@ -108,7 +108,6 @@ def solve_residuals(segment,state):
 
     # process and pack
     acceleration = np.dot(D , v)
-    distances    = np.dot(I , v)
     conditions.frames.inertial.acceleration_vector = acceleration
     
     a  = state.conditions.frames.inertial.acceleration_vector
@@ -116,7 +115,6 @@ def solve_residuals(segment,state):
     state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
     state.residuals.forces[:,1] = FT[:,2]/m[:,0] #- a[:,2]   
     state.residuals.final_distance_error = (p[-1,0] - df)
-    state.residuals.distance_error       = p[:,0] - distances[:,0]
 
     return
     
