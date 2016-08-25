@@ -37,7 +37,7 @@ def unpack_unknowns(segment,state):
 
     #apply unknowns
     conditions = state.conditions
-    conditions.frames.inertial.position_vector[:,0] = dists[:,0]
+    conditions.frames.inertial.position_vector[:,0]  = dists[:,0]
     conditions.frames.inertial.velocity_vector[:,0]  = velocity_x[:,0]
     conditions.frames.body.inertial_rotations[:,1]   = theta[:,0]  
     conditions.frames.inertial.time[:,0]             = time[:,0]
