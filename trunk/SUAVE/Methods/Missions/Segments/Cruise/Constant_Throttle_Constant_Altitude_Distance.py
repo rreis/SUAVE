@@ -32,12 +32,8 @@ def unpack_unknowns(segment,state):
     t_final    = t_initial + time  
     time       = t_nondim * (t_final-t_initial) + t_initial     
 
-    # estimate distances for faster convergence
-    dists = t_nondim*df
-
     #apply unknowns
     conditions = state.conditions
-    conditions.frames.inertial.position_vector[:,0]  = dists[:,0]
     conditions.frames.inertial.velocity_vector[:,0]  = velocity_x[:,0]
     conditions.frames.body.inertial_rotations[:,1]   = theta[:,0]  
     conditions.frames.inertial.time[:,0]             = time[:,0]
@@ -79,7 +75,14 @@ def initialize_conditions(segment,state):
     if alt is None:
         if not state.initials: raise AttributeError('altitude not set')
         alt = -1.0 * state.initials.conditions.frames.inertial.position_vector[-1,2]
-        segment.altitude = alt    
+        segment.altitude = alt   
+        
+        ## estimate distances for faster convergence
+        ##dists = t_nondim*df
+    
+        ##apply unknowns
+        #conditions = state.conditions
+        ##conditions.frames.inertial.position_vector[:,0]  = dists[:,0]        
     
     # pack conditions
     state.conditions.propulsion.throttle[:,0] = throttle  
@@ -114,7 +117,7 @@ def solve_residuals(segment,state):
 
     state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
     state.residuals.forces[:,1] = FT[:,2]/m[:,0] #- a[:,2]   
-    state.residuals.final_distance_error = (p[-1,0] - df)
+    state.residuals.final_distance_error = (p[-1,0] - df)/df
 
     return
     

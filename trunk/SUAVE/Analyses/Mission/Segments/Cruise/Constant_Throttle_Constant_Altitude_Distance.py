@@ -46,8 +46,8 @@ class Constant_Throttle_Constant_Altitude_Distance(Aerodynamic):
         # initials and unknowns
         ones_row = self.state.ones_row
         self.state.unknowns.body_angle            = ones_row(1) * 0.0 * Units.deg
-        self.state.unknowns.velocity_x            = ones_row(1) * 0.1
-        self.state.unknowns.time                  = 0.1
+        self.state.unknowns.velocity_x            = ones_row(1) * 200.
+        self.state.unknowns.time                  = 15000.
         self.state.residuals.final_distance_error = 0.0
         self.state.residuals.forces               = ones_row(2) * 0.0
         
