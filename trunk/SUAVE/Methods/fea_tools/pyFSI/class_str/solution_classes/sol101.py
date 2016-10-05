@@ -9,19 +9,19 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import str_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_forms
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_forms
-from pyFSI.input.read_su2_surface_file_euler import read_su2_surface_file_euler
-from pyFSI.input.read_bdf_file import read_bdf_file
-from pyFSI.class_str.load_disp_bc.class_structure import FORCE
-from pyFSI.output.write_tacs_load_file import write_tacs_load_file
-from pyFSI.input.read_su2_surface_file_euler_f import read_su2_surface_file_euler_f
-from pyFSI.output.write_su2_deformation_file import write_su2_deformation_file
-from pyFSI.input.read_tacs_displacement_file import read_tacs_displacement_file
-from pyFSI.utility_functions.nearest_point import nearest_point
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import str_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_forms
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_forms
+from SUAVE.Methods.fea_tools.pyFSI.input.read_su2_surface_file_euler import read_su2_surface_file_euler
+from SUAVE.Methods.fea_tools.pyFSI.input.read_bdf_file import read_bdf_file
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import FORCE
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tacs_load_file import write_tacs_load_file
+from SUAVE.Methods.fea_tools.pyFSI.input.read_su2_surface_file_euler_f import read_su2_surface_file_euler_f
+from SUAVE.Methods.fea_tools.pyFSI.output.write_su2_deformation_file import write_su2_deformation_file
+from SUAVE.Methods.fea_tools.pyFSI.input.read_tacs_displacement_file import read_tacs_displacement_file
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.nearest_point import nearest_point
 
 class sol101:
     

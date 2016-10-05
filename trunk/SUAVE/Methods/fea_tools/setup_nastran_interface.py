@@ -15,75 +15,75 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy
 
 
-from pyFSI.class_str.grid.class_structure import grid
-from pyFSI.class_str.elements.class_structure import CTRIA3
-from pyFSI.class_str.material.class_structure import PSHELL
-from pyFSI.class_str.material.class_structure import PBARL
-from pyFSI.class_str.material.class_structure import MAT1
-from pyFSI.class_str.load_disp_bc.class_structure import FORCE
-from pyFSI.class_str.load_disp_bc.class_structure import PLOAD
-from pyFSI.class_str.load_disp_bc.class_structure import SPC
-from pyFSI.class_str.io.class_structure import SU2_import
+from SUAVE.Methods.fea_tools.pyFSI.class_str.grid.class_structure import grid
+from SUAVE.Methods.fea_tools.pyFSI.class_str.elements.class_structure import CTRIA3
+from SUAVE.Methods.fea_tools.pyFSI.class_str.material.class_structure import PSHELL
+from SUAVE.Methods.fea_tools.pyFSI.class_str.material.class_structure import PBARL
+from SUAVE.Methods.fea_tools.pyFSI.class_str.material.class_structure import MAT1
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import FORCE
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import PLOAD
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import SPC
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.class_structure import SU2_import
 
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import str_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import str_form
 
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_forms
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_forms
-from pyFSI.utility_functions.pressure_interpolation import pressure_interpolation
-
-
-from pyFSI.class_str.optimization.constraints.class_structure import DCONSTR
-from pyFSI.class_str.optimization.constraints.class_structure import DCONADD
-from pyFSI.class_str.optimization.constraints.class_structure import DRESP
-from pyFSI.class_str.optimization.constraints.class_structure import DRESP1
-from pyFSI.class_str.optimization.constraints.class_structure import DRESP2
-from pyFSI.class_str.optimization.constraints.class_structure import DDVAL
-from pyFSI.class_str.optimization.constraints.class_structure import DEQUATN
-from pyFSI.class_str.optimization.constraints.class_structure import DESVAR
-from pyFSI.class_str.optimization.constraints.class_structure import DVPREL1
-from pyFSI.class_str.optimization.constraints.class_structure import DVCREL1
-from pyFSI.class_str.optimization.constraints.class_structure import DVGRID
-from pyFSI.class_str.optimization.constraints.class_structure import DLINK
-from pyFSI.class_str.optimization.constraints.class_structure import DOPTPRM
-
-from pyFSI.utility_functions.print_equation import print_equation
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_forms
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_forms
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.pressure_interpolation import pressure_interpolation
 
 
-from pyFSI.input.read_nas_file import read_nas_file
-from pyFSI.utility_functions.interpolate_grid import interpolate_grid
-from pyFSI.output.write_tecplot_file import write_tecplot_file
-from pyFSI.output.write_tecplot_file_str import write_tecplot_file_str
-from pyFSI.input.read_beam_numbers import read_beam_numbers
-from pyFSI.input.read_constraints import read_constraints
-from pyFSI.input.read_su2_surface_file import read_su2_surface_file
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DCONSTR
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DCONADD
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DRESP
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DRESP1
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DRESP2
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DDVAL
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DEQUATN
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DESVAR
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DVPREL1
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DVCREL1
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DVGRID
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DLINK
+from SUAVE.Methods.fea_tools.pyFSI.class_str.optimization.constraints.class_structure import DOPTPRM
 
-from pyFSI.input.read_beam import read_beam
-from pyFSI.input.read_beam_numbers import read_beam_numbers
-from pyFSI.input.read_opt_f06_file import read_opt_f06_file
-from pyFSI.input.read_opt_f06_file_stress import read_opt_f06_file_stress
-from pyFSI.utility_functions.interpolate_grid_brown import interpolate_grid_brown
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.print_equation import print_equation
 
-from pyFSI.input.read_geomach_structural_file import read_geomach_structural_file
 
-from pyFSI.class_str.solution_classes.sol200 import sol200
+from SUAVE.Methods.fea_tools.pyFSI.input.read_nas_file import read_nas_file
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.interpolate_grid import interpolate_grid
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file import write_tecplot_file
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file_str import write_tecplot_file_str
+from SUAVE.Methods.fea_tools.pyFSI.input.read_beam_numbers import read_beam_numbers
+from SUAVE.Methods.fea_tools.pyFSI.input.read_constraints import read_constraints
+from SUAVE.Methods.fea_tools.pyFSI.input.read_su2_surface_file import read_su2_surface_file
+
+from SUAVE.Methods.fea_tools.pyFSI.input.read_beam import read_beam
+from SUAVE.Methods.fea_tools.pyFSI.input.read_beam_numbers import read_beam_numbers
+from SUAVE.Methods.fea_tools.pyFSI.input.read_opt_f06_file import read_opt_f06_file
+from SUAVE.Methods.fea_tools.pyFSI.input.read_opt_f06_file_stress import read_opt_f06_file_stress
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.interpolate_grid_brown import interpolate_grid_brown
+
+from SUAVE.Methods.fea_tools.pyFSI.input.read_geomach_structural_file import read_geomach_structural_file
+
+from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol200 import sol200
 #from python_nastran_io.class_str.solution_classes.sol101 import sol101
 #-----------
 #---function to convert integers to required nastran format
 from interpolate_loads import interpolate_loads
-from pyFSI.output.write_tacs_load_file import write_tacs_load_file
-from pyFSI.functions.mark_loading_points import mark_loading_points
-from pyFSI.functions.setup_aero_pointwise import setup_aero_pointwise
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tacs_load_file import write_tacs_load_file
+from SUAVE.Methods.fea_tools.pyFSI.functions.mark_loading_points import mark_loading_points
+from SUAVE.Methods.fea_tools.pyFSI.functions.setup_aero_pointwise import setup_aero_pointwise
 
 
-from pyFSI.interpolation import extrap_matrix
-from pyFSI.interpolation import extrap_a2s
-from pyFSI.interpolation import extrap_s2a
-from pyFSI.interpolation import write_N
-from pyFSI.interpolation import read_N
+from SUAVE.Methods.fea_tools.pyFSI.interpolation import extrap_matrix
+from SUAVE.Methods.fea_tools.pyFSI.interpolation import extrap_a2s
+from SUAVE.Methods.fea_tools.pyFSI.interpolation import extrap_s2a
+from SUAVE.Methods.fea_tools.pyFSI.interpolation import write_N
+from SUAVE.Methods.fea_tools.pyFSI.interpolation import read_N
 
-from pyFSI.functions.generate_panel_mesh import generate_panel_mesh
+from SUAVE.Methods.fea_tools.pyFSI.functions.generate_panel_mesh import generate_panel_mesh
 
 def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_filename,output_filename,aircraft,loads_scale_factor):
 

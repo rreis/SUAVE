@@ -9,26 +9,26 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import numpy as np
 
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import str_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_forms
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_forms
-from pyFSI.utility_functions.print_equation import print_equation
-from pyFSI.input.read_su2_surface_file_euler import read_su2_surface_file_euler
-from pyFSI.input.read_su2_surface_file_euler_f import read_su2_surface_file_euler_f
-from pyFSI.input.read_bdf_file import read_bdf_file
-from pyFSI.class_str.load_disp_bc.class_structure import FORCE
-from pyFSI.output.write_tacs_load_file import write_tacs_load_file
-from pyFSI.input.read_opt_f06_file import read_opt_f06_file
-from pyFSI.input.read_opt_f06_file_stress import read_opt_f06_file_stress
-from pyFSI.output.write_tecplot_file import write_tecplot_file
-from pyFSI.utility_functions.split_mesh import split_mesh
-from pyFSI.input.import_s200_bdf import import_s200_bdf
-from pyFSI.class_str.load_disp_bc.class_structure import SPC
-from pyFSI.utility_functions.compute_centroid import compute_centroid
-from pyFSI.class_str.load_disp_bc.class_structure import PLOAD
-from pyFSI.output.visualize_tacs_results import visualize_tacs_results
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import str_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_forms
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_forms
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.print_equation import print_equation
+from SUAVE.Methods.fea_tools.pyFSI.input.read_su2_surface_file_euler import read_su2_surface_file_euler
+from SUAVE.Methods.fea_tools.pyFSI.input.read_su2_surface_file_euler_f import read_su2_surface_file_euler_f
+from SUAVE.Methods.fea_tools.pyFSI.input.read_bdf_file import read_bdf_file
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import FORCE
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tacs_load_file import write_tacs_load_file
+from SUAVE.Methods.fea_tools.pyFSI.input.read_opt_f06_file import read_opt_f06_file
+from SUAVE.Methods.fea_tools.pyFSI.input.read_opt_f06_file_stress import read_opt_f06_file_stress
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file import write_tecplot_file
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.split_mesh import split_mesh
+from SUAVE.Methods.fea_tools.pyFSI.input.import_s200_bdf import import_s200_bdf
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import SPC
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.compute_centroid import compute_centroid
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import PLOAD
+from SUAVE.Methods.fea_tools.pyFSI.output.visualize_tacs_results import visualize_tacs_results
 
 
 class sol200:

@@ -2,8 +2,8 @@
 # Created:  Oct 2015, Anil Variyar
 # Modified: May 2016, Anil Variyar
 #
-from pyFSI.class_str.grid.class_structure import grid
-from pyFSI.class_str.elements.class_structure import CTRIA3
+from SUAVE.Methods.fea_tools.pyFSI.class_str.grid.class_structure import grid
+from SUAVE.Methods.fea_tools.pyFSI.class_str.elements.class_structure import CTRIA3
 
 import numpy as np
 

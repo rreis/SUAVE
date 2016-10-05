@@ -4,11 +4,11 @@
 #
 #-----------
 #---function to convert integers to required nastran format
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import str_form
-from pyFSI.utility_functions.nearest_element import nearest_element
-from pyFSI.class_str.load_disp_bc.class_structure import FORCE
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import str_form
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.nearest_element import nearest_element
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import FORCE
 import numpy
 
 

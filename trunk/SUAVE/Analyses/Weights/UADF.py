@@ -17,11 +17,11 @@ import sys
 
 import numpy as np
 
-#import pyFSI
+#import SUAVE.Methods.fea_tools.pyFSI
 #import weight_estimation
 #
 #
-#from pyFSI.functions.geometry_generation import geometry_generation
+#from SUAVE.Methods.fea_tools.pyFSI.functions.geometry_generation import geometry_generation
 #from weight_estimation import FEA_Weight
 #from weight_estimation import Filenames
 #from SUAVE.Plugins.VyPy.regression import gpr

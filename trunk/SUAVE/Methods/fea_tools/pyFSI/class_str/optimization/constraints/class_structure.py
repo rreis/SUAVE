@@ -3,7 +3,7 @@
 # Modified: May 2016, Anil Variyar
 #
 #---Class structure for this----------------------
-from pyFSI.utility_functions.print_equation import print_equation
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.print_equation import print_equation
 #-------------grid class-------------------------
 class DCONSTR:
     def __defaults__(self):

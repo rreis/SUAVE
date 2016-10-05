@@ -4,7 +4,7 @@
 #
 #--------reading in a grid file(stl,tec,su2)----------------------------------------------------------
 
-from pyFSI.class_str.grid.class_structure import grid
+from SUAVE.Methods.fea_tools.pyFSI.class_str.grid.class_structure import grid
 
 
 

@@ -4,9 +4,9 @@
 #
 #-----------
 #---function to convert integers to required nastran format
-from pyFSI.class_str.io.nastran_datatype_write_formats import float_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import int_form
-from pyFSI.class_str.io.nastran_datatype_write_formats import str_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import float_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import int_form
+from SUAVE.Methods.fea_tools.pyFSI.class_str.io.nastran_datatype_write_formats import str_form
 
 
 def interpolate_grid(pointlist,pointlist_fl,no_of_points,constrained_grid_points,no_of_constrained_grid_points):

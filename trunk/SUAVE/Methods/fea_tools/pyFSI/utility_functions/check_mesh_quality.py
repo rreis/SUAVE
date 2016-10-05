@@ -7,8 +7,8 @@ import numpy as np
 import math
 
 #---function to convert integers to required nastran format
-from pyFSI.class_str.load_disp_bc.class_structure import PLOAD
-from pyFSI.class_str.elements.class_structure import CTRIA3
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import PLOAD
+from SUAVE.Methods.fea_tools.pyFSI.class_str.elements.class_structure import CTRIA3
 
 
 #read in a set of elements, check if they are valid then return an updated elemlist list

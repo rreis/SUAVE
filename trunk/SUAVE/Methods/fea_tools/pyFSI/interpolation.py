@@ -5,12 +5,12 @@ import re
 import numpy as np
 import heapq
 from scipy.sparse import csr_matrix
-from pyFSI.input.read_bdf_file import read_bdf_file
-from pyFSI.input.read_su2_surface_file_euler import read_su2_surface_file_euler
-from pyFSI.class_str.solution_classes.sol200 import sol200
-from pyFSI.class_str.solution_classes.sol101 import sol101
-from pyFSI.input.read_nas_file import read_nas_file
-from pyFSI.utility_functions.nearest_n_points  import nearest_n_points
+from SUAVE.Methods.fea_tools.pyFSI.input.read_bdf_file import read_bdf_file
+from SUAVE.Methods.fea_tools.pyFSI.input.read_su2_surface_file_euler import read_su2_surface_file_euler
+from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol200 import sol200
+from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol101 import sol101
+from SUAVE.Methods.fea_tools.pyFSI.input.read_nas_file import read_nas_file
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.nearest_n_points  import nearest_n_points
 
 ## Writes sparse matrix N and nearest-point dx data to ascii format
 #

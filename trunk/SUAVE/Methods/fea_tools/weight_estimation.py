@@ -9,15 +9,15 @@ import numpy as np
 import shutil
 import argparse
 from mpi4py import MPI
-from baseclasses import *
-import tacs
-from tacs import *
+#from baseclasses import *
+#import tacs
+#from tacs import *
 #from repostate import *
 #from pyoptsparse import *
-from pyOpt import *
+#from pyOpt import *
 
 
-from pyOpt import SNOPT
+#from pyOpt import SNOPT
 #from pyOpt import NSGA2
 #from pyOpt import COBYLA
 
@@ -30,12 +30,12 @@ from geometry_generation import geometry_generation
 from compute_aircraft_loads import compute_aerodynamic_loads
 from setup_nastran_interface import setup_nastran_interface
 from regenerate_geomach_bdf import regenerate_geomach_bdf
-from pyFSI.class_str.solution_classes.sol200 import sol200
-from pyFSI.output.write_tecplot_file import write_tecplot_file
+from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol200 import sol200
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file import write_tecplot_file
 
-from pyFSI.output.write_tecplot_file import write_tecplot_file
-from pyFSI.classes.structural_dvs import structural_dvs
-from pyFSI.functions.regenerate_geomach_bdf_spanwise import regenerate_geomach_bdf_spanwise
+from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file import write_tecplot_file
+from SUAVE.Methods.fea_tools.pyFSI.classes.structural_dvs import structural_dvs
+from SUAVE.Methods.fea_tools.pyFSI.functions.regenerate_geomach_bdf_spanwise import regenerate_geomach_bdf_spanwise
 
 #path to external framework
 import sys
@@ -243,6 +243,7 @@ class FEA_Weight:
     def run_Nastran_optimization(self,in_vals):
 
         #system calls to Nastran
+        pass
 
 
 

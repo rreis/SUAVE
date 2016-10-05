@@ -4,7 +4,7 @@
 #
 #-----------
 #---function to convert integers to required nastran format
-from pyFSI.class_str.load_disp_bc.class_structure import PLOAD
+from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import PLOAD
 
 
 def pressure_interpolation(elements,points,no_of_elements,global_to_loc_points,load_id):
