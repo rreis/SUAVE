@@ -71,19 +71,12 @@ from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol200 import sol2
 #from python_nastran_io.class_str.solution_classes.sol101 import sol101
 #-----------
 #---function to convert integers to required nastran format
-from interpolate_loads import interpolate_loads
 from SUAVE.Methods.fea_tools.pyFSI.output.write_tacs_load_file import write_tacs_load_file
-from SUAVE.Methods.fea_tools.pyFSI.functions.mark_loading_points import mark_loading_points
-from SUAVE.Methods.fea_tools.pyFSI.functions.setup_aero_pointwise import setup_aero_pointwise
+from SUAVE.Methods.fea_tools.mark_loading_points import mark_loading_points
+#from SUAVE.Methods.fea_tools.setup_aero_pointwise import setup_aero_pointwise
 
 
-from SUAVE.Methods.fea_tools.pyFSI.interpolation import extrap_matrix
-from SUAVE.Methods.fea_tools.pyFSI.interpolation import extrap_a2s
-from SUAVE.Methods.fea_tools.pyFSI.interpolation import extrap_s2a
-from SUAVE.Methods.fea_tools.pyFSI.interpolation import write_N
-from SUAVE.Methods.fea_tools.pyFSI.interpolation import read_N
-
-from SUAVE.Methods.fea_tools.pyFSI.functions.generate_panel_mesh import generate_panel_mesh
+#from SUAVE.Methods.fea_tools.pyFSI.functions.generate_panel_mesh import generate_panel_mesh
 
 def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_filename,output_filename,aircraft,loads_scale_factor):
 
@@ -173,40 +166,12 @@ def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_fil
     s200.spc_type=1
     s200.read_bdf(mesh_filename)
 
-    #   s200.read_load_file(load_filename,"su2_euler_f")
-
-#    if(load_mesh_type == "low_fidelity_aero"):
-#        s200.pointlist_fl = aircraft.pointlist
-#        #interpolate_loads(s200.pointlist_fl,s200.pointlist,s200.elemlist)
-#        #Consistent conservative load transfer
-#        N,N_list_dx = extrap_matrix(s200.pointlist_fl, s200.pointlist, s200.elemlist)
-#        extrap_a2s(s200.pointlist_fl,s200.pointlist,s200.elemlist,N_list_dx, N)
-#        print "no_of_aero_loads", len(s200.pointlist_fl)
-#    
-#    else:
-#        print
-#        s200.read_load_file(load_filename,load_mesh_type)
-#        #interpolate_loads(s200.pointlist_fl,s200.pointlist,s200.elemlist)
-#        #interpolate_grid_brown(s200.pointlist_fl,s200.pointlist,s200.elemlist)
-#        #Consistent conservative load transfer
-#        N,N_list_dx = extrap_matrix(s200.pointlist_fl, s200.pointlist, s200.elemlist)
-#        extrap_a2s(s200.pointlist_fl,s200.pointlist,s200.elemlist,N_list_dx, N)
-#
-
-    
-
-        
-
-
-    #
-# s200.scale_loads(loads_scale_factor)
-
 
 
     mark_loading_points(aircraft,s200.elemlist,s200.pointlist,mesh_filename)
     
     #setup_aero_pointwise(aircraft,s200.elemlist,s200.pointlist)
-    generate_panel_mesh(s200.elemlist,s200.pointlist,aircraft)
+    #generate_panel_mesh(s200.elemlist,s200.pointlist,aircraft)
 
     s200.compute_nastran_loads()
     #s200.specify_loads(load_list)

@@ -27,6 +27,8 @@ class Vehicle(Analysis.Container):
         self.atmosphere   = None
         self.planet       = None
         self.noise        = None
+        self.geometry     = None
+        self.external     = None
 
 
     def append(self,analysis):
@@ -51,6 +53,8 @@ class Vehicle(Analysis.Container):
             SUAVE.Analyses.Atmospheric.Atmospheric   : 'atmosphere'   ,
             SUAVE.Analyses.Planets.Planet            : 'planet'       ,
             SUAVE.Analyses.Noise.Noise               : 'noise'        ,
+            SUAVE.Analyses.Geometry.Geometry         : 'geometry'     ,
+            SUAVE.Analyses.External.External         : 'external'     ,
         }
 
     def get_root(self,analysis):

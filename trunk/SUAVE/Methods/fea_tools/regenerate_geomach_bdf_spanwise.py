@@ -6,8 +6,6 @@
 
 import numpy as np
 
-from SUAVE.Methods.fea_tools.pyFSI.geomach_aircraft_models.conventional5 import Conventional5
-
 
 #--imports---
 import re
@@ -74,7 +72,6 @@ from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol200 import sol2
 #from python_nastran_io.class_str.solution_classes.sol101 import sol101
 #-----------
 #---function to convert integers to required nastran format
-from interpolate_loads import interpolate_loads
 from SUAVE.Methods.fea_tools.pyFSI.output.write_tacs_load_file import write_tacs_load_file
 from SUAVE.Methods.fea_tools.pyFSI.input.read_bdf_file import read_bdf_file
 from SUAVE.Methods.fea_tools.pyFSI.utility_functions.compute_centroid import compute_centroid

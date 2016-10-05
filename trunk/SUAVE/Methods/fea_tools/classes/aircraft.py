@@ -8,7 +8,7 @@
 from SUAVE.Methods.fea_tools.pyFSI.class_str.grid.class_structure import grid
 from SUAVE.Methods.fea_tools.pyFSI.input.read_geomach_surface_points import read_geomach_surface_points
 from SUAVE.Methods.fea_tools.pyFSI.input.read_stl_meshfile import read_stl_meshfile
-from SUAVE.Methods.fea_tools.pyFSI.functions.compute_aircraft_loads import compute_aerodynamic_loads
+from SUAVE.Methods.fea_tools.compute_aircraft_loads import compute_aerodynamic_loads
 from structural_dvs import structural_dvs
 from mpl_toolkits.mplot3d import Axes3D
 

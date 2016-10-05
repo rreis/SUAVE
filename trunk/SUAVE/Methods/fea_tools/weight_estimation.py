@@ -26,16 +26,16 @@ from classes.aircraft import wing_section
 from classes.aircraft import wing
 from classes.aircraft import fuselage
 #
-from geometry_generation import geometry_generation
-from compute_aircraft_loads import compute_aerodynamic_loads
-from setup_nastran_interface import setup_nastran_interface
-from regenerate_geomach_bdf import regenerate_geomach_bdf
+from SUAVE.Methods.fea_tools.geomach_geometry import geomach_geometry
+from SUAVE.Methods.fea_tools.compute_aircraft_loads import compute_aerodynamic_loads
+from SUAVE.Methods.fea_tools.setup_nastran_interface import setup_nastran_interface
+from SUAVE.Methods.fea_tools.regenerate_geomach_bdf import regenerate_geomach_bdf
 from SUAVE.Methods.fea_tools.pyFSI.class_str.solution_classes.sol200 import sol200
 from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file import write_tecplot_file
 
 from SUAVE.Methods.fea_tools.pyFSI.output.write_tecplot_file import write_tecplot_file
-from SUAVE.Methods.fea_tools.pyFSI.classes.structural_dvs import structural_dvs
-from SUAVE.Methods.fea_tools.pyFSI.functions.regenerate_geomach_bdf_spanwise import regenerate_geomach_bdf_spanwise
+from SUAVE.Methods.fea_tools.classes.structural_dvs import structural_dvs
+from SUAVE.Methods.fea_tools.regenerate_geomach_bdf_spanwise import regenerate_geomach_bdf_spanwise
 
 #path to external framework
 import sys
