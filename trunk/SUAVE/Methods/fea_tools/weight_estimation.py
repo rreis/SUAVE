@@ -26,7 +26,7 @@ from classes.aircraft import wing_section
 from classes.aircraft import wing
 from classes.aircraft import fuselage
 #
-from SUAVE.Methods.fea_tools.geomach_geometry import geomach_geometry
+from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.compute_aircraft_loads import compute_aerodynamic_loads
 from SUAVE.Methods.fea_tools.setup_nastran_interface import setup_nastran_interface
 from SUAVE.Methods.fea_tools.regenerate_geomach_bdf import regenerate_geomach_bdf
@@ -127,8 +127,8 @@ class FEA_Weight:
         aircraft = self.aircraft
         geometry_generation(aircraft,self.filename.geomach_output_orig,self.filename.geomach_structural_surface_grid_points,self.filename.geomach_stl_mesh)
 
-        shutil.copy2("strut_braced_str.bdf", self.filename.geomach_output_orig)
-        shutil.copy2("strut_braced_str", self.output_folder + "strut_braced_str.dat")
+        #shutil.copy2("conventional_str.bdf", self.filename.geomach_output_orig)
+        #shutil.copy2("conventional_str", self.output_folder + "conventional_str.dat")
 
 
 #        shutil.copy2(self.filename.geomach_output_root, self.filename.geomach_output_orig)

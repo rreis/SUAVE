@@ -1,4 +1,4 @@
-from geomach_geometry import geomach_geometry
+from geomach_geometry import geometry_generation
 from conventional5 import Conventional5
 
 import classes

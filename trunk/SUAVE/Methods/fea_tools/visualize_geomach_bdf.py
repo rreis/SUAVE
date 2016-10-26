@@ -12,7 +12,7 @@ from read_geomach_structural_file import read_geomach_structural_file
 
 def visualize_geomach_geometry(bdf_filename,tecplot_filename):
 
-    elemlist,pointlist,no_of_points,no_of_elements = read_geomach_structural_file(bdf_filename,1.)
+    elemlist,pointlist,no_of_points,no_of_elements,constrained_grid_point_list,shell_element_list = read_geomach_structural_file(bdf_filename,1.)
 
 
     write_tecplot_file(pointlist,elemlist,tecplot_filename,no_of_points,no_of_elements)

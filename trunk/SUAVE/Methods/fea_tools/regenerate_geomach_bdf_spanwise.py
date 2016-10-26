@@ -558,8 +558,13 @@ def regenerate_geomach_bdf_spanwise(bdf_structural_meshfile,bdf_structural_meshf
     
     for iwing in range(0,len(aircraft.main_wing)):
     
-        wing_tip_z = aircraft.main_wing[iwing].tip_origin[2]
-        wing_root_z = aircraft.main_wing[iwing].root_origin[2]
+        if(aircraft.main_wing[iwing].vertical == 1):
+            wing_tip_z = aircraft.main_wing[iwing].tip_origin[1]
+            wing_root_z = aircraft.main_wing[iwing].root_origin[1]
+        else:
+        
+            wing_tip_z = aircraft.main_wing[iwing].tip_origin[2]
+            wing_root_z = aircraft.main_wing[iwing].root_origin[2]
     
         wing_span = wing_tip_z - wing_root_z
     
@@ -569,6 +574,7 @@ def regenerate_geomach_bdf_spanwise(bdf_structural_meshfile,bdf_structural_meshf
         spanwise_sections = np.zeros(number_of_sections+1)
         
         section_span = float(wing_span)/float(number_of_sections)
+        print iwing," ",wing_root_z," ",wing_tip_z," ",wing_span," ",number_of_sections," ",section_span," ",aircraft.main_wing[iwing].vertical
         
         wing = dv_breakdown.wings[iwing]
         

@@ -9,6 +9,7 @@ from Control_Surface import Control_Surface
 from Main_Wing import Main_Wing
 from Vertical_Tail import Vertical_Tail
 from Horizontal_Tail import Horizontal_Tail
+from Wing_Section import Wing_Section
 
 # packages
 import Airfoils

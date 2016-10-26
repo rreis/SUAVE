@@ -7,6 +7,9 @@
 
 from class_structure import grid
 from class_structure import CTRIA3
+from pyFSI.class_str.material.class_structure import PSHELL
+from pyFSI.class_str.material.class_structure import MAT1
+from pyFSI.class_str.load_disp_bc.class_structure import SPC
 
 #--imports---
 import re
