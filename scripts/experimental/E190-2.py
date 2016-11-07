@@ -150,7 +150,7 @@ def base_analysis(vehicle):
     filenames.tacs_load = "geomach_tacs_load_conventional.txt"
     filenames.aero_load = "geomach_load_aero.txt"
     filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
-    local_dir = "/home/anilvariyar/Desktop/SUAVE/workspace"
+    local_dir = "/home/tim/Documents/SUAVE/scripts/experimental"
     SBW_wing = FEA_Weight(filenames,local_dir)
     
     external.vehicle  = vehicle
