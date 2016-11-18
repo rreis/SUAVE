@@ -470,6 +470,8 @@ class aircraft:
     
                 #setup interpolation
                 # learn the model
+                if spanwise_coord[1] == 0.:
+                    spanwise_coord[1] = 1E-12 #prevent divide by 0 error
                 spanwise_coord = np.array([0,self.main_wing[i].main_wing_section[j].span])
                 spanwise_chord = np.array([self.main_wing[i].main_wing_section[j].root_chord,self.main_wing[i].main_wing_section[j].tip_chord])
                 
