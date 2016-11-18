@@ -17,7 +17,7 @@ from SUAVE.Core import Units
 import numpy as np
 import pylab as plt
 
-import copy, time
+import copy, time, os
 
 from SUAVE.Core import (
 Data, Container, Data_Exception, Data_Warning,
@@ -150,7 +150,7 @@ def base_analysis(vehicle):
     filenames.tacs_load = "geomach_tacs_load_conventional.txt"
     filenames.aero_load = "geomach_load_aero.txt"
     filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
-    local_dir = "/home/anilvariyar/Desktop/SUAVE/workspace"
+    local_dir = os.getcwd()
     SBW_wing = FEA_Weight(filenames,local_dir)
     
     external.vehicle  = vehicle
