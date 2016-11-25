@@ -473,6 +473,7 @@ class aircraft:
                 spanwise_coord = np.array([0,self.main_wing[i].main_wing_section[j].span])
                 spanwise_chord = np.array([self.main_wing[i].main_wing_section[j].root_chord,self.main_wing[i].main_wing_section[j].tip_chord])
                 
+                #what happens for multisection main wings
                 chord_surrogate = np.poly1d(np.polyfit(spanwise_coord, spanwise_chord ,1))
                 self.main_wing[i].main_wing_section[j].chord_surrogate = chord_surrogate
     
@@ -625,6 +626,10 @@ class aircraft:
 
 
 
+            for isurr in range(0,5):
+                print self.main_wing[1].chord_surrogate(float(isurr))
+    
+            
             print "Wing : ",wng,"\n"
             print "wing_box_start_x : ",self.main_wing[wng].wing_box_start_x,"\n"
             print "wing_box_end_x : ",self.main_wing[wng].wing_box_end_x,"\n"

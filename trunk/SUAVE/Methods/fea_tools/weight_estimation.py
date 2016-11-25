@@ -241,8 +241,47 @@ class FEA_Weight:
 
 
     def run_Nastran_optimization(self,in_vals):
-
+        
+        import sys
+        import time
+        import subprocess
+        
         #system calls to Nastran
+        
+        log_file = "log_filename.txt"
+        err_file = "err_file.txt"
+        
+        filenames_array = [log_file,err_file,self.nastran_filename]
+        
+        #remove existing files from the directory
+        for f in filenames_array:
+            try:
+                os.remove(f)
+                except OSError:
+                    pass
+
+        
+        aswing_call = self.nastran_path+" "+"nastran"
+        
+        #1st set the operating conditions
+        icond = 0
+        commands = []
+
+        
+        with redirect.output(log_file,err_file):
+            
+            ctime = time.ctime() # Current date and time stamp
+
+            
+            nastran_run = subprocess.Popen([aswing_call,self.nastran_filename],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+            
+            nastran_run.wait()
+            
+            exit_status = nastran_run.returncode
+            ctime = time.ctime()
+            sys.stdout.write("\nProcess finished: {0}\nExit status: {1}\n".format(ctime,exit_status))
+
+
         pass
 
 
