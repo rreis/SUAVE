@@ -153,6 +153,9 @@ def base_analysis(vehicle):
     local_dir = os.getcwd()
     SBW_wing = FEA_Weight(filenames,local_dir)
     
+    #the nastran path on zion" 
+    SBW_wing.nastran_path = "/opt/MSC/NASTRAN/bin/msc20131"
+    
     external.vehicle  = vehicle
     external.external = SBW_wing
     analyses.append(external)

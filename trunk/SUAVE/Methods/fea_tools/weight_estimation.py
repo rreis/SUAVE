@@ -53,7 +53,7 @@ class FEA_Weight:
         self.aero = None
         self.tacs = None
         self.nastran = None
-        self.primary_structure_weight = None
+        self.primary_structure_weight = 0.0
         self.design_variables_fin  = None
         self.design_variables_init = None
         self.load_type = "low_fidelity_aero"
@@ -63,6 +63,7 @@ class FEA_Weight:
         self.init_dv_list = None
         self.output_folder = output_folder
         self.output_folder = self.output_folder + str('/')
+        self.nastran_path = None
 
         self.filename = filenames
         
@@ -261,7 +262,7 @@ class FEA_Weight:
                     pass
 
         
-        aswing_call = self.nastran_path+" "+"nastran"
+        nastran_call = self.nastran_path+" "+"nastran"
         
         #1st set the operating conditions
         icond = 0
@@ -271,9 +272,8 @@ class FEA_Weight:
         with redirect.output(log_file,err_file):
             
             ctime = time.ctime() # Current date and time stamp
-
             
-            nastran_run = subprocess.Popen([aswing_call,self.nastran_filename],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+            nastran_run = subprocess.Popen([nastran_call,self.nastran_filename],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
             
             nastran_run.wait()
             
