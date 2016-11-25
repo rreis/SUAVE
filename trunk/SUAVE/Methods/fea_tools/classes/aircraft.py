@@ -470,10 +470,13 @@ class aircraft:
     
                 #setup interpolation
                 # learn the model
+                
                 spanwise_coord = np.array([0,self.main_wing[i].main_wing_section[j].span])
                 spanwise_chord = np.array([self.main_wing[i].main_wing_section[j].root_chord,self.main_wing[i].main_wing_section[j].tip_chord])
                 
                 #what happens for multisection main wings
+                if spanwise_coord[1] == 0.:
+                    spanwise_coord[1] = 1E-12 #prevent divide by 0 error
                 chord_surrogate = np.poly1d(np.polyfit(spanwise_coord, spanwise_chord ,1))
                 self.main_wing[i].main_wing_section[j].chord_surrogate = chord_surrogate
     
