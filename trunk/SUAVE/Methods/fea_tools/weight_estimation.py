@@ -74,7 +74,7 @@ class FEA_Weight:
         self.filename.geomach_stl_mesh = self.output_folder + self.filename.geomach_stl_mesh
         self.filename.tacs_load = self.output_folder + self.filename.tacs_load
         self.filename.tacs_optimization_driver = self.output_folder + self.filename.tacs_optimization_driver
-        
+        self.tecplot_file_vis = "visualize_opt_results.plt"
 
 
         
@@ -237,8 +237,8 @@ class FEA_Weight:
         elif(fea_code == 1):
             in_vals = 0.0
             self.run_Nastran_optimization(in_vals)
-
-
+            self.s200.read_sol(self.nastran_filename,self.tecplot_file_vis)
+            self.primary_structure_weight = float(self.s200.objective_list[-1])
 
 
     def run_Nastran_optimization(self,in_vals):
@@ -282,7 +282,10 @@ class FEA_Weight:
             sys.stdout.write("\nProcess finished: {0}\nExit status: {1}\n".format(ctime,exit_status))
 
 
-        pass
+
+
+
+        #pass
 
 
 
