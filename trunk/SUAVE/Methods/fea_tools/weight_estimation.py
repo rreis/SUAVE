@@ -258,8 +258,8 @@ class FEA_Weight:
         for f in filenames_array:
             try:
                 os.remove(f)
-                except OSError:
-                    pass
+            except OSError:
+                pass
 
         
         nastran_call = self.nastran_path+" "+"nastran"
