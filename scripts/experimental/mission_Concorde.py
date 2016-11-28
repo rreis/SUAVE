@@ -267,7 +267,8 @@ def vehicle_setup():
     wing.tag = 'main_wing'
     
     wing.aspect_ratio            = 1.83
-    wing.sweeps.quarter_chord     = 59.5 * Units.deg
+    #wing.sweeps.quarter_chord     = 59.5 * Units.deg
+    wing.sweeps                  = 59.5 * Units.deg
     wing.thickness_to_chord      = 0.03
     wing.taper                   = 0.
     wing.span_efficiency         = 0.74
