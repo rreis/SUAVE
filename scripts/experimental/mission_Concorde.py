@@ -300,7 +300,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 13.8
-    wing_section[0].mid_chord   = 0.0
+    wing_section[0].mid_chord   = 0.0 #0 in example, not sure why
     wing_section[0].root_origin = wing.root_origin
     wing_section[0].tip_origin  = wing.tip_origin
     wing_section[0].mid_origin  = [0.0,0.0,0.0]
@@ -365,7 +365,8 @@ def vehicle_setup():
     wing.tag = 'vertical_stabilizer'    
     
     wing.aspect_ratio            = 0.74      #
-    wing.sweeps.quarter_chord    = 60 * Units.deg
+    #wing.sweeps.quarter_chord    = 60 * Units.deg
+    wing.sweep                   = 60 * Units.deg
     wing.thickness_to_chord      = 0.04
     wing.taper                   = 0.14
     wing.span_efficiency         = 0.9
@@ -373,7 +374,7 @@ def vehicle_setup():
     wing.spans.projected         = 6.0      #    
 
     wing.chords.root             = 14.5
-    wing.total_length            = 14.5
+    #wing.total_length            = 14.5
     wing.chords.tip              = 2.7
     wing.chords.mean_aerodynamic = 8.66
     
@@ -391,7 +392,30 @@ def vehicle_setup():
     wing.high_mach               = True     
     
     wing.dynamic_pressure_ratio  = 1.0
+    wing.no_of_sections          = 2
+    wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
+    wing_section[0].type = 'wing_section'
+    wing_section[0].root_chord  = wing.chords.root
+    wing_section[0].tip_chord   = 7.5
+    wing_section[0].mid_chord   = 0.0
+    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].tip_origin  = wing.tip_origin
+    wing_section[0].mid_origin  = [0.0,0.0,0.0]
+    wing_section[0].span        = 2.4
+    wing_section[0].sweep       = 63. * Units.deg
 
+    wing_section[1].type =  'wing_section'
+    wing_section[1].root_chord = wing_section[0].tip_chord
+    wing_section[1].tip_chord = wing.chords.tip
+    wing_section[1].root_origin = [0.0,0.0,0.0]
+    wing_section[1].tip_origin = [0.0,0.0,0.0]
+    wing_section[1].span = wing.spans.projected-wing_section[0].span
+    wing_section[1].sweep = 40. * Units.deg
+
+  
+    
+    
+    '''
     # set root sweep with inner section
     segment = SUAVE.Components.Wings.Segment()
     segment.tag                   = 'section_1'
@@ -414,7 +438,7 @@ def vehicle_setup():
     
     # add to vehicle
     vehicle.append_component(wing)    
-
+    '''
 
     # ------------------------------------------------------------------
     #  Fuselage
@@ -449,6 +473,7 @@ def vehicle_setup():
     
     fuselage.differential_pressure = 7.4e4 * Units.pascal    # Maximum differential pressure
     
+    '''
     fuselage.OpenVSP_values = Data() # VSP uses degrees directly
     
     fuselage.OpenVSP_values.nose = Data()
@@ -472,7 +497,7 @@ def vehicle_setup():
     fuselage.OpenVSP_values.tail.TB_Sym = False 
     fuselage.OpenVSP_values.tail.bottom.angle = -20.0
     fuselage.OpenVSP_values.tail.bottom.strength = 0.75        
-    
+    '''
     # add to vehicle
     vehicle.append_component(fuselage)
     
