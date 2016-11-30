@@ -259,7 +259,7 @@ class FEA_Weight:
 #                    pass
 
         
-        nastran_call = self.nastran_path +" "+"nastran"
+        nastran_call = self.nastran_path #+" "+"nastran"
         
         #1st set the operating conditions
         icond = 0
@@ -269,10 +269,12 @@ class FEA_Weight:
         #with redirect.output(log_file,err_file):
             
         ctime = time.ctime() # Current date and time stamp
-        
+        print 'nastran_call =', nastran_call
         #nastran_run = subprocess.Popen([nastran_call,self.filename.Nastran_sol200],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
-        nastran_run = subprocess.call((nastran_call, self.filename.Nastran_sol200))
+        nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200])#,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+        
+        #nastran_run = subprocess.call((nastran_call, self.filename.Nastran_sol200))
         
         #nastran_run.wait()
         
