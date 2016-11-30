@@ -273,6 +273,7 @@ class FEA_Weight:
         #nastran_run = subprocess.Popen([nastran_call,self.filename.Nastran_sol200],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
         nastran_run = subprocess.call((nastran_call, self.filename.Nastran_sol200))
+        #nastran_run = subprocess.call((nastran_call, 'nasa_crm_wing_str_bounds_001_2_5_29_4.bdf'))
         
         #nastran_run.wait()
         
