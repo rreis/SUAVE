@@ -248,6 +248,7 @@ class FEA_Weight:
         log_file = "log_filename.txt"
         err_file = "err_file.txt"
         
+
 #        filenames_array = [log_file,err_file,self.nastran_filename]
 #        
 #        #remove existing files from the directory
