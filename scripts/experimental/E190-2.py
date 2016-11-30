@@ -315,7 +315,7 @@ def vehicle_setup():
 
     #variables for weight estimation framework
 
-    wing.root_origin             = [10.0,1.5,1.88849]
+    wing.root_origin             = [20., 0.,0.]#[10.0,1.5,1.88849]
     wing.tip_origin              = [15.751179,1.21029894189,25.89911]
     wing.mid_origin              = [12.58803055,1.52830402,12.693269  ]
     
