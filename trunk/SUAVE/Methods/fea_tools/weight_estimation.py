@@ -53,7 +53,7 @@ class FEA_Weight:
         self.aero = None
         self.tacs = None
         self.nastran = None
-        self.primary_structure_weight = None
+        self.primary_structure_weight = 0.0
         self.design_variables_fin  = None
         self.design_variables_init = None
         self.load_type = "low_fidelity_aero"
@@ -63,6 +63,7 @@ class FEA_Weight:
         self.init_dv_list = None
         self.output_folder = output_folder
         self.output_folder = self.output_folder + str('/')
+        self.nastran_path = None
 
         self.filename = filenames
         
@@ -73,7 +74,7 @@ class FEA_Weight:
         self.filename.geomach_stl_mesh = self.output_folder + self.filename.geomach_stl_mesh
         self.filename.tacs_load = self.output_folder + self.filename.tacs_load
         self.filename.tacs_optimization_driver = self.output_folder + self.filename.tacs_optimization_driver
-        
+        self.tecplot_file_vis = "visualize_opt_results.plt"
 
 
         
@@ -236,14 +237,55 @@ class FEA_Weight:
         elif(fea_code == 1):
             in_vals = 0.0
             self.run_Nastran_optimization(in_vals)
-
-
+            self.s200.read_sol(self.nastran_filename,self.tecplot_file_vis)
+            self.primary_structure_weight = float(self.s200.objective_list[-1])
 
 
     def run_Nastran_optimization(self,in_vals):
-
+        
+        import sys
+        import time
+        import subprocess
+        
         #system calls to Nastran
-        pass
+        
+        log_file = "log_filename.txt"
+        err_file = "err_file.txt"
+        
+        filenames_array = [log_file,err_file,self.nastran_filename]
+        
+        #remove existing files from the directory
+        for f in filenames_array:
+            try:
+                os.remove(f)
+            except OSError:
+                pass
+
+        
+        nastran_call = self.nastran_path+" "+"nastran"
+        
+        #1st set the operating conditions
+        icond = 0
+        commands = []
+
+        
+        with redirect.output(log_file,err_file):
+            
+            ctime = time.ctime() # Current date and time stamp
+            
+            nastran_run = subprocess.Popen([nastran_call,self.nastran_filename],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+            
+            nastran_run.wait()
+            
+            exit_status = nastran_run.returncode
+            ctime = time.ctime()
+            sys.stdout.write("\nProcess finished: {0}\nExit status: {1}\n".format(ctime,exit_status))
+
+
+
+
+
+        #pass
 
 
 
