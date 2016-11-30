@@ -155,7 +155,7 @@ def base_analysis(vehicle):
     SBW_wing = FEA_Weight(filenames,local_dir)
     
     #the nastran path on zion" 
-    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131 nastran" #"nast20140"
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
     
     external.vehicle  = vehicle
     external.external = SBW_wing

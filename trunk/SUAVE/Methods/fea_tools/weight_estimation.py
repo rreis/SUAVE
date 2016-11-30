@@ -259,7 +259,7 @@ class FEA_Weight:
 #                    pass
 
         
-        nastran_call = self.nastran_path #+" "+"nastran"
+        nastran_call = self.nastran_path +" "+"nastran"
         
         #1st set the operating conditions
         icond = 0
