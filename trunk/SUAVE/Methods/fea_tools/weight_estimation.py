@@ -9,12 +9,8 @@ import numpy as np
 import shutil
 import argparse
 from mpi4py import MPI
-#from baseclasses import *
-#import tacs
-#from tacs import *
-#from repostate import *
-#from pyoptsparse import *
-#from pyOpt import *
+import os
+import subprocess
 
 
 #from pyOpt import SNOPT
@@ -76,7 +72,7 @@ class FEA_Weight:
         self.filename.tacs_optimization_driver = self.output_folder + self.filename.tacs_optimization_driver
         self.tecplot_file_vis = "visualize_opt_results.plt"
 
-
+        self.f06_filename = "sample_f06.f06"
         
         self.filename.geomach_output_orig = self.filename.geomach_output
     
@@ -237,8 +233,8 @@ class FEA_Weight:
         elif(fea_code == 1):
             in_vals = 0.0
             self.run_Nastran_optimization(in_vals)
-            self.s200.read_sol(self.nastran_filename,self.tecplot_file_vis)
-            self.primary_structure_weight = float(self.s200.objective_list[-1])
+            #self.s200.read_sol(self.filename.Nastran_f06,self.tecplot_file_vis)
+            self.primary_structure_weight = 1000.0 #float(self.s200.objective_list[-1])
 
 
     def run_Nastran_optimization(self,in_vals):
@@ -252,34 +248,37 @@ class FEA_Weight:
         log_file = "log_filename.txt"
         err_file = "err_file.txt"
         
-        filenames_array = [log_file,err_file,self.nastran_filename]
-        
-        #remove existing files from the directory
-        for f in filenames_array:
-            try:
-                os.remove(f)
-            except OSError:
-                pass
+
+#        filenames_array = [log_file,err_file,self.nastran_filename]
+#        
+#        #remove existing files from the directory
+#        for f in filenames_array:
+#            try:
+#                os.remove(f)
+#                except OSError:
+#                    pass
 
         
-        nastran_call = self.nastran_path+" "+"nastran"
+        nastran_call = self.nastran_path #+" "+"nastran"
         
         #1st set the operating conditions
         icond = 0
         commands = []
 
         
-        with redirect.output(log_file,err_file):
+        #with redirect.output(log_file,err_file):
             
-            ctime = time.ctime() # Current date and time stamp
-            
-            nastran_run = subprocess.Popen([nastran_call,self.nastran_filename],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
-            
-            nastran_run.wait()
-            
-            exit_status = nastran_run.returncode
-            ctime = time.ctime()
-            sys.stdout.write("\nProcess finished: {0}\nExit status: {1}\n".format(ctime,exit_status))
+        ctime = time.ctime() # Current date and time stamp
+        
+        #nastran_run = subprocess.Popen([nastran_call,self.filename.Nastran_sol200],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+        
+        nastran_run = subprocess.call((nastran_call, self.filename.Nastran_sol200))
+        
+        #nastran_run.wait()
+        
+        #exit_status = nastran_run.returncode
+        ctime = time.ctime()
+        #sys.stdout.write("\nProcess finished: {0}\nExit status: {1}\n".format(ctime,exit_status))
 
 
 

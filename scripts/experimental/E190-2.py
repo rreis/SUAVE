@@ -65,10 +65,10 @@ def main():
 
     # mission analysis
     mission = analyses.missions
-    #results = mission.evaluate()   
+    results = mission.evaluate()
 
     # plt the old results
-    #plot_mission(results)
+    plot_mission(results)
     
 #    configs.base.type ='Conventional'
 #    
@@ -144,6 +144,7 @@ def base_analysis(vehicle):
     filenames = Filenames()
     
     filenames.Nastran_sol200 = "conventional_opt.bdf"
+    filenames.Nastran_f06 = "conventional_opt.f06"
     filenames.geomach_output = "conventional_str.bdf"
     filenames.geomach_structural_surface_grid_points = "pt_str_surf.dat"
     filenames.geomach_stl_mesh = 'conventional.stl'
@@ -154,7 +155,7 @@ def base_analysis(vehicle):
     SBW_wing = FEA_Weight(filenames,local_dir)
     
     #the nastran path on zion" 
-    SBW_wing.nastran_path = "/opt/MSC/NASTRAN/bin/msc20131"
+    SBW_wing.nastran_path = "nast20140" #"/opt/MSC/NASTRAN/bin/msc20131"
     
     external.vehicle  = vehicle
     external.external = SBW_wing
