@@ -287,6 +287,7 @@ def vehicle_setup():
     vehicle.systems.control        = "fully powered"
     vehicle.systems.accessories    = "medium range"
     
+    #new nastran parameters
     vehicle.wing_fea = [0,1,2]
     vehicle.fuselage_fea = [0]
     vehicle.no_of_intersections = 3
@@ -552,7 +553,7 @@ def vehicle_setup():
    
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     wing.wing_sections = wing_section
-    print 'vtail_wing.section[0].span=', wing_section[0].span
+    
     
     # add to vehicle
     vehicle.append_component(wing)
