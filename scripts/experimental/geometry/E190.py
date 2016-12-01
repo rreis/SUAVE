@@ -29,8 +29,10 @@ from SUAVE.Methods.Performance  import payload_range
 
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_chord_leading_edge import find_tip_chord_leading_edge
-from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 
+from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
+from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
+from SUAVE.Methods.fea_tools.weight_estimation import Filenames
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
