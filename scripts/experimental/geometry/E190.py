@@ -333,19 +333,18 @@ def vehicle_setup():
     wing.dynamic_pressure_ratio  = 1.0
     
    
-    #new nastran parameters
+    #new nastran parameters (note nastran uses x, z, y coordinate system
     wing.geometry_tag = "lwing"
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
     
+    coords                       = wing.origin
+    wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
     
-    wing.root_origin             = wing.origin#[10.0,1.5,1.88849]
-    wing.tip_origin              = find_tip_chord_leading_edge(wing)+wing.origin
-    
-    print 'wing.root_origin=', wing.root_origin
-    print 'wing.tip_origin =', wing.tip_origin
+    coords                       = find_tip_chord_leading_edge(wing)+wing.origin
+    wing.tip_origin              = np.array([coords[0], coords[2], coords[1]])
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
@@ -363,14 +362,21 @@ def vehicle_setup():
     wing.no_of_sections          = 2
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
     wing_section[0].type = 'wing_section'
+
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
+    
+    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].tip_origin  = wing.tip_origin
+    '''
     #wing_section[0].mid_chord   = 0.0 #mid chord and mid origin are depecrated
     coords = wing.root_origin 
     wing_section[0].root_origin = np.array([coords[0], coords[2],coords[1]])
     coords = wing.tip_origin
     wing_section[0].tip_origin  =np.array([coords[0], coords[2], coords[1]])
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
+    '''
+    
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     print 'main_wing.section[0].span=', wing_section[0].span
@@ -429,8 +435,14 @@ def vehicle_setup():
     
     #nastran parameters
     wing.geometry_tag = "ltail"
-    wing.root_origin             = wing.origin
-    wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
+    
+    #convert coordinate system
+    coords                       = wing.origin
+    wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
+    
+    coords                       = find_tip_chord_leading_edge(wing)+wing.origin
+    wing.tip_origin              = np.array([coords[0], coords[2], coords[1]])
+    
     
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
@@ -458,10 +470,10 @@ def vehicle_setup():
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = wing.chords.tip
     wing_section[0].mid_chord   = 0.0
-    coords = wing.root_origin
-    wing_section[0].root_origin = np.array([coords[0], coords[2], coords[1]])
-    coords = wing.tip_origin
-    wing_section[0].tip_origin  = np.array([coords[0], coords[2], coords[1]])
+     
+    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].tip_origin  = wing.tip_origin
+    
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
     
     
@@ -515,9 +527,11 @@ def vehicle_setup():
     #new nastran parameters
     wing.geometry_tag = "vtail"
     wing.airfoil                 = "rae2012"
-    wing.root_origin             = wing.origin
+    coords                       = wing.origin
+    wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
+    coords                       = find_tip_chord_leading_edge(wing)+wing.origin
+    wing.tip_origin              = np.array([coords[0], coords[2], coords[1]])
     
-    wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.element_area            = 0.25
@@ -543,10 +557,8 @@ def vehicle_setup():
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = wing.chords.tip
     #wing_section[0].mid_chord   = 0.0
-    coords = wing.root_origin 
-    wing_section[0].root_origin = np.array([coords[0], coords[2], coords[1]])
-    coords = wing.tip_origin
-    wing_section[0].tip_origin  = np.array([coords[0], coords[2], coords[1]])
+    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].tip_origin  = wing.tip_origin
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
     wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
    

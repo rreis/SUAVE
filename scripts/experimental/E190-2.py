@@ -317,7 +317,7 @@ def vehicle_setup():
     span                         = 27.8
     wing.spans.projected         = span
     
-    wing.root_origin             = wing.root_origin#[10.0,1.5,1.88849]
+    wing.root_origin             = wing.origin#[10.0,1.5,1.88849]
     wing.tip_origin              = [(span/2.)*np.tan(wing.sweep), span/2.,0]#[15.751179,1.21029894189,25.89911]
     wing.mid_origin              = [(span/4.)*np.tan(wing.sweep), span/2.,0.]#[12.58803055,1.52830402,12.693269  ]
     
