@@ -371,6 +371,8 @@ def vehicle_setup():
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
     wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
+    print 'main_wing.section[0].span=', wing_section[0].span
+    
     
     wing_section[1].type =  'wing_section'
     wing_section[1].root_chord = 0.5*(wing.chords.root + wing.chords.tip)
@@ -464,6 +466,7 @@ def vehicle_setup():
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     
+    print 'htail_wing.section[0].span=', wing_section[0].span
     
     
     wing.wing_sections = wing_section
@@ -547,7 +550,7 @@ def vehicle_setup():
    
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     wing.wing_sections = wing_section
-
+    print 'vtail_wing.section[0].span=', wing_section[0].span
     
     # add to vehicle
     vehicle.append_component(wing)
