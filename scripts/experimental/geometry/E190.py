@@ -51,14 +51,39 @@ def main():
     configs.base.type ='Conventional'
     
     geomach_geometry(configs.base,'E190.stl')
-
+    setup_nastran(configs.base)
+    
     # plt the old results
     #plot_mission(results)
     
 
     return
 
-
+    
+def setup_nastran(vehicle):
+    external = SUAVE.Analyses.External.UADF()
+    
+    filenames = Filenames()
+    
+    filenames.Nastran_sol200 = "conventional_opt.bdf"
+    filenames.Nastran_f06 = "conventional_opt.f06"
+    filenames.geomach_output = "conventional_str.bdf"
+    filenames.geomach_structural_surface_grid_points = "pt_str_surf.dat"
+    filenames.geomach_stl_mesh = 'conventional.stl'
+    filenames.tacs_load = "geomach_tacs_load_conventional.txt"
+    filenames.aero_load = "geomach_load_aero.txt"
+    filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
+    local_dir = os.getcwd()
+    SBW_wing = FEA_Weight(filenames,local_dir)
+    
+    #the nastran path on zion" 
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
+    external.vehicle  = vehicle
+    external.external = SBW_wing
+    
+    SBW_wing = FEA_Weight(filenames,local_dir)
+    analyses.append(external)
+    return
 # ----------------------------------------------------------------------
 #   Analysis Setup
 # ----------------------------------------------------------------------
@@ -78,7 +103,8 @@ def full_setup():
     analyses = SUAVE.Analyses.Analysis.Container()
     analyses.configs  = configs_analyses
     analyses.missions = mission
-
+   
+    
     return configs, analyses
 
 
@@ -1172,6 +1198,7 @@ def check_results(new_results,old_results):
     return
 
 
+    
 def load_results():
     return SUAVE.Input_Output.SUAVE.load('results_mission_E190_constThr.res')
 
