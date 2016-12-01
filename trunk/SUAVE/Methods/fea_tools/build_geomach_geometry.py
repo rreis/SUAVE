@@ -16,18 +16,18 @@ import numpy as np
 # ----------------------------------------------------------------------
 
 def build_geomach_geometry(wing):
-     """ 
-     transforms the global SUAVE coordinates into GEOMACH's coordinate system,
-     which is used to build up a bunch of section-wise geometry parameters
-     
-        Inputs:
-            wing
-           
-        Outputs:
-            wing.root_origin
-            wing.tip_origin
+    """ 
+    transforms the global SUAVE coordinates into GEOMACH's coordinate system,
+    which is used to build up a bunch of section-wise geometry parameters
+    
+    Inputs:
+        wing
+        
+    Outputs:
+        wing.root_origin
+        wing.tip_origin
     """
-
+    
     coords                       = wing.origin
     wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
     
