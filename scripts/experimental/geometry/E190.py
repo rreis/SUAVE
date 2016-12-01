@@ -33,6 +33,7 @@ from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_chord_leading_edge import
 from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
 from SUAVE.Methods.fea_tools.weight_estimation import Filenames
+from SUAVE.Methods.fea_tools.build_geomach_geometry.py import build_geomach_geometry
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
@@ -338,13 +339,9 @@ def vehicle_setup():
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
+    build_geomach_geometry(wing)
     
     
-    coords                       = wing.origin
-    wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
-    
-    coords                       = find_tip_chord_leading_edge(wing)+wing.origin
-    wing.tip_origin              = np.array([coords[0], coords[2], coords[1]])
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
@@ -437,11 +434,7 @@ def vehicle_setup():
     wing.geometry_tag = "ltail"
     
     #convert coordinate system
-    coords                       = wing.origin
-    wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
-    
-    coords                       = find_tip_chord_leading_edge(wing)+wing.origin
-    wing.tip_origin              = np.array([coords[0], coords[2], coords[1]])
+    build_geomach_geometry(wing)
     
     
     wing.airfoil                 = "rae2012"
@@ -479,8 +472,6 @@ def vehicle_setup():
     
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
-    
-    print 'htail_wing.section[0].span=', wing_section[0].span
     
     
     wing.wing_sections = wing_section
@@ -527,10 +518,8 @@ def vehicle_setup():
     #new nastran parameters
     wing.geometry_tag = "vtail"
     wing.airfoil                 = "rae2012"
-    coords                       = wing.origin
-    wing.root_origin             = np.array([coords[0], coords[2], coords[1]])
-    coords                       = find_tip_chord_leading_edge(wing)+wing.origin
-    wing.tip_origin              = np.array([coords[0], coords[2], coords[1]])
+    build_geomach_geometry(wing)
+    
     
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
