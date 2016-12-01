@@ -29,7 +29,7 @@ from SUAVE.Methods.Performance  import payload_range
 
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_chord_leading_edge import find_tip_chord_leading_edge
-from SUAVE.Methods.fea_tools.geomach_geometry import geomach_geometry
+from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 
 # ----------------------------------------------------------------------
 #   Main
@@ -50,7 +50,7 @@ def main():
     
     configs.base.type ='Conventional'
     
-    geomach_geometry(configs.base,'E190.stl')
+    geometry_generation(configs.base,0,0,'E190.stl') #two dummy variables in script right now
     setup_nastran(configs.base)
     
     # plt the old results
