@@ -287,7 +287,7 @@ def vehicle_setup():
     
     wing.origin                  = [14,0,-.8]
     wing.aerodynamic_center      = [35,0,0] 
-    
+    wing.root_origin             = wing.origin
     wing.vertical                = False
     wing.symmetric               = True
     wing.high_lift               = True

@@ -269,11 +269,10 @@ class FEA_Weight:
         #with redirect.output(log_file,err_file):
             
         ctime = time.ctime() # Current date and time stamp
-        
+        print 'nastran_call =', nastran_call
         #nastran_run = subprocess.Popen([nastran_call,self.filename.Nastran_sol200],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
-        nastran_run = subprocess.call((nastran_call, self.filename.Nastran_sol200))
-        #nastran_run = subprocess.call((nastran_call, 'nasa_crm_wing_str_bounds_001_2_5_29_4.bdf'))
+        nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200])#,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
         #nastran_run.wait()
         

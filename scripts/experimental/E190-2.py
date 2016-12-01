@@ -36,7 +36,7 @@ from SUAVE.Methods.fea_tools.weight_estimation import Filenames
 from SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform import wing_planform
 from SUAVE.Methods.Geometry.Two_Dimensional.Planform.fuselage_planform import fuselage_planform
 from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Fuselage.fuselage_crosssection import fuselage_crosssection
-
+from SUAVE.Methods.fea_tools.build_geomach_geometry import build_geomach_geometry
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
@@ -155,7 +155,8 @@ def base_analysis(vehicle):
     SBW_wing = FEA_Weight(filenames,local_dir)
     
     #the nastran path on zion" 
-    SBW_wing.nastran_path = "nastran" #"/opt/MSC/NASTRAN/bin/msc20131"
+    #SBW_wing.nastran_path = "nastran" #"/opt/MSC/NASTRAN/bin/msc20131"
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
     
     external.vehicle  = vehicle
     external.external = SBW_wing
@@ -314,15 +315,16 @@ def vehicle_setup():
     wing.dynamic_pressure_ratio  = 1.0
 
     #variables for weight estimation framework
-
-    wing.root_origin             = [10.0,1.5,1.88849]
-    wing.tip_origin              = [15.751179,1.21029894189,25.89911]
-    wing.mid_origin              = [12.58803055,1.52830402,12.693269  ]
+    span                         = 27.8
+    wing.spans.projected         = span
+    
+    wing.root_origin             = wing.origin#[10.0,1.5,1.88849]
+    build_geomach_geometry(wing) #computes wing.root_origin and wing.tip_origin, for GEOMACHS coordinate system
     
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     #wing.vertical                = 0
-    wing.spans.projected         = 27.8
+    
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
     wing.fuel_load = 10000.0
@@ -356,7 +358,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
-    wing_section[0].mid_chord   = 0.0
+    wing_section[0].mid_chord   = 0.0 #mid chord and mid origin are depecrated
     wing_section[0].root_origin = wing.root_origin
     wing_section[0].tip_origin  = wing.tip_origin
     wing_section[0].mid_origin  = [0.0,0.0,0.0]
@@ -417,17 +419,16 @@ def vehicle_setup():
     
     wing.chords.root             = 3.48
     wing.chords.tip              = 1.216
-    wing.root_origin             = [35.3,6.6,0.25]
-    wing.tip_origin              = [38.7,6.3,6.12]
+   
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.vertical                = 0
-    
+    build_geomach_geometry(wing) 
     wing.sweep                   = np.arctan((wing.tip_origin[2]- wing.root_origin[2])/(wing.tip_origin[0]- wing.root_origin[0])) #31. * Units.deg
     
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
-    wing.fuel_load = 10000.0
+    wing.fuel_load = 0.
     wing.max_x = 200.0
     wing.max_y = 200.0
     wing.max_z = 0.6*wing.tip_origin[2]
@@ -504,8 +505,7 @@ def vehicle_setup():
     
     wing.chords.root             = 5.26
     wing.chords.tip              = 5.26
-    wing.root_origin             = [30.7,2.1,0.]
-    wing.tip_origin              = [35.3,7.36,0.]
+    build_geomach_geometry(wing) 
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.vertical                = 1
@@ -514,7 +514,7 @@ def vehicle_setup():
     
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
-    wing.fuel_load = 10000.0
+    wing.fuel_load = 0.
     wing.max_x = 200.0
     wing.max_y = 200.0
     wing.max_z = 0.6*wing.tip_origin[2]
@@ -539,7 +539,7 @@ def vehicle_setup():
     wing_section[0].root_origin = wing.root_origin
     wing_section[0].tip_origin  = wing.tip_origin
     wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
+    wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     
     

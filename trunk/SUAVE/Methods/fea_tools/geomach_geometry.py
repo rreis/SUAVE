@@ -85,7 +85,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         bse.vec['cp'].export_tec_scatter()
         bse.vec['pt'].export_tec_scatter()
         bse.vec['cp_str'].export_IGES()
-        #bse.vec['cp_str'].export_STL(stl_mesh_filename)
+        bse.vec['cp_str'].export_STL(stl_mesh_filename)
         
         pgm.meshStructure()
         visualize_geomach_geometry('conventional_str.bdf','conventional_str.plt')
