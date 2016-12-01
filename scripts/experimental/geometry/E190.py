@@ -33,7 +33,7 @@ from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_chord_leading_edge import
 from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
 from SUAVE.Methods.fea_tools.weight_estimation import Filenames
-from SUAVE.Methods.fea_tools.build_geomach_geometry.py import build_geomach_geometry
+from SUAVE.Methods.fea_tools.build_geomach_geometry import build_geomach_geometry
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
@@ -376,8 +376,7 @@ def vehicle_setup():
     
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
-    print 'main_wing.section[0].span=', wing_section[0].span
-    
+
     
     wing_section[1].type =  'wing_section'
     wing_section[1].root_chord = 0.5*(wing.chords.root + wing.chords.tip)

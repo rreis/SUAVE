@@ -36,7 +36,7 @@ from SUAVE.Methods.fea_tools.weight_estimation import Filenames
 from SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_planform import wing_planform
 from SUAVE.Methods.Geometry.Two_Dimensional.Planform.fuselage_planform import fuselage_planform
 from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Fuselage.fuselage_crosssection import fuselage_crosssection
-from SUAVE.Methods.fea_tools.build_geomach_geometry.py import build_geomach_geometry
+from SUAVE.Methods.fea_tools.build_geomach_geometry import build_geomach_geometry
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
