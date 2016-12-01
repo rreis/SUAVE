@@ -504,7 +504,7 @@ def vehicle_setup():
     wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
-    
+    wing.element_area            = 0.25
     wing.dynamic_pressure_ratio                     = 1.0
 
     #wingsections
