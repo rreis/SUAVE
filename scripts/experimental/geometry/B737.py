@@ -330,7 +330,7 @@ def vehicle_setup():
     wing.spans.projected         = 35.66    
 
     wing.chords.root             = 7.76 * Units.meter
-    wing.chords.tip              = .782 & Units.meter
+    wing.chords.tip              = .782 * Units.meter
     wing.chords.mean_aerodynamic = 4.235
 
     wing.areas.reference         = 124.862 
@@ -446,7 +446,7 @@ def vehicle_setup():
     
     #convert coordinate system
     build_geomach_geometry(wing)
-    #add in dihedral
+    #add in dihedral (remember nastran goes xzy, where z is up
     wing.tip_origin[1] = wing.root_origin[1]+tan(8.63*Units.degrees)*wing.spans.project/2.
     
     wing.airfoil                 = "rae2012"
