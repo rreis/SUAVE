@@ -580,6 +580,7 @@ def regenerate_geomach_bdf_spanwise(bdf_structural_meshfile,bdf_structural_meshf
         
         for ielem in range(0,len(wing.upper.fea_element_nos)):
             ielems = wing.upper.fea_element_nos[ielem]
+            print 'wing.tag=', wing.tag
             local_pid = min(int(math.floor(float(elemlist[ielems].centroid[2] - wing_root_z)/float(section_span))),wing.upper.required_no_of_elements)
             if(local_pid < 0):
                 local_pid = 0
