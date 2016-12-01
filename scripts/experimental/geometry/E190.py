@@ -343,7 +343,9 @@ def vehicle_setup():
     
     wing.root_origin             = wing.origin#[10.0,1.5,1.88849]
     wing.tip_origin              = find_tip_chord_leading_edge(wing)+wing.origin
-   
+    
+    print 'wing.root_origin=', wing.root_origin
+    print 'wing.tip_origin =', wing.tip_origin
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
