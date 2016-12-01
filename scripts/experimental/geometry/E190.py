@@ -278,8 +278,7 @@ def vehicle_setup():
     
     wing.root_origin             = wing.origin#[10.0,1.5,1.88849]
     wing.tip_origin              = find_tip_chord_leading_edge(wing)+wing.origin
-    
-    wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
+   
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
@@ -294,6 +293,7 @@ def vehicle_setup():
     
     wing_planform(wing)
     wing.no_of_sections          = 2
+    wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
