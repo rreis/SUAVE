@@ -155,7 +155,7 @@ def base_analysis(vehicle):
     SBW_wing = FEA_Weight(filenames,local_dir)
     
     #the nastran path on zion" 
-    SBW_wing.nastran_path = "nast20140" #"/opt/MSC/NASTRAN/bin/msc20131"
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
     
     external.vehicle  = vehicle
     external.external = SBW_wing
@@ -314,15 +314,17 @@ def vehicle_setup():
     wing.dynamic_pressure_ratio  = 1.0
 
     #variables for weight estimation framework
-
-    wing.root_origin             = [10.0,1.5,1.88849]
-    wing.tip_origin              = [15.751179,1.21029894189,25.89911]
-    wing.mid_origin              = [12.58803055,1.52830402,12.693269  ]
+    span                         = 27.8
+    wing.spans.projected         = span
+    
+    wing.root_origin             = wing.root_origin#[10.0,1.5,1.88849]
+    wing.tip_origin              = [(span/2.)*np.tan(wing.sweep), span/2.,0]#[15.751179,1.21029894189,25.89911]
+    wing.mid_origin              = [(span/4.)*np.tan(wing.sweep), span/2.,0.]#[12.58803055,1.52830402,12.693269  ]
     
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     #wing.vertical                = 0
-    wing.spans.projected         = 27.8
+    
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
     wing.fuel_load = 10000.0
@@ -356,7 +358,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
-    wing_section[0].mid_chord   = 0.0
+    wing_section[0].mid_chord   = 0.0 #mid chord and mid origin are depecrated
     wing_section[0].root_origin = wing.root_origin
     wing_section[0].tip_origin  = wing.tip_origin
     wing_section[0].mid_origin  = [0.0,0.0,0.0]
@@ -427,7 +429,7 @@ def vehicle_setup():
     
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
-    wing.fuel_load = 10000.0
+    wing.fuel_load = 0.
     wing.max_x = 200.0
     wing.max_y = 200.0
     wing.max_z = 0.6*wing.tip_origin[2]

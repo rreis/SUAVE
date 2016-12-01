@@ -32,4 +32,4 @@ def find_tip_chord_leading_edge(wing):
         y_offset = b/2.
         z_offset = 0.        
     
-    return [x_offset,y_offset,z_offset]
+    return np.array([x_offset,y_offset,z_offset])
