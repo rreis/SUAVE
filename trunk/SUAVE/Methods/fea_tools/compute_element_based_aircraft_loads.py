@@ -44,7 +44,11 @@ def compute_element_based_aircraft_loads(elemlist,pointlist,aircraft):
                 point_dir = (local_point - np.array(aircraft.main_wing[i].root_origin))
                 point_dir = point_dir/np.linalg.norm(point_dir)
                 
-                wing_axis = np.array([1.0,0.0,0.0])
+                if(aircraft.main_wing[i].vertical == 0):
+                    wing_axis = np.array([1.0,0.0,0.0])
+                else:
+                    wing_axis = np.array([0.0,1.0,0.0])
+                
                 #point_projection_angle = np.arccos(np.dot(point_dir,aircraft.main_wing[i].spanwise_direction)) #assumes both are unit vectors
                 point_projection_angle = np.arccos(np.dot(point_dir,wing_axis)) #assumes both are unit vectors
 
@@ -113,7 +117,6 @@ def compute_element_based_aircraft_loads(elemlist,pointlist,aircraft):
 
                 elemlist[j].local_chord = aircraft.main_wing[i].chord_surrogate(elemlist[j].global_spanwise_coordinate)
 
-
                 #breakup the load
 
                 max_load   = 2.0*aircraft.main_wing[i].sizing_lift/aircraft.main_wing[i].span
@@ -121,7 +124,6 @@ def compute_element_based_aircraft_loads(elemlist,pointlist,aircraft):
                 element_load = load_scale*compute_spanwise_load(elemlist[j])*compute_chordwise_load(elemlist[j])
                 elemlist[j].pressure = element_load
                 element_load = element_load*elemlist[j].area
-                
                 aircraft.main_wing[i].total_force += element_load
 
                 if(elemlist[j].type == "CTRIA3"):

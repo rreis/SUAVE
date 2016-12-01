@@ -539,7 +539,7 @@ def vehicle_setup():
     wing_section[0].root_origin = wing.root_origin
     wing_section[0].tip_origin  = wing.tip_origin
     wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
+    wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     
     
