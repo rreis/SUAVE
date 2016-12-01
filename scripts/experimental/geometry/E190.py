@@ -49,9 +49,12 @@ def main():
     #results = mission.evaluate()
     
     configs.base.type ='Conventional'
+    external = analyses.configs.base.external
+    aircraft_external = external.evaluate()
     
-    geometry_generation(configs.base,0,0,'E190.stl') #two dummy variables in script right now
-    setup_nastran(configs.base)
+    
+    #geometry_generation(configs.base,0,0,'E190.stl') #two dummy variables in script right now
+    #setup_nastran(configs.base)
     
     # plt the old results
     #plot_mission(results)
@@ -59,7 +62,7 @@ def main():
 
     return
 
-    
+'''    
 def setup_nastran(vehicle):
     external = SUAVE.Analyses.External.UADF()
     
@@ -84,6 +87,8 @@ def setup_nastran(vehicle):
     SBW_wing = FEA_Weight(filenames,local_dir)
     analyses.append(external)
     return
+    
+'''    
 # ----------------------------------------------------------------------
 #   Analysis Setup
 # ----------------------------------------------------------------------
@@ -138,18 +143,65 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = SUAVE.Analyses.Vehicle()
-
+    
+    # ------------------------------------------------------------------
+    #  External Module
+    external = SUAVE.Analyses.External.UADF()
+    
+    filenames = Filenames()
+    
+    filenames.Nastran_sol200 = "conventional_opt.bdf"
+    filenames.Nastran_f06 = "conventional_opt.f06"
+    filenames.geomach_output = "conventional_str.bdf"
+    filenames.geomach_structural_surface_grid_points = "pt_str_surf.dat"
+    filenames.geomach_stl_mesh = 'conventional.stl'
+    filenames.tacs_load = "geomach_tacs_load_conventional.txt"
+    filenames.aero_load = "geomach_load_aero.txt"
+    filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
+    local_dir = os.getcwd()
+    SBW_wing = FEA_Weight(filenames,local_dir)
+    
+    #the nastran path on zion" 
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
+    
+    external.vehicle  = vehicle
+    external.external = SBW_wing
+    analyses.append(external)
+    
     # ------------------------------------------------------------------
     #  Basic Geometry Relations
     sizing = SUAVE.Analyses.Sizing.Sizing()
     sizing.features.vehicle = vehicle
+    
     analyses.append(sizing)
-
+    
+    # Geometry specify
+    geometry = SUAVE.Analyses.Geometry.UADF()
+    #geometry = SUAVE.Analyses.Geometry.Geometry()
+    geometry.vehicle = vehicle
+    geometry.external = external.external
+    analyses.append(geometry)
+    
     # ------------------------------------------------------------------
     #  Weights
-    weights = SUAVE.Analyses.Weights.Weights()
+    #weights = SUAVE.Analyses.Weights.Weights()
+    
+    weights = SUAVE.Analyses.Weights.UADF()
     weights.vehicle = vehicle
+    weights.external = external.external
     analyses.append(weights)
+
+#    # ------------------------------------------------------------------
+#    #  Basic Geometry Relations
+#    sizing = SUAVE.Analyses.Sizing.Sizing()
+#    sizing.features.vehicle = vehicle
+#    analyses.append(sizing)
+#
+#    # ------------------------------------------------------------------
+#    #  Weights
+#    weights = SUAVE.Analyses.Weights.Weights()
+#    weights.vehicle = vehicle
+#    analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
@@ -184,7 +236,6 @@ def base_analysis(vehicle):
 
     # done!
     return analyses    
-
 
 # ----------------------------------------------------------------------
 #   Define the Vehicle
