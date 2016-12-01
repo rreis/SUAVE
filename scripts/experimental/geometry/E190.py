@@ -17,7 +17,7 @@ from SUAVE.Core import Units
 import numpy as np
 import pylab as plt
 
-import copy, time
+import copy, time, os
 
 from SUAVE.Core import (
 Data, Container, Data_Exception, Data_Warning,
