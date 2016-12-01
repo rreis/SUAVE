@@ -270,6 +270,7 @@ def vehicle_setup():
     
    
     #new nastran parameters
+    wing.geometry_tag = "lwing"
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
@@ -317,8 +318,7 @@ def vehicle_setup():
 
     wing.wing_sections = wing_section
 
-    
-    vehicle.main_wing = wing #for nastran
+   
     # add to vehicle
     vehicle.append_component(wing)
 
@@ -360,6 +360,7 @@ def vehicle_setup():
     wing.dynamic_pressure_ratio                     = 0.9
     
     #nastran parameters
+    wing.geometry_tag = "ltail"
     wing.root_origin             = wing.origin
     wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
     
@@ -443,7 +444,7 @@ def vehicle_setup():
     
     
     #new nastran parameters
-
+    wing.geometry_tag = "vtail"
     wing.airfoil                 = "rae2012"
     wing.root_origin             = wing.origin
     
@@ -469,6 +470,8 @@ def vehicle_setup():
     wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
    
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
+    wing.wing_sections = wing_section
+
     
     # add to vehicle
     vehicle.append_component(wing)
