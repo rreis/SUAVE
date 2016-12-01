@@ -314,7 +314,7 @@ def vehicle_setup():
     # add to vehicle
     vehicle.append_component(fuselage)
     
-        # ------------------------------------------------------------------        
+    # ------------------------------------------------------------------        
     #   Main Wing
     # ------------------------------------------------------------------        
 
@@ -338,7 +338,7 @@ def vehicle_setup():
     wing.twists.root             = 4.0 * Units.degrees
     wing.twists.tip              = -4.0 * Units.degrees
 
-    wing.origin                  = [20,.8*fuselage.effective_diameter/2.,0]
+    wing.origin                  = [15,fuselage.effective_diameter/2.,0]
     wing.aerodynamic_center      = [3,0,0] 
     
 
@@ -432,7 +432,7 @@ def vehicle_setup():
     wing.twists.root             = 3.0 * Units.degrees
     wing.twists.tip              = 3.0 * Units.degrees 
 
-    wing.origin                  = [35.,0,0]
+    wing.origin                  = [33.,0,0]
     wing.aerodynamic_center      = [2,0,0]
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
@@ -517,7 +517,7 @@ def vehicle_setup():
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
 
-    wing.origin                  = [35.,0,0]
+    wing.origin                  = [33.,0,0]
     wing.aerodynamic_center      = [2,0,0]    
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
