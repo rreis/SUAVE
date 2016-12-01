@@ -54,7 +54,18 @@ def main():
     external = analyses.configs.base.external
     aircraft_external = external.evaluate()
     
+    #geometry computation
+    geometry = analyses.configs.base.geometry
+    aircraft_geometry = geometry.evaluate()
     
+    #weight analysis
+    weights = analyses.configs.base.weights
+    breakdown = weights.evaluate()
+    
+    #mission analysis
+    mission = analyses.missions
+    results = mission.evaluate()
+
     #geometry_generation(configs.base,0,0,'E190.stl') #two dummy variables in script right now
     #setup_nastran(configs.base)
     
