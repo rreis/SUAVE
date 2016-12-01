@@ -407,7 +407,7 @@ def vehicle_setup():
     wing.tag = 'vertical_stabilizer'
 
     wing.aspect_ratio            = 1.7      #
-    wing.sweep                   = 35 * Units.deg
+    wing.sweep                   = 35. * Units.deg
     wing.thickness_to_chord      = 0.11
     wing.taper                   = 0.31
     wing.span_efficiency         = 0.9
@@ -427,8 +427,8 @@ def vehicle_setup():
     wing.twists.tip              = 0.0 * Units.degrees
     
 
-    wing.origin                  = [31,0,1.]
-    wing.aerodynamic_center      = [2,0,0]
+    wing.origin                  = [31.,0,1.]
+    wing.aerodynamic_center      = [2.,0,0]
 
     wing.vertical                = True
     wing.symmetric               = False
@@ -438,6 +438,8 @@ def vehicle_setup():
 
     wing.airfoil                 = "rae2012"
     wing.root_origin             = wing.origin
+    print 'vtail origin=', wing.origin
+    print 'find_tip_chord_leading_edge(wing)=', find_tip_chord_leading_edge(wing)
     wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
