@@ -579,6 +579,7 @@ def vehicle_setup():
     fuselage.differential_pressure = 10**5 * Units.pascal    # Maximum differential pressure
     
     #new nastran parameters
+    fuselage.geometry_tag = "fuse"
     fuselage.root_origin = [0.0,0.0,0.0]
     fuselage.tip_origin = [fuselage.lengths.total,0.0,0.0]
     fuselage.structural_dv         = 3 #dv_val #1
