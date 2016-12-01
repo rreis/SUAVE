@@ -447,7 +447,7 @@ def vehicle_setup():
     #convert coordinate system
     build_geomach_geometry(wing)
     #add in dihedral (remember nastran goes xzy, where z is up
-    wing.tip_origin[1] = wing.root_origin[1]+np.tan(8.63*Units.degrees)*wing.spans.project/2.
+    wing.tip_origin[1] = wing.root_origin[1]+np.tan(8.63*Units.degrees)*wing.spans.projected/2.
     
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
