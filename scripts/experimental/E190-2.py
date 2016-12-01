@@ -516,7 +516,7 @@ def vehicle_setup():
     
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     
-    wing.fuel_load = 10000.0
+    wing.fuel_load = 0.
     wing.max_x = 200.0
     wing.max_y = 200.0
     wing.max_z = 0.6*wing.tip_origin[2]

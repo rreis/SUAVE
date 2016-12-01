@@ -506,7 +506,19 @@ def vehicle_setup():
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.element_area            = 0.25
     wing.dynamic_pressure_ratio                     = 1.0
-
+    wing.fuel_load = 0.
+    wing.max_x = 200.0
+    wing.max_y = 200.0
+    wing.max_z = 0.6*wing.tip_origin[2]
+    wing.load_scaling = 1.1
+    
+    wing.structural_dv           = dv_val #1
+    wing.strut_presence          = 0
+    wing.strut                   = 0
+    
+    
+    
+    
     #wingsections
     wing.no_of_sections          = 1
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
