@@ -276,7 +276,7 @@ def vehicle_setup():
     
     
     
-    wing.root_origin             = root_origin#[10.0,1.5,1.88849]
+    wing.root_origin             = wing.origin#[10.0,1.5,1.88849]
     wing.tip_origin              = find_tip_chord_leading_edge(wing)+wing.origin
     
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
