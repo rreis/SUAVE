@@ -67,6 +67,8 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         
         #fuselage
         
+        
+        '''
         pgm.dvs['fus_root_x'].data[0] = aircraft.fuselage[0].root_origin[0]  #0.
         pgm.dvs['fus_root_y'].data[0] = aircraft.fuselage[0].root_origin[1]  #0.
         pgm.dvs['fus_root_z'].data[0] = aircraft.fuselage[0].root_origin[2]  #0.
@@ -76,6 +78,19 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['fus_tip_z'].data[0] = aircraft.fuselage[0].tip_origin[2]  #0.
         
         pgm.dvs['diameter'].data[0] = aircraft.fuselage[0].diameter  #2.6
+        '''
+        #old fuselage setup
+        pgm.dvs['fus_root_x'].data[0] = aircraft.fuselages.fuselage.origin[0]
+        pgm.dvs['fus_root_y'].data[0] = aircraft.fuselages.fuselage.origin[1]
+        pgm.dvs['fus_root_z'].data[0] = aircraft.fuselages.fuselage.origin[2]
+        
+        pgm.dvs['fus_tip_x'].data[0] = aircraft.fuselages.fuselage.lengths.total
+        pgm.dvs['fus_tip_y'].data[0] = 0.
+        pgm.dvs['fus_tip_z'].data[0] = 0.
+        
+        pgm.dvs['diameter'].data[0] = aircraft.fuselages.fuselage.effective_diameter/2.
+
+        
         
         pgm.compute_all()
         
