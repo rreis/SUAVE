@@ -329,17 +329,17 @@ def vehicle_setup():
 
     wing.spans.projected         = 35.66    
 
-    wing.chords.root             = 6.81
-    wing.chords.tip              = 1.09
+    wing.chords.root             = 7.76 * Units.meter
+    wing.chords.tip              = .782 & Units.meter
     wing.chords.mean_aerodynamic = 4.235
 
     wing.areas.reference         = 124.862 
 
     wing.twists.root             = 4.0 * Units.degrees
-    wing.twists.tip              = -4.0 * Units.degrees
+    wing.twists.tip              = 0.0 * Units.degrees
 
-    wing.origin                  = [15,fuselage.effective_diameter/2.,0]
-    wing.aerodynamic_center      = [3,0,0] 
+    wing.origin                  = [13.61, 0., -1.27]
+    wing.aerodynamic_center      = [3,0,0] #not really used here 
     
 
     wing.vertical                = False
@@ -389,8 +389,7 @@ def vehicle_setup():
     '''
     
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
-    wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
-
+    wing_section[0].sweep       = 28.225 * Units.degrees
     
     wing_section[1].type =  'wing_section'
     wing_section[1].root_chord = 0.5*(wing.chords.root + wing.chords.tip)
@@ -418,10 +417,10 @@ def vehicle_setup():
     wing.aspect_ratio            = 6.16
     wing.sweep                   = 30 * Units.deg
     wing.thickness_to_chord      = 0.08
-    wing.taper                   = 0.4
+    wing.taper                   = .955/4.7
     wing.span_efficiency         = 0.9
 
-    wing.spans.projected         = 14.146
+    wing.spans.projected         = 14.2
 
     wing.chords.root             = 3.28
     wing.chords.tip              = 1.31    
@@ -429,10 +428,10 @@ def vehicle_setup():
 
     wing.areas.reference         = 32.488
 
-    wing.twists.root             = 3.0 * Units.degrees
-    wing.twists.tip              = 3.0 * Units.degrees 
+    wing.twists.root             = 0 * Units.degrees
+    wing.twists.tip              = 0 * Units.degrees 
 
-    wing.origin                  = [33.,0,0]
+    wing.origin                  = [32.83,0,1.14]
     wing.aerodynamic_center      = [2,0,0]
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
@@ -447,7 +446,8 @@ def vehicle_setup():
     
     #convert coordinate system
     build_geomach_geometry(wing)
-    
+    #add in dihedral
+    wing.tip_origin[1] = wing.root_origin[1]+tan(8.63*Units.degrees)*wing.spans.project/2.
     
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
@@ -503,13 +503,13 @@ def vehicle_setup():
     wing.aspect_ratio            = 1.91
     wing.sweep                   = 25 * Units.deg
     wing.thickness_to_chord      = 0.08
-    wing.taper                   = 0.25
+    wing.taper                   = .85/8.19
     wing.span_efficiency         = 0.9
 
-    wing.spans.projected         = 7.877
+    wing.spans.projected         = 7.77
 
-    wing.chords.root             = 6.60
-    wing.chords.tip              = 1.65
+    wing.chords.root             = 8.19
+    wing.chords.tip              = .85
     wing.chords.mean_aerodynamic = 8.0
 
     wing.areas.reference         = 32.488
@@ -517,8 +517,9 @@ def vehicle_setup():
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
 
-    wing.origin                  = [33.,0,0]
-    wing.aerodynamic_center      = [2,0,0]    
+    wing.origin                  = [28.79,0,1.57]
+    
+    wing.aerodynamic_center      = [2,0,0]   #not really used 
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
 
