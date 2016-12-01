@@ -318,7 +318,7 @@ def vehicle_setup():
     wing.wing_sections = wing_section
 
     
-    
+    vehicle.main_wing = wing #for nastran
     # add to vehicle
     vehicle.append_component(wing)
 
@@ -362,7 +362,7 @@ def vehicle_setup():
     #nastran parameters
     wing.root_origin             = wing.origin
     wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
-    print 'find_tip_chord_leading_edge(wing)=', find_tip_chord_leading_edge(wing)
+    
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.vertical                = 0
@@ -394,9 +394,7 @@ def vehicle_setup():
     coords = wing.tip_origin
     wing_section[0].tip_origin  = np.array([coords[0], coords[2], coords[1]])
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    print 'wing.tip_origin =', wing.tip_origin
-    print 'wing_section[0].root_origin=',wing_section[0].root_origin
-    print 'wing_section[0],tip_origin=',wing_section[0].tip_origin
+    
     
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
@@ -448,8 +446,7 @@ def vehicle_setup():
 
     wing.airfoil                 = "rae2012"
     wing.root_origin             = wing.origin
-    print 'vtail origin=', wing.origin
-    print 'find_tip_chord_leading_edge(wing)=', find_tip_chord_leading_edge(wing)
+    
     wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
@@ -470,8 +467,7 @@ def vehicle_setup():
     wing_section[0].tip_origin  = np.array([coords[0], coords[2], coords[1]])
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
     wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
-    print 'wing_section[0].tip_origin[0]=',wing_section[0].tip_origin[0]
-    print 'wing_section[0].root_origin[0]=', wing_section[0].root_origin[0]
+   
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     
     # add to vehicle
