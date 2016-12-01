@@ -299,9 +299,9 @@ def vehicle_setup():
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
     #wing_section[0].mid_chord   = 0.0 #mid chord and mid origin are depecrated
-    coords = wing.root_origin 
+    coords = wing.root_origin *1.
     wing_section[0].root_origin = [coords[0], coords[2],coords[1]] 
-    coords = wing.tip_origin
+    coords = wing.tip_origin*1.
     wing_section[0].tip_origin  = [coords[0], coords[2], coords[1]]
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
     wing_section[0].span        = wing_section[0].tip_origin[1] - wing_section[0].root_origin[1]
@@ -389,12 +389,12 @@ def vehicle_setup():
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = wing.chords.tip
     wing_section[0].mid_chord   = 0.0
-    coords = wing.root_origin 
+    coords = wing.root_origin*1.
     wing_section[0].root_origin = [coords[0], coords[2], coords[1]] 
-    coords = wing.tip_origin
+    coords = wing.tip_origin*1.
     wing_section[0].tip_origin  = [coords[0], coords[2], coords[1]]
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    
+    print 'wing.tip_origin =', wing.tip_origin
     print 'wing_section[0].root_origin=',wing_section[0].root_origin
     print 'wing_section[0],tip_origin=',wing_section[0].tip_origin
     
