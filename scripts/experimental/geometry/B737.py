@@ -264,7 +264,57 @@ def vehicle_setup():
     vehicle.intersection_tag=["lwing_fuse","ltail_fuse","vtail_fuse"]
     dv_val = 12
 
-    # ------------------------------------------------------------------        
+
+
+
+    # ------------------------------------------------------------------
+    #  Fuselage
+    # ------------------------------------------------------------------
+
+    fuselage = SUAVE.Components.Fuselages.Fuselage()
+    fuselage.tag = 'fuselage'
+
+    fuselage.seats_abreast         = 6
+    fuselage.seat_pitch            = 1
+
+    fuselage.fineness.nose         = 1.6
+    fuselage.fineness.tail         = 2.
+
+    fuselage.lengths.nose          = 6.4
+    fuselage.lengths.tail          = 8.0
+    fuselage.lengths.cabin         = 28.85
+    fuselage.lengths.total         = 38.02
+    fuselage.lengths.fore_space    = 6.
+    fuselage.lengths.aft_space     = 5.    
+
+    fuselage.width                 = 3.74
+
+    fuselage.heights.maximum       = 3.74
+    fuselage.heights.at_quarter_length          = 3.74
+    fuselage.heights.at_three_quarters_length   = 3.74
+    fuselage.heights.at_wing_root_quarter_chord = 3.74
+
+    fuselage.areas.side_projected  = 142.1948
+    fuselage.areas.wetted          = 446.718
+    fuselage.areas.front_projected = 12.57
+
+    fuselage.effective_diameter    = 3.74 #4.0
+
+    fuselage.differential_pressure = 5.0e4 * Units.pascal # Maximum differential pressure
+
+    #new nastran parameters
+    fuselage.geometry_tag = "fuse"
+    fuselage.root_origin = [0.0,0.0,0.0]
+    fuselage.tip_origin = [fuselage.lengths.total,0.0,0.0]
+    fuselage.structural_dv         = 3 #dv_val #1
+
+    
+    
+    
+    # add to vehicle
+    vehicle.append_component(fuselage)
+    
+        # ------------------------------------------------------------------        
     #   Main Wing
     # ------------------------------------------------------------------        
 
@@ -288,7 +338,7 @@ def vehicle_setup():
     wing.twists.root             = 4.0 * Units.degrees
     wing.twists.tip              = -4.0 * Units.degrees
 
-    wing.origin                  = [20,0,0]
+    wing.origin                  = [20,.8*fuselage.effective_diameter/2.,0]
     wing.aerodynamic_center      = [3,0,0] 
     
 
@@ -382,7 +432,7 @@ def vehicle_setup():
     wing.twists.root             = 3.0 * Units.degrees
     wing.twists.tip              = 3.0 * Units.degrees 
 
-    wing.origin                  = [50,0,0]
+    wing.origin                  = [35.,,0]
     wing.aerodynamic_center      = [2,0,0]
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
@@ -467,7 +517,7 @@ def vehicle_setup():
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
 
-    wing.origin                  = [50,0,0]
+    wing.origin                  = [35.,0,0]
     wing.aerodynamic_center      = [2,0,0]    
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
@@ -516,60 +566,10 @@ def vehicle_setup():
    
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     wing.wing_sections = wing_section
-    print 'vtail_wing.section[0].span=', wing_section[0].span
+    
     
     # add to vehicle
     vehicle.append_component(wing)
-
-
-
-    # ------------------------------------------------------------------
-    #  Fuselage
-    # ------------------------------------------------------------------
-
-    fuselage = SUAVE.Components.Fuselages.Fuselage()
-    fuselage.tag = 'fuselage'
-
-    fuselage.seats_abreast         = 6
-    fuselage.seat_pitch            = 1
-
-    fuselage.fineness.nose         = 1.6
-    fuselage.fineness.tail         = 2.
-
-    fuselage.lengths.nose          = 6.4
-    fuselage.lengths.tail          = 8.0
-    fuselage.lengths.cabin         = 28.85
-    fuselage.lengths.total         = 38.02
-    fuselage.lengths.fore_space    = 6.
-    fuselage.lengths.aft_space     = 5.    
-
-    fuselage.width                 = 3.74
-
-    fuselage.heights.maximum       = 3.74
-    fuselage.heights.at_quarter_length          = 3.74
-    fuselage.heights.at_three_quarters_length   = 3.74
-    fuselage.heights.at_wing_root_quarter_chord = 3.74
-
-    fuselage.areas.side_projected  = 142.1948
-    fuselage.areas.wetted          = 446.718
-    fuselage.areas.front_projected = 12.57
-
-    fuselage.effective_diameter    = 3.74 #4.0
-
-    fuselage.differential_pressure = 5.0e4 * Units.pascal # Maximum differential pressure
-
-    #new nastran parameters
-    fuselage.geometry_tag = "fuse"
-    fuselage.root_origin = [0.0,0.0,0.0]
-    fuselage.tip_origin = [fuselage.lengths.total,0.0,0.0]
-    fuselage.structural_dv         = 3 #dv_val #1
-
-    
-    
-    
-    # add to vehicle
-    vehicle.append_component(fuselage)
-
 
     # ------------------------------------------------------------------
     #   Turbofan Network
