@@ -362,6 +362,7 @@ def vehicle_setup():
     #nastran parameters
     wing.root_origin             = wing.origin
     wing.tip_origin              = wing.origin+find_tip_chord_leading_edge(wing)
+    print 'find_tip_chord_leading_edge(wing)=', find_tip_chord_leading_edge(wing)
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.vertical                = 0
