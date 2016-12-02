@@ -431,7 +431,7 @@ def vehicle_setup():
     wing.twists.root             = 0 * Units.degrees
     wing.twists.tip              = 0 * Units.degrees 
 
-    wing.origin                  = [32.83,0,1.14]
+    wing.origin                  = [28.79,0,1.14]
     wing.aerodynamic_center      = [2,0,0]
     
     wing.tip_location            = find_tip_chord_leading_edge(wing)
