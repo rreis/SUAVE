@@ -60,10 +60,16 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['vtail_tip_y'].data[0] = aircraft.main_wing[2].main_wing_section[0].tip_origin[1]-aircraft.main_wing[2].main_wing_section[0].root_origin[1] #8.
         pgm.dvs['vtail_tip_z'].data[0] = aircraft.main_wing[2].main_wing_section[0].tip_origin[2]-aircraft.main_wing[2].main_wing_section[0].root_origin[2] #0.
         
+        pgm.dvs['vtail_root_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].root_chord # 10.0
+        pgm.dvs['vtail_mid_chord'].data[0] = aircraft.main_wing[2].main_wing_section[1].root_chord # 4.5
+        pgm.dvs['vtail_tip_chord'].data[0] = aircraft.main_wing[2].main_wing_section[1].tip_chord # 1.2
+        
+        
+        '''
         pgm.dvs['vtail_root_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].root_chord #5.8
         #pgm.dvs['vtail_mid_chord'].data[0] = 4.5
-        pgm.dvs['vtail_tip_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].tip_chord #2.0
-        
+        pgm.dvs['vtail_tip_chord'].data[0] = aircraft.main_wing[2].main_wing_section[1].tip_chord #2.0
+        '''
         
         #fuselage
         

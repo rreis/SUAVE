@@ -126,7 +126,7 @@ class Conventional5(PGMconfiguration):
         dvs['ltail_tip_z'] = PGMdv((1), 8.0).set_identity_param('ltail', 'pos', 'lin', (1,2))
 
         dvs['ltail_root_chord'] = PGMdv((1), 4.).set_identity_param('ltail', 'scl', '', (0,0))
-        #dvs['ltail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('ltail', 'scl', '', (1,0))
+        dvs['ltail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('ltail', 'scl', '', (1,0))
         dvs['ltail_tip_chord'] = PGMdv((1), 1.).set_identity_param('ltail', 'scl', '', (1,0))
 
 
@@ -142,7 +142,7 @@ class Conventional5(PGMconfiguration):
         dvs['vtail_tip_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (1,2))
 
         dvs['vtail_root_chord'] = PGMdv((1), 5.8).set_identity_param('vtail', 'scl', '', (0,0))
-        #dvs['vtail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
+        dvs['vtail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
         dvs['vtail_tip_chord'] = PGMdv((1), 2.0).set_identity_param('vtail', 'scl', '', (1,0))
 
 
