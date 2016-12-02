@@ -60,10 +60,16 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['vtail_tip_y'].data[0] = aircraft.main_wing[2].main_wing_section[0].tip_origin[1]-aircraft.main_wing[2].main_wing_section[0].root_origin[1] #8.
         pgm.dvs['vtail_tip_z'].data[0] = aircraft.main_wing[2].main_wing_section[0].tip_origin[2]-aircraft.main_wing[2].main_wing_section[0].root_origin[2] #0.
         
+        pgm.dvs['vtail_root_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].root_chord # 10.0
+        pgm.dvs['vtail_mid_chord'].data[0] = aircraft.main_wing[2].main_wing_section[1].root_chord # 4.5
+        pgm.dvs['vtail_tip_chord'].data[0] = aircraft.main_wing[2].main_wing_section[1].tip_chord # 1.2
+        
+        
+        '''
         pgm.dvs['vtail_root_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].root_chord #5.8
         #pgm.dvs['vtail_mid_chord'].data[0] = 4.5
-        pgm.dvs['vtail_tip_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].tip_chord #2.0
-        
+        pgm.dvs['vtail_tip_chord'].data[0] = aircraft.main_wing[2].main_wing_section[1].tip_chord #2.0
+        '''
         
         #fuselage
         
@@ -75,7 +81,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['fus_tip_y'].data[0] = aircraft.fuselage[0].tip_origin[1]  #0.
         pgm.dvs['fus_tip_z'].data[0] = aircraft.fuselage[0].tip_origin[2]  #0.
         
-        pgm.dvs['diameter'].data[0] = aircraft.fuselage[0].diameter  #2.6
+        pgm.dvs['diameter'].data[0] = aircraft.fuselage[0].diameter/2.  #looks this is to fix a geomach bug
         
         pgm.compute_all()
         
@@ -85,7 +91,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         bse.vec['cp'].export_tec_scatter()
         bse.vec['pt'].export_tec_scatter()
         bse.vec['cp_str'].export_IGES()
-        #bse.vec['cp_str'].export_STL(stl_mesh_filename)
+        bse.vec['cp_str'].export_STL(stl_mesh_filename)
         
         pgm.meshStructure()
         visualize_geomach_geometry('conventional_str.bdf','conventional_str.plt')

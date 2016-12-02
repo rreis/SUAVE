@@ -274,8 +274,6 @@ class FEA_Weight:
         
         nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200])#,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
-        #nastran_run = subprocess.call((nastran_call, self.filename.Nastran_sol200))
-        
         #nastran_run.wait()
         
         #exit_status = nastran_run.returncode
