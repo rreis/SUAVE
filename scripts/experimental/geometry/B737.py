@@ -551,7 +551,8 @@ def vehicle_setup():
     
     
     
-    
+    '''
+    #this is saved for a single wing section
     #wingsections
     wing.no_of_sections          = 1
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
@@ -567,6 +568,29 @@ def vehicle_setup():
    
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     wing.wing_sections = wing_section
+    '''
+    wing.no_of_sections          = 2
+    wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
+    
+    wing_section[0].type = 'wing_section'
+    wing_section[0].root_chord  = wing.chords.root
+    wing_section[0].tip_chord   = wing.chords.tip #not sure how this works
+    #wing_section[0].mid_chord   = 0.0
+    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].tip_origin  = wing.tip_origin
+    #wing_section[0].mid_origin  = [0.0,0.0,0.0]
+    wing_section[0].span        = .194*wing.spans.projected
+    wing_section[0].sweep       = 63.63 * Units.degrees
+    
+    wing_section[1].root_chord = 0.54*wing.chords.root
+    wing_section[1].tip_chord = wing.chords.tip
+    wing_section[1].root_origin = [0.0,0.0,0.0] #why?
+    wing_section[1].tip_origin = [0.0,0.0,0.0]
+    wing_section[1].span = 0.
+    wing_section[1].sweep = 30*Units.degrees
+
+    wing.wing_sections = wing_section
+    
     
     
     # add to vehicle
