@@ -415,15 +415,15 @@ def vehicle_setup():
     wing.tag = 'horizontal_stabilizer'
 
     wing.aspect_ratio            = 6.16
-    wing.sweep                   = 30 * Units.deg
+    wing.sweep                   = 40. * Units.deg
     wing.thickness_to_chord      = 0.08
     wing.taper                   = .955/4.7
     wing.span_efficiency         = 0.9
 
     wing.spans.projected         = 14.2
 
-    wing.chords.root             = 3.28
-    wing.chords.tip              = 1.31    
+    wing.chords.root             = 4.7
+    wing.chords.tip              = .955    
     wing.chords.mean_aerodynamic = 8.0
 
     wing.areas.reference         = 32.488
@@ -463,9 +463,11 @@ def vehicle_setup():
     wing.strut_presence          = 0
     wing.strut                   = 0
     
+
     
     #wingsections
-    
+    '''
+    # old way
     wing.no_of_sections          = 1
     
     
@@ -485,6 +487,33 @@ def vehicle_setup():
     wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
     wing_section[0].sweep       = np.arctan((wing_section[0].tip_origin[2]- wing_section[0].root_origin[2])/(wing_section[0].tip_origin[0]- wing_section[0].root_origin[0]))
     
+    '''
+    wing.no_of_sections          = 3
+    
+    
+    wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
+    
+    wing_section[0].type = 'wing_section'
+    wing_section[0].root_chord  = wing.chords.root
+    wing_section[0].tip_chord   = wing.chords.tip
+    wing_section[0].mid_chord   = 0.0
+     
+    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].tip_origin  = wing.tip_origin
+    
+    #wing_section[0].mid_origin  = [0.0,0.0,0.0]
+    
+    
+    wing_section[0].span        = .91*wing.spans.projected
+    wing_section[0].sweep       = 38.42*Units.degrees
+    
+    wing_section[1].type =  'wing_section'
+    wing_section[1].root_chord = .35*wing.chords.roop
+    wing_section[1].tip_chord = wing.chords.tip
+    wing_section[1].root_origin = [0.0,0.0,0.0] #why?
+    wing_section[1].tip_origin = [0.0,0.0,0.0]
+    wing_section[1].span = 0.0
+    wing_section[1].sweep = 48.17*Units.degrees
     
     wing.wing_sections = wing_section
     
