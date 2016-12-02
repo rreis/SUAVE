@@ -508,7 +508,7 @@ def vehicle_setup():
     wing_section[0].sweep       = 38.42*Units.degrees
     
     wing_section[1].type =  'wing_section'
-    wing_section[1].root_chord = .35*wing.chords.roop
+    wing_section[1].root_chord = .35*wing.chords.root
     wing_section[1].tip_chord = wing.chords.tip
     wing_section[1].root_origin = [0.0,0.0,0.0] #why?
     wing_section[1].tip_origin = [0.0,0.0,0.0]
