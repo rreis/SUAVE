@@ -389,14 +389,14 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_1_y'].data[0] = -1.
     pgm.dvs['lwing_section_1_z'].data[0] = 2.6
     
-    pgm.dvs['lwing_section_2_x'].data[0] = 8.1
+    pgm.dvs['lwing_section_2_x'].data[0] = 16.1
     pgm.dvs['lwing_section_2_y'].data[0] = 1.2
-    pgm.dvs['lwing_section_2_z'].data[0] = 6.1
+    pgm.dvs['lwing_section_2_z'].data[0] = 12.3
 
 
     pgm.dvs['lwing_section_3_x'].data[0] = 16.2
     pgm.dvs['lwing_section_3_y'].data[0] = 2.4
-    pgm.dvs['lwing_section_3_z'].data[0] = 12.3
+    pgm.dvs['lwing_section_3_z'].data[0] = 24.1
 
 
 
