@@ -26,7 +26,7 @@ Data, Container, Data_Exception, Data_Warning,
 from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
 from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_chord_leading_edge import find_tip_chord_leading_edge
-
+from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_section_origin_from_chord_and_span import find_tip_section_origin_from_chord_and_span
 from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
 from SUAVE.Methods.fea_tools.weight_estimation import Filenames
@@ -375,30 +375,37 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
 
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
-    
-    wing_section[0].root_origin = wing.root_origin
-    wing_section[0].tip_origin  = wing.tip_origin
-    '''
-    #wing_section[0].mid_chord   = 0.0 #mid chord and mid origin are depecrated
-    coords = wing.root_origin 
-    wing_section[0].root_origin = np.array([coords[0], coords[2],coords[1]])
-    coords = wing.tip_origin
-    wing_section[0].tip_origin  =np.array([coords[0], coords[2], coords[1]])
-    #wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    '''
-    
-    wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
+    wing_section[0].tip_chord   =.5*wing.chords.root
+    wing_section[0].span        = (.963-.324)*wing.spans.projected
     wing_section[0].sweep       = 28.225 * Units.degrees
     
-    wing_section[1].type =  'wing_section'
-    wing_section[1].root_chord = wing_section[0].tip_chord
-    wing_section[1].tip_chord = wing.chords.tip
-    wing_section[1].root_origin = [0.0,0.0,0.0] #why?
-    wing_section[1].tip_origin = [0.0,0.0,0.0]
-    wing_section[1].span = 0.0
-    wing_section[1].sweep = 0.0
+    wing_section[0].root_origin = wing.root_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[0])
+    wing_section[0].tip_origin  = wing_rel_pos
+    
+    
+    wing_section[1].type        =  'wing_section'
+    wing_section[1].root_chord  = wing_section[0].tip_chord
+    wing_section[1].tip_chord   = .22*wing.chords.root
+    wing_section[1].span        = (.963-.324)*.5*wing.spans.projected
+    
+    wing_section[1].sweep       = 25.*Units.degrees
+    wing_section[1].root_origin = wing_section[0].tip_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[1])
+    wing_section[1].tip_origin  = wing_rel_pos  
+    
+    wing_section[2].type        =  'wing_section'
+    wing_section[2].root_chord  = wing_section[0].tip_chord
+    wing_section[2].tip_chord   = wing.chords.tip
+    wing_section[2].span        = wing.spans.projected-wing_section[1].span*.5
+    wing_section[2].sweep       = 56.75 * Units.degrees
+    wing_section[2].root_origin = wing_section[1].tip_origin
+    wing_rel_pos 2              = find_tip_section_origin_from_chord_and_span(wing_section[1])
+    wing_section[2].tip_origin  = wing_rel_pos  
+    
+   
 
+   
     wing.wing_sections = wing_section
 
    
@@ -603,21 +610,25 @@ def vehicle_setup():
     
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   = wing.chords.tip #not sure how this works
+    wing_section[0].tip_chord   = .54*wing.chords.root #not sure how this works
     #wing_section[0].mid_chord   = 0.0
-    wing_section[0].root_origin = wing.root_origin
-    wing_section[0].tip_origin  = wing.tip_origin
+    
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
     wing_section[0].span        = .194*wing.spans.projected
     wing_section[0].sweep       = 63.63 * Units.degrees
+    wing_section[0].root_origin = wing.root_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[1])
+    wing_section[0].tip_origin  = wing_rel_pos
     
-    wing_section[1].root_chord = 0.54*wing.chords.root
+    wing_section[1].root_chord = wing_section[0].tip_chord
     wing_section[1].tip_chord = wing.chords.tip
-    wing_section[1].root_origin = [0.0,0.0,0.0] #why?
-    wing_section[1].tip_origin = [0.0,0.0,0.0]
-    wing_section[1].span = 0.
-    wing_section[1].sweep = 30*Units.degrees
-
+ 
+    wing_section[1].span        = wing.spans_projected-wing_section[0].span
+    wing_section[1].sweep       = 30*Units.degrees
+    
+    wing_section[1].root_origin = wing.section[0].tip_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[1])
+    wing_section[1].tip_origin  = wing_rel_pos
     wing.wing_sections = wing_section
     
     
