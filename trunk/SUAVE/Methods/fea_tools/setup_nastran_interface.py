@@ -343,9 +343,9 @@ def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_fil
     #DRESP1
     #DRESP1
     s200.no_of_dresp1 = 7
-    s200.no_of_dresp2 = 5
-    s200.no_of_equations = 4
-    s200.no_of_constraints = 3
+    s200.no_of_dresp2 = 2
+    s200.no_of_equations = 2
+    s200.no_of_constraints = 2
     s200.no_of_dconadd = 1
 
 
@@ -476,50 +476,50 @@ def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_fil
     
     
     
-    dresp2_list[2].type = 'DRESP2'
-    dresp2_list[2].id = 10   #unique identification number
-    dresp2_list[2].label ='KSStr1'       # user defined label
-    dresp2_list[2].eqid =3    # equation id
-    dresp2_list[2].region  =0   #region identifier for constraint screening
-    dresp2_list[2].method  ='0'    # method to be used on fun
-    dresp2_list[2].c1  =0     #constants used
-    dresp2_list[2].c2 = 0
-    dresp2_list[2].c3 = 0
-    dresp2_list[2].associated ='DRESP1' # value associated with (like "DRESP1"
-    dresp2_list[2].nr1=8
-    dresp2_list[2].nr2=0
-    dresp2_list[2].nr3=0
-    
-    
-    dresp2_list[3].type = 'DRESP2'
-    dresp2_list[3].id = 11   #unique identification number
-    dresp2_list[3].label ='KSStr2'       # user defined label
-    dresp2_list[3].eqid = 0     # equation id
-    dresp2_list[3].region  =0   #region identifier for constraint screening
-    dresp2_list[3].method  ='SUM'    # method to be used on fun
-    dresp2_list[3].c1  =0     #constants used
-    dresp2_list[3].c2 = 0
-    dresp2_list[3].c3 = 0
-    dresp2_list[3].associated ='DRESP2' # value associated with (like "DRESP1"
-    dresp2_list[3].nr1=10
-    dresp2_list[3].nr2=0
-    dresp2_list[3].nr3=0
-    
-    
-    
-    dresp2_list[4].type = 'DRESP2'
-    dresp2_list[4].id = 12   #unique identification number
-    dresp2_list[4].label ='KSStrF'       # user defined label
-    dresp2_list[4].eqid = 4     # equation id
-    dresp2_list[4].region  =0   #region identifier for constraint screening
-    dresp2_list[4].method  ='0'    # method to be used on fun
-    dresp2_list[4].c1  =0     #constants used
-    dresp2_list[4].c2 = 0
-    dresp2_list[4].c3 = 0
-    dresp2_list[4].associated ='DRESP2' # value associated with (like "DRESP1"
-    dresp2_list[4].nr1=11
-    dresp2_list[4].nr2=0
-    dresp2_list[4].nr3=0
+#    dresp2_list[2].type = 'DRESP2'
+#    dresp2_list[2].id = 10   #unique identification number
+#    dresp2_list[2].label ='KSStr1'       # user defined label
+#    dresp2_list[2].eqid =3    # equation id
+#    dresp2_list[2].region  =0   #region identifier for constraint screening
+#    dresp2_list[2].method  ='0'    # method to be used on fun
+#    dresp2_list[2].c1  =0     #constants used
+#    dresp2_list[2].c2 = 0
+#    dresp2_list[2].c3 = 0
+#    dresp2_list[2].associated ='DRESP1' # value associated with (like "DRESP1"
+#    dresp2_list[2].nr1=8
+#    dresp2_list[2].nr2=0
+#    dresp2_list[2].nr3=0
+#    
+#    
+#    dresp2_list[3].type = 'DRESP2'
+#    dresp2_list[3].id = 11   #unique identification number
+#    dresp2_list[3].label ='KSStr2'       # user defined label
+#    dresp2_list[3].eqid = 0     # equation id
+#    dresp2_list[3].region  =0   #region identifier for constraint screening
+#    dresp2_list[3].method  ='SUM'    # method to be used on fun
+#    dresp2_list[3].c1  =0     #constants used
+#    dresp2_list[3].c2 = 0
+#    dresp2_list[3].c3 = 0
+#    dresp2_list[3].associated ='DRESP2' # value associated with (like "DRESP1"
+#    dresp2_list[3].nr1=10
+#    dresp2_list[3].nr2=0
+#    dresp2_list[3].nr3=0
+#    
+#    
+#    
+#    dresp2_list[4].type = 'DRESP2'
+#    dresp2_list[4].id = 12   #unique identification number
+#    dresp2_list[4].label ='KSStrF'       # user defined label
+#    dresp2_list[4].eqid = 4     # equation id
+#    dresp2_list[4].region  =0   #region identifier for constraint screening
+#    dresp2_list[4].method  ='0'    # method to be used on fun
+#    dresp2_list[4].c1  =0     #constants used
+#    dresp2_list[4].c2 = 0
+#    dresp2_list[4].c3 = 0
+#    dresp2_list[4].associated ='DRESP2' # value associated with (like "DRESP1"
+#    dresp2_list[4].nr1=11
+#    dresp2_list[4].nr2=0
+#    dresp2_list[4].nr3=0
 
     s200.dresp1_list = dresp1_list
     s200.dresp2_list = dresp2_list
@@ -536,17 +536,17 @@ def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_fil
     equation_list[1].id = 2   #unique equation identification number
     equation_list[1].equation = 'MAXSTR(majStr,minStr,vmStr) = MAX(majStr , minStr , vmStr )'       # equation
 
-    #Adding a KS function
-    #Equation to compute max stress
-    #Equation to compute max stress
-    equation_list[2].type = 'DEQATN'
-    equation_list[2].id = 3   #unique equation identification number
-    equation_list[2].equation = 'KS1(vmStr) = (80.0*EXP(vmStr))'
-    
-    equation_list[3].type = 'DEQATN'
-    equation_list[3].id = 4   #unique equation identification number
-    equation_list[3].equation = 'KS(SvmStr) = LOG(SvmStr)/80.0'
-    
+#    #Adding a KS function
+#    #Equation to compute max stress
+#    #Equation to compute max stress
+#    equation_list[2].type = 'DEQATN'
+#    equation_list[2].id = 3   #unique equation identification number
+#    equation_list[2].equation = 'KS1(vmStr) = (80.0*EXP(vmStr))'
+#    
+#    equation_list[3].type = 'DEQATN'
+#    equation_list[3].id = 4   #unique equation identification number
+#    equation_list[3].equation = 'KS(SvmStr) = LOG(SvmStr)/80.0'
+
 #    equation_list[4].type = 'DEQATN'
 #    equation_list[4].id = 5   #unique equation identification number
 #    equation_list[4].equation = 'KSSUM(xi) = SUM(xi)'
@@ -587,19 +587,19 @@ def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_fil
     #---------stress constraint------------------
     constraint_list[1].type = 'DCONSTR'
     constraint_list[1].dcid = 2   #design constrain set identification number
-    constraint_list[1].rid =8       #DRESPi entry identification number
+    constraint_list[1].rid = 8       #DRESPi entry identification number
     constraint_list[1].lallow =10e-10    #lower bound on the response quantity
     #constraint_list[1].lid                #set identi of a TABLEDi entry that suplies the lower bound as a fun of freq
     constraint_list[1].uallow = 420e6    #upper bound on the response quantity
     
     
-    #---------stress constraint------------------
-    constraint_list[2].type = 'DCONSTR'
-    constraint_list[2].dcid = 3   #design constrain set identification number
-    constraint_list[2].rid = 12       #DRESPi entry identification number
-    constraint_list[2].lallow =10e-10    #lower bound on the response quantity
-    #constraint_list[1].lid                #set identi of a TABLEDi entry that suplies the lower bound as a fun of freq
-    constraint_list[2].uallow = 420e6    #upper bound on the response quantity
+#    #---------stress constraint------------------
+#    constraint_list[2].type = 'DCONSTR'
+#    constraint_list[2].dcid = 3   #design constrain set identification number
+#    constraint_list[2].rid = 12       #DRESPi entry identification number
+#    constraint_list[2].lallow =10e-10    #lower bound on the response quantity
+#    #constraint_list[1].lid                #set identi of a TABLEDi entry that suplies the lower bound as a fun of freq
+#    constraint_list[2].uallow = 420e6    #upper bound on the response quantity
 
 
     s200.constraint_list = constraint_list
@@ -607,8 +607,8 @@ def setup_nastran_interface(s200,geomach_structural_mesh,load_mesh_type,load_fil
 
     dconadd_list[0].type = 'DCONADD'
     dconadd_list[0].dcid = 25
-    dconadd_list[0].dc1 = 2
-    dconadd_list[0].dc2 = 3
+    dconadd_list[0].dc1 = 1
+    dconadd_list[0].dc2 = 2
 
     s200.dconadd_list = dconadd_list
 

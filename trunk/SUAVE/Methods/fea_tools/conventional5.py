@@ -11,6 +11,7 @@ import numpy
 
 class Conventional5(PGMconfiguration):
 
+
     def _define_comps(self):
         self.comps['fuse'] = PGMbody(num_x=24, num_y=4, num_z=2)
         self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=True)
@@ -49,8 +50,9 @@ class Conventional5(PGMconfiguration):
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
-        lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
-        lwing['pos'].params['lin'] = PGMparameter(2, 3)
+        #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
+        lwing['scl'].params[''] = PGMparameter(3, 1)
+        lwing['pos'].params['lin'] = PGMparameter(3, 3)
         lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
         lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
@@ -76,8 +78,8 @@ class Conventional5(PGMconfiguration):
 
         ltail = self.comps['ltail'].props
         ltail['pos'].params[''] = PGMparameter(1, 3)
-        ltail['pos'].params['lin'] = PGMparameter(2, 3)
-        ltail['scl'].params[''] = PGMparameter(2, 1)
+        ltail['pos'].params['lin'] = PGMparameter(3, 3)
+        ltail['scl'].params[''] = PGMparameter(3, 1)
         ltail['rot'].params[''] = PGMparameter(2, 3)
         ltail['ogn'].params[''] = PGMparameter(1, 3)
 
@@ -90,9 +92,9 @@ class Conventional5(PGMconfiguration):
 
         vtail = self.comps['vtail'].props
         vtail['pos'].params[''] = PGMparameter(1, 3)
-        vtail['pos'].params['lin'] = PGMparameter(2, 3)
+        vtail['pos'].params['lin'] = PGMparameter(3, 3)
         vtail['nor'].params[''] = PGMparameter(1, 3)
-        vtail['scl'].params[''] = PGMparameter(2, 1)
+        vtail['scl'].params[''] = PGMparameter(3, 1)
         vtail['rot'].params[''] = PGMparameter(2, 3)
         vtail['ogn'].params[''] = PGMparameter(1, 3)
 
@@ -101,60 +103,72 @@ class Conventional5(PGMconfiguration):
 
         #main wing
 
-        dvs['lwing_root_x'] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', '', (0,0))
-        dvs['lwing_root_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
-        dvs['lwing_root_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
+        dvs['lwing_section_1_x'] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', '', (0,0))
+        dvs['lwing_section_1_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
+        dvs['lwing_section_1_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
+        
+        dvs['lwing_section_2_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'lin', (1,0))
+        dvs['lwing_section_2_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'lin', (1,1))
+        dvs['lwing_section_2_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'lin', (1,2))
 
         #relative to the root
-        dvs['lwing_tip_x'] = PGMdv((1), 16.5).set_identity_param('lwing', 'pos', 'lin', (1,0))
-        dvs['lwing_tip_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin', (1,1))
-        dvs['lwing_tip_z'] = PGMdv((1), 23.3).set_identity_param('lwing', 'pos', 'lin', (1,2))
+        dvs['lwing_section_3_x'] = PGMdv((1), 16.5).set_identity_param('lwing', 'pos', 'lin', (2,0))
+        dvs['lwing_section_3_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin', (2,1))
+        dvs['lwing_section_3_z'] = PGMdv((1), 23.3).set_identity_param('lwing', 'pos', 'lin', (2,2))
 
-        dvs['lwing_root_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
-        dvs['lwing_mid_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
-        dvs['lwing_tip_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
+        dvs['lwing_section_1_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
+        dvs['lwing_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
+        dvs['lwing_section_3_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
 
 
         #horz tail
 
-        dvs['ltail_root_x'] = PGMdv((1), 44.0).set_identity_param('ltail', 'pos', '', (0,0))
-        dvs['ltail_root_y'] = PGMdv((1), 0.).set_identity_param('ltail', 'pos', '', (0,1))
-        dvs['ltail_root_z'] = PGMdv((1), 1.3).set_identity_param('ltail', 'pos', '', (0,2))
+        dvs['ltail_section_1_x'] = PGMdv((1), 44.0).set_identity_param('ltail', 'pos', '', (0,0))
+        dvs['ltail_section_1_y'] = PGMdv((1), 0.).set_identity_param('ltail', 'pos', '', (0,1))
+        dvs['ltail_section_1_z'] = PGMdv((1), 1.3).set_identity_param('ltail', 'pos', '', (0,2))
 
-        dvs['ltail_tip_x'] = PGMdv((1), 6.0).set_identity_param('ltail', 'pos', 'lin', (1,0))
-        dvs['ltail_tip_y'] = PGMdv((1), 1.4).set_identity_param('ltail', 'pos', 'lin', (1,1))
-        dvs['ltail_tip_z'] = PGMdv((1), 8.0).set_identity_param('ltail', 'pos', 'lin', (1,2))
+        dvs['ltail_section_2_x'] = PGMdv((1), 3.0).set_identity_param('ltail', 'pos', 'lin', (1,0))
+        dvs['ltail_section_2_y'] = PGMdv((1), 0.7).set_identity_param('ltail', 'pos', 'lin', (1,1))
+        dvs['ltail_section_2_z'] = PGMdv((1), 4.0).set_identity_param('ltail', 'pos', 'lin', (1,2))
+        
+        dvs['ltail_section_3_x'] = PGMdv((1), 6.0).set_identity_param('ltail', 'pos', 'lin', (2,0))
+        dvs['ltail_section_3_y'] = PGMdv((1), 1.4).set_identity_param('ltail', 'pos', 'lin', (2,1))
+        dvs['ltail_section_3_z'] = PGMdv((1), 8.0).set_identity_param('ltail', 'pos', 'lin', (2,2))
 
-        dvs['ltail_root_chord'] = PGMdv((1), 4.).set_identity_param('ltail', 'scl', '', (0,0))
-        dvs['ltail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('ltail', 'scl', '', (1,0))
-        dvs['ltail_tip_chord'] = PGMdv((1), 1.).set_identity_param('ltail', 'scl', '', (1,0))
+        dvs['ltail_section_1_chord'] = PGMdv((1), 4.).set_identity_param('ltail', 'scl', '', (0,0))
+        dvs['ltail_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('ltail', 'scl', '', (1,0))
+        dvs['ltail_section_3_chord'] = PGMdv((1), 1.).set_identity_param('ltail', 'scl', '', (2,0))
 
 
         #vertical tail
 
 
-        dvs['vtail_root_x'] = PGMdv((1), 42.).set_identity_param('vtail', 'pos', '', (0,0))
-        dvs['vtail_root_y'] = PGMdv((1), 1.7).set_identity_param('vtail', 'pos', '', (0,1))
-        dvs['vtail_root_z'] = PGMdv((1), 0.0).set_identity_param('vtail', 'pos', '', (0,2))
+        dvs['vtail_section_1_x'] = PGMdv((1), 42.).set_identity_param('vtail', 'pos', '', (0,0))
+        dvs['vtail_section_1_y'] = PGMdv((1), 1.7).set_identity_param('vtail', 'pos', '', (0,1))
+        dvs['vtail_section_1_z'] = PGMdv((1), 0.0).set_identity_param('vtail', 'pos', '', (0,2))
 
-        dvs['vtail_tip_x'] = PGMdv((1), 6.).set_identity_param('vtail', 'pos', 'lin', (1,0))
-        dvs['vtail_tip_y'] = PGMdv((1), 8.).set_identity_param('vtail', 'pos', 'lin', (1,1))
-        dvs['vtail_tip_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (1,2))
+        dvs['vtail_section_2_x'] = PGMdv((1), 3.).set_identity_param('vtail', 'pos', 'lin', (1,0))
+        dvs['vtail_section_2_y'] = PGMdv((1), 4.).set_identity_param('vtail', 'pos', 'lin', (1,1))
+        dvs['vtail_section_2_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (1,2))
+        
+        dvs['vtail_section_3_x'] = PGMdv((1), 6.).set_identity_param('vtail', 'pos', 'lin', (2,0))
+        dvs['vtail_section_3_y'] = PGMdv((1), 8.).set_identity_param('vtail', 'pos', 'lin', (2,1))
+        dvs['vtail_section_3_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (2,2))
 
-        dvs['vtail_root_chord'] = PGMdv((1), 5.8).set_identity_param('vtail', 'scl', '', (0,0))
-        dvs['vtail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
-        dvs['vtail_tip_chord'] = PGMdv((1), 2.0).set_identity_param('vtail', 'scl', '', (1,0))
+        dvs['vtail_section_1_chord'] = PGMdv((1), 5.8).set_identity_param('vtail', 'scl', '', (0,0))
+        dvs['vtail_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
+        dvs['vtail_section_3_chord'] = PGMdv((1), 2.0).set_identity_param('vtail', 'scl', '', (2,0))
 
 
         #fuselage
 
-        dvs['fus_root_x'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,0))
-        dvs['fus_root_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,1))
-        dvs['fus_root_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,2))
+        dvs['fus_section_1_x'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,0))
+        dvs['fus_section_1_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,1))
+        dvs['fus_section_1_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,2))
 
-        dvs['fus_tip_x'] = PGMdv((1), 36.).set_identity_param('fuse', 'pos', '', (1,0))
-        dvs['fus_tip_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,1))
-        dvs['fus_tip_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,2))
+        dvs['fus_section_2_x'] = PGMdv((1), 36.).set_identity_param('fuse', 'pos', '', (1,0))
+        dvs['fus_section_2_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,1))
+        dvs['fus_section_2_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,2))
 
         dvs['diameter']  = PGMdv((1), 3.0).set_identity_param('fuse', 'scl', '', (0,0))
 
@@ -173,7 +187,7 @@ class Conventional5(PGMconfiguration):
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
         lwing['scl'].params[''].val([10,4.5,1.2])
-        lwing['pos'].params['lin'].val([[0,0,0],[16.5,4.4,23.3]])
+        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,4.4,23.3]])
 
 #        rwing = self.comps['rwing'].props
 #        rwing['pos'].params[''].val([16,-1,-2.6])
@@ -195,8 +209,8 @@ class Conventional5(PGMconfiguration):
 
         ltail = self.comps['ltail'].props
         ltail['pos'].params[''].val([44,0,1.3])
-        ltail['pos'].params['lin'].val([[0,0,0],[6,1.4,8]])
-        ltail['scl'].params[''].val([4,1])
+        ltail['pos'].params['lin'].val([[0,0,0],[2,0.7,4],[6,1.4,8]])
+        ltail['scl'].params[''].val([4.0,2.0,1.0])
         ltail['rot'].params[''].val([[0,10,0],[0,0,0]])
         ltail['ogn'].params[''].val([0.25,0,0])
 
@@ -209,9 +223,9 @@ class Conventional5(PGMconfiguration):
 
         vtail = self.comps['vtail'].props
         vtail['pos'].params[''].val([42,1.7,0])
-        vtail['pos'].params['lin'].val([[0,0,0],[6,8,0]])
+        vtail['pos'].params['lin'].val([[0,0,0],[3,4,0],[6,8,0]])
         vtail['nor'].params[''].val([1,0,0])
-        vtail['scl'].params[''].val([5.8,2])
+        vtail['scl'].params[''].val([5.8,3.0,2])
         vtail['rot'].params[''].val([[0,10,0],[0,0,0]])
         vtail['ogn'].params[''].val([0.25,0,0])
 
@@ -371,60 +385,79 @@ if __name__ == '__main__':
     pgm.comps['ltail'].set_airfoil()
     #main wing
 
-    pgm.dvs['lwing_root_x'].data[0] = 16.
-    pgm.dvs['lwing_root_y'].data[0] = -1.
-    pgm.dvs['lwing_root_z'].data[0] = 2.6
+    pgm.dvs['lwing_section_1_x'].data[0] = 16.
+    pgm.dvs['lwing_section_1_y'].data[0] = -1.
+    pgm.dvs['lwing_section_1_z'].data[0] = 2.6
+    
+    pgm.dvs['lwing_section_2_x'].data[0] = 16.1
+    pgm.dvs['lwing_section_2_y'].data[0] = 1.2
+    pgm.dvs['lwing_section_2_z'].data[0] = 12.3
 
-    #relative to the root
-    pgm.dvs['lwing_tip_x'].data[0] = 16.5
-    pgm.dvs['lwing_tip_y'].data[0] = 4.4
-    pgm.dvs['lwing_tip_z'].data[0] = 23.3
 
-    pgm.dvs['lwing_root_chord'].data[0] = 10.
-    pgm.dvs['lwing_mid_chord'].data[0] = 4.5
-    pgm.dvs['lwing_tip_chord'].data[0] = 1.2
+    pgm.dvs['lwing_section_3_x'].data[0] = 16.2
+    pgm.dvs['lwing_section_3_y'].data[0] = 2.4
+    pgm.dvs['lwing_section_3_z'].data[0] = 24.1
+
+
+
+#    #relative to the root
+#    pgm.dvs['lwing_tip_x'].data[0] = 16.5
+#    pgm.dvs['lwing_tip_y'].data[0] = 4.4
+#    pgm.dvs['lwing_tip_z'].data[0] = 23.3
+
+    pgm.dvs['lwing_section_1_chord'].data[0] = 10.
+    pgm.dvs['lwing_section_2_chord'].data[0] = 4.5
+    pgm.dvs['lwing_section_3_chord'].data[0] = 1.2
 
 
     #horz tail
 
-    pgm.dvs['ltail_root_x'].data[0] = 44.0
-    pgm.dvs['ltail_root_y'].data[0] = 0.
-    pgm.dvs['ltail_root_z'].data[0] = 1.3
+    pgm.dvs['ltail_section_1_x'].data[0] = 44.0
+    pgm.dvs['ltail_section_1_y'].data[0] = 0.
+    pgm.dvs['ltail_section_1_z'].data[0] = 1.3
+    
+    pgm.dvs['ltail_section_2_x'].data[0] = 6.0
+    pgm.dvs['ltail_section_2_y'].data[0] = 1.4
+    pgm.dvs['ltail_section_2_z'].data[0] = 8.0
 
-    pgm.dvs['ltail_tip_x'].data[0] = 6.0
-    pgm.dvs['ltail_tip_y'].data[0] = 1.4
-    pgm.dvs['ltail_tip_z'].data[0] = 8.0
+    pgm.dvs['ltail_section_3_x'].data[0] = 3.0
+    pgm.dvs['ltail_section_3_y'].data[0] = 0.7
+    pgm.dvs['ltail_section_3_z'].data[0] = 4.0
 
-    pgm.dvs['ltail_root_chord'].data[0] = 4.
-    #pgm.dvs['ltail_mid_chord'].data[0] = 4.5
-    pgm.dvs['ltail_tip_chord'].data[0] = 1.
+    pgm.dvs['ltail_section_1_chord'].data[0] = 4.
+    pgm.dvs['ltail_section_2_chord'].data[0] = 2.0
+    pgm.dvs['ltail_section_3_chord'].data[0] = 1.
 
 
     #vertical tail
 
 
-    pgm.dvs['vtail_root_x'].data[0] = 42.
-    pgm.dvs['vtail_root_y'].data[0] = 1.7
-    pgm.dvs['vtail_root_z'].data[0] = 0.0
+    pgm.dvs['vtail_section_1_x'].data[0] = 42.
+    pgm.dvs['vtail_section_1_y'].data[0] = 1.7
+    pgm.dvs['vtail_section_1_z'].data[0] = 0.0
 
-    pgm.dvs['vtail_tip_x'].data[0] = 6.
-    pgm.dvs['vtail_tip_y'].data[0] = 8.
-    pgm.dvs['vtail_tip_z'].data[0] = 0.
+    pgm.dvs['vtail_section_2_x'].data[0] = 21.
+    pgm.dvs['vtail_section_2_y'].data[0] = 0.8
+    pgm.dvs['vtail_section_2_z'].data[0] = 0.0
 
-    pgm.dvs['vtail_root_chord'].data[0] = 5.8
-    #pgm.dvs['vtail_mid_chord'].data[0] = 4.5
-    pgm.dvs['vtail_tip_chord'].data[0] = 2.0
+    pgm.dvs['vtail_section_3_x'].data[0] = 6.
+    pgm.dvs['vtail_section_3_y'].data[0] = 8.
+    pgm.dvs['vtail_section_3_z'].data[0] = 0.
+
+    pgm.dvs['vtail_section_1_chord'].data[0] = 5.8
+    pgm.dvs['vtail_section_2_chord'].data[0] = 4.5
+    pgm.dvs['vtail_section_3_chord'].data[0] = 2.0
 
 
     #fuselage
 
-    pgm.dvs['fus_root_x'].data[0] = 0.
-    pgm.dvs['fus_root_y'].data[0] = 0.
-    pgm.dvs['fus_root_z'].data[0] = 0.
+    pgm.dvs['fus_section_1_x'].data[0] = 0.
+    pgm.dvs['fus_section_1_y'].data[0] = 0.
+    pgm.dvs['fus_section_1_z'].data[0] = 0.
 
-    pgm.dvs['fus_tip_x'].data[0] = 50.
-    pgm.dvs['fus_tip_y'].data[0] = 0.
-    pgm.dvs['fus_tip_z'].data[0] = 0.
+    pgm.dvs['fus_section_2_x'].data[0] = 50.
+    pgm.dvs['fus_section_2_y'].data[0] = 0.
+    pgm.dvs['fus_section_2_z'].data[0] = 0.
 
     pgm.dvs['diameter'].data[0] = 2.6
     pgm.compute_all()
