@@ -107,18 +107,27 @@ class Conventional5(PGMconfiguration):
         dvs['lwing_section_1_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
         dvs['lwing_section_1_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
         
+        
         dvs['lwing_section_2_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'lin', (1,0))
         dvs['lwing_section_2_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'lin', (1,1))
         dvs['lwing_section_2_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'lin', (1,2))
 
+  
+        
         #relative to the root
         dvs['lwing_section_3_x'] = PGMdv((1), 16.5).set_identity_param('lwing', 'pos', 'lin', (2,0))
-        dvs['lwing_section_3_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin', (2,1))
+        dvs['lwing_section_3_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin',  (2,1))
         dvs['lwing_section_3_z'] = PGMdv((1), 23.3).set_identity_param('lwing', 'pos', 'lin', (2,2))
 
-        dvs['lwing_section_1_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
+        dvs['lwing_section_4_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'lin', (3,0))
+        dvs['lwing_section_4_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'lin',  (3,1))
+        dvs['lwing_section_4_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'lin', (3,2))
+
+        
+        dvs['lwing_section_1_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '',  (0,0))
         dvs['lwing_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
         dvs['lwing_section_3_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
+        dvs['lwing_section_4_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (3,0))
 
 
         #horz tail
