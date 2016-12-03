@@ -130,14 +130,14 @@ class Conventional5(PGMconfiguration):
         dvs['ltail_section_2_x'] = PGMdv((1), 3.0).set_identity_param('ltail', 'pos', 'lin', (1,0))
         dvs['ltail_section_2_y'] = PGMdv((1), 0.7).set_identity_param('ltail', 'pos', 'lin', (1,1))
         dvs['ltail_section_2_z'] = PGMdv((1), 4.0).set_identity_param('ltail', 'pos', 'lin', (1,2))
-        
+        '''
         dvs['ltail_section_3_x'] = PGMdv((1), 6.0).set_identity_param('ltail', 'pos', 'lin', (2,0))
         dvs['ltail_section_3_y'] = PGMdv((1), 1.4).set_identity_param('ltail', 'pos', 'lin', (2,1))
         dvs['ltail_section_3_z'] = PGMdv((1), 8.0).set_identity_param('ltail', 'pos', 'lin', (2,2))
-
+        '''
         dvs['ltail_section_1_chord'] = PGMdv((1), 4.).set_identity_param('ltail', 'scl', '', (0,0))
         dvs['ltail_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('ltail', 'scl', '', (1,0))
-        dvs['ltail_section_3_chord'] = PGMdv((1), 1.).set_identity_param('ltail', 'scl', '', (2,0))
+        #dvs['ltail_section_3_chord'] = PGMdv((1), 1.).set_identity_param('ltail', 'scl', '', (2,0))
 
 
         #vertical tail
