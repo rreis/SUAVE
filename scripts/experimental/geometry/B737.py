@@ -329,7 +329,7 @@ def vehicle_setup():
 
     wing.spans.projected         = 35.66    
 
-    wing.chords.root             = 7.76 * Units.meter
+    wing.chords.root             = 17. * Units.meter
     wing.chords.tip              = .782 * Units.meter
     wing.chords.mean_aerodynamic = 4.235
 
