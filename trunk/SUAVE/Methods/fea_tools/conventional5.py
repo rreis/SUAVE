@@ -166,9 +166,9 @@ class Conventional5(PGMconfiguration):
         dvs['fus_section_1_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,1))
         dvs['fus_section_1_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (0,2))
 
-        dvs['fus_section_2_x'] = PGMdv((1), 36.).set_identity_param('fuse', 'pos', '', (1,0))
-        dvs['fus_section_2_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,1))
-        dvs['fus_section_2_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,2))
+        dvs['fus_section_3_x'] = PGMdv((1), 36.).set_identity_param('fuse', 'pos', '', (1,0))
+        dvs['fus_section_3_y'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,1))
+        dvs['fus_section_3_z'] = PGMdv((1), 0.).set_identity_param('fuse', 'pos', '', (1,2))
 
         dvs['diameter']  = PGMdv((1), 3.0).set_identity_param('fuse', 'scl', '', (0,0))
 

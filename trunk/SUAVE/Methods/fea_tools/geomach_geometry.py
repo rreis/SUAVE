@@ -77,9 +77,9 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['fus_section_1_y'].data[0] = aircraft.fuselage[0].root_origin[1]  #0.
         pgm.dvs['fus_section_1_z'].data[0] = aircraft.fuselage[0].root_origin[2]  #0.
         
-        pgm.dvs['fus_section_3_x'].data[0] = aircraft.fuselage[0].tip_origin[0]  #50.
-        pgm.dvs['fus_section_3_y'].data[0] = aircraft.fuselage[0].tip_origin[1]  #0.
-        pgm.dvs['fus_section_3_z'].data[0] = aircraft.fuselage[0].tip_origin[2]  #0.
+        pgm.dvs['fus_section_2_x'].data[0] = aircraft.fuselage[0].tip_origin[0]  #50.
+        pgm.dvs['fus_section_2_y'].data[0] = aircraft.fuselage[0].tip_origin[1]  #0.
+        pgm.dvs['fus_section_2_z'].data[0] = aircraft.fuselage[0].tip_origin[2]  #0.
         
         pgm.dvs['diameter'].data[0] = aircraft.fuselage[0].diameter/2.  #looks this is to fix a geomach bug
         
