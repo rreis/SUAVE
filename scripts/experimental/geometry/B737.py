@@ -31,7 +31,7 @@ from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
 from SUAVE.Methods.fea_tools.weight_estimation import Filenames
 from SUAVE.Methods.fea_tools.build_geomach_geometry import build_geomach_geometry
-from SUAVE.Methods.fea_tools.
+from SUAVE.Methods.fea_tools.translate_to_geomach_geometry import translate_to_geomach_geometry
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
