@@ -370,7 +370,7 @@ def vehicle_setup():
     
     #note: NASTRAN uses x, z, y as coordinate system
     #wing_planform(wing)
-    wing.no_of_sections          = 2
+    wing.no_of_sections          = 3
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
     wing_section[0].type = 'wing_section'
 
