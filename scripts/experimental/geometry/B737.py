@@ -400,7 +400,7 @@ def vehicle_setup():
     wing_section[2].span        = wing.spans.projected-wing_section[1].span*.5
     wing_section[2].sweep       = 56.75 * Units.degrees
     wing_section[2].root_origin = wing_section[1].tip_origin
-    wing_rel_pos 2              = find_tip_section_origin_from_chord_and_span(wing_section[1])
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[1])
     wing_section[2].tip_origin  = wing_rel_pos  
     
    
