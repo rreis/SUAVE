@@ -31,7 +31,7 @@ from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
 from SUAVE.Methods.fea_tools.weight_estimation import Filenames
 from SUAVE.Methods.fea_tools.build_geomach_geometry import build_geomach_geometry
-
+from SUAVE.Methods.fea_tools.
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
@@ -353,9 +353,9 @@ def vehicle_setup():
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
-    build_geomach_geometry(wing)
-    
-    
+    #build_geomach_geometry(wing)
+    wing.root_origin  = wing.origin
+    wing.tip_origin   = find_tip_chord_leading_edge(wing)+wing.origin
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
@@ -380,7 +380,7 @@ def vehicle_setup():
     wing_section[0].sweep       = 28.225 * Units.degrees
     
     wing_section[0].root_origin = wing.root_origin
-    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[0])
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[0])
     wing_section[0].tip_origin  = wing_rel_pos
     
     
@@ -407,7 +407,7 @@ def vehicle_setup():
 
    
     wing.wing_sections = wing_section
-
+    translate_to_geomach_geometry(wing)
    
     # add to vehicle
     vehicle.append_component(wing)
@@ -627,7 +627,7 @@ def vehicle_setup():
     wing_section[1].sweep       = 30*Units.degrees
     
     wing_section[1].root_origin = wing.section[0].tip_origin
-    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing_section[1])
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
     wing_section[1].tip_origin  = wing_rel_pos
     wing.wing_sections = wing_section
     
