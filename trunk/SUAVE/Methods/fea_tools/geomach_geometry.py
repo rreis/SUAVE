@@ -45,7 +45,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['ltail_section_3_z'].data[0] = aircraft.main_wing[1].main_wing_section[0].tip_origin[2]-aircraft.main_wing[1].main_wing_section[0].root_origin[2] #8.0
         
         pgm.dvs['ltail_section_1_chord'].data[0] = aircraft.main_wing[1].main_wing_section[0].root_chord #4.
-        #pgm.dvs['ltailsection_3_mid_chord'].data[0] = 4.5
+        pgm.dvs['ltail_section_2_chord'].data[0] = aircraft.main_wing[1].main_wing_section[1].root_chord
         pgm.dvs['ltail_section_3_chord'].data[0] = aircraft.main_wing[1].main_wing_section[0].tip_chord #1.
         
         
