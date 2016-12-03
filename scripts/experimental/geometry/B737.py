@@ -626,7 +626,7 @@ def vehicle_setup():
     wing_section[1].root_chord = wing_section[0].tip_chord
     wing_section[1].tip_chord = wing.chords.tip
  
-    wing_section[1].span        = wing.spans_projected-wing_section[0].span
+    wing_section[1].span        = wing.spans.projected-wing_section[0].span
     wing_section[1].sweep       = 30*Units.degrees
     
     wing_section[1].root_origin = wing.section[0].tip_origin
