@@ -1290,7 +1290,7 @@ def mission_setup(analyses):
 
     return mission
 
-    '''
+
 def missions_setup(base_mission):
 
     # the mission container
@@ -1302,7 +1302,7 @@ def missions_setup(base_mission):
 
     missions.base = base_mission
 
-    
+    '''
     # ------------------------------------------------------------------
     #   Mission for Constrained Fuel
     # ------------------------------------------------------------------    
@@ -1311,7 +1311,7 @@ def missions_setup(base_mission):
     fuel_mission.range   = 1277. * Units.nautical_mile
     fuel_mission.payload   = 19000.
     missions.append(fuel_mission)    
-
+    '''
 
     # ------------------------------------------------------------------
     #   Mission for Constrained Short Field
@@ -1329,7 +1329,7 @@ def missions_setup(base_mission):
     missions.append(short_field)
 
 
-
+    '''
     # ------------------------------------------------------------------
     #   Mission for Fixed Payload
     # ------------------------------------------------------------------    
@@ -1338,11 +1338,11 @@ def missions_setup(base_mission):
     payload.range   = 2316. * Units.nautical_mile
     payload.payload   = 19000.
     missions.append(payload)
-    
+    '''
 
     # done!
     return missions  
-    '''
+    
 if __name__ == '__main__': 
     main()    
     plt.show()
