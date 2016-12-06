@@ -333,7 +333,10 @@ def vehicle_setup():
     wing.chords.tip              = .782 * Units.meter
     wing.chords.mean_aerodynamic = 4.235
 
-    wing.areas.reference         = 124.862 
+    wing.areas.reference         = 124.862
+    wing.areas.wetted            = 2.0 * wing.areas.reference
+    wing.areas.exposed           = 0.8 * wing.areas.wetted
+    wing.areas.affected          = 0.6 * wing.areas.wetted
 
     wing.twists.root             = 4.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
@@ -434,6 +437,9 @@ def vehicle_setup():
     wing.chords.mean_aerodynamic = 8.0
 
     wing.areas.reference         = 32.488
+    wing.areas.wetted            = 2.0 * wing.areas.reference
+    wing.areas.exposed           = 0.8 * wing.areas.wetted
+    wing.areas.affected          = 0.6 * wing.areas.wetted
 
     wing.twists.root             = 0 * Units.degrees
     wing.twists.tip              = 0 * Units.degrees 
@@ -554,6 +560,9 @@ def vehicle_setup():
     wing.chords.mean_aerodynamic = 8.0
 
     wing.areas.reference         = 32.488
+    wing.areas.wetted            = 2.0 * wing.areas.reference
+    wing.areas.exposed           = 0.8 * wing.areas.wetted
+    wing.areas.affected          = 0.6 * wing.areas.wetted
 
     wing.twists.root             = 0.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees  
