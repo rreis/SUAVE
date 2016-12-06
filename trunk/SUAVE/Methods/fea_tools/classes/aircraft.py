@@ -113,7 +113,7 @@ class aircraft:
             
             main_wing_section  = [wing_section() for mnw in range(vehicle.wings[wing_fea[i]].no_of_sections)]
             
-            #print i,int(wing_fea[i]),vehicle.wings[wing_fea[i]].no_of_sections
+            print i,int(wing_fea[i]),vehicle.wings[wing_fea[i]].no_of_sections
             
             for j in range(0,vehicle.wings[wing_fea[i]].no_of_sections):
                 main_wing_section[j].type = vehicle.wings[wing_fea[i]].wing_sections[j].type

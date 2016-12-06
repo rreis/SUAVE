@@ -51,8 +51,8 @@ class Conventional5(PGMconfiguration):
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
-        lwing['scl'].params[''] = PGMparameter(3, 1)
-        lwing['pos'].params['lin'] = PGMparameter(3, 3)
+        lwing['scl'].params[''] = PGMparameter(4, 1)
+        lwing['pos'].params['lin'] = PGMparameter(4, 3)
         lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
         lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
@@ -195,8 +195,8 @@ class Conventional5(PGMconfiguration):
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
-        lwing['scl'].params[''].val([10,4.5,1.2])
-        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,4.4,23.3]])
+        lwing['scl'].params[''].val([10,4.5,1.2,0.8])
+        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,4.4,23.3],[16.5,4.4,23.3]])
 
 #        rwing = self.comps['rwing'].props
 #        rwing['pos'].params[''].val([16,-1,-2.6])
@@ -244,8 +244,8 @@ class Conventional5(PGMconfiguration):
         comps = self.comps
 
         comps['fuse'].faces['rgt'].set_option('num_cp', 'u', [12,12,12,12])#[4,4,4,4]
-        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [4,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,4])#[18,4,4,4,4,8,4,15,4,4,10,4]
-        comps['fuse'].faces['rgt'].set_option('num_pt', 'v', [120,48,48,48,48,180,48,120,48,48,210,48,120,48,48,48,48,180,48,120,48,48,210,48], both=False)#40,16,16,16,16,60,16,60,16,16,70,16
+        comps['fuse'].faces['rgt'].set_option('num_cp', 'v', [4,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,4])#[18,4,4,4,4,8,4,15,4,4,10,4]) #[18,4,4,4,4,8,4,15,4,4,10,4]) #[4,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,4])#[18,4,4,4,4,8,4,15,4,4,10,4]
+        comps['fuse'].faces['rgt'].set_option('num_pt', 'v', [120,48,48,48,48,180,48,120,48,48,210,48,120,48,48,48,48,180,48,120,48,48,210,48], both=False) #[40,16,16,16,16,60,16,60,16,16,70,16]) #[120,48,48,48,48,180,48,120,48,48,210,48,120,48,48,48,48,180,48,120,48,48,210,48], both=False)#40,16,16,16,16,60,16,60,16,16,70,16
         comps['fuse'].faces['top'].set_option('num_cp', 'u', [24,24]) #8,8
         comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120]) #[6,4,4,20]
 
@@ -406,6 +406,10 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_3_x'].data[0] = 16.2
     pgm.dvs['lwing_section_3_y'].data[0] = 2.4
     pgm.dvs['lwing_section_3_z'].data[0] = 24.1
+    
+    pgm.dvs['lwing_section_4_x'].data[0] = 16.5
+    pgm.dvs['lwing_section_4_y'].data[0] = 2.6
+    pgm.dvs['lwing_section_4_z'].data[0] = 27.1
 
 
 
@@ -417,6 +421,7 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_1_chord'].data[0] = 10.
     pgm.dvs['lwing_section_2_chord'].data[0] = 4.5
     pgm.dvs['lwing_section_3_chord'].data[0] = 1.2
+    pgm.dvs['lwing_section_4_chord'].data[0] = 0.8
 
 
     #horz tail
