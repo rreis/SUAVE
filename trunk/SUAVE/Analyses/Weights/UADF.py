@@ -60,7 +60,7 @@ class UADF(Weights):
         
             # evaluate
             recompute_dvs = 1
-            split_mesh = 0
+            split_mesh = 1
             self.external.setup_design_problem(recompute_dvs,split_mesh)
             
             fea_code = 1 #tacs

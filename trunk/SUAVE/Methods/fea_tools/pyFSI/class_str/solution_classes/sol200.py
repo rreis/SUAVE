@@ -27,6 +27,7 @@ from SUAVE.Methods.fea_tools.pyFSI.utility_functions.split_mesh import split_mes
 from SUAVE.Methods.fea_tools.pyFSI.input.import_s200_bdf import import_s200_bdf
 from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import SPC
 from SUAVE.Methods.fea_tools.pyFSI.utility_functions.compute_centroid import compute_centroid
+from SUAVE.Methods.fea_tools.pyFSI.utility_functions.compute_normal import compute_normal
 from SUAVE.Methods.fea_tools.pyFSI.class_str.load_disp_bc.class_structure import PLOAD
 from SUAVE.Methods.fea_tools.pyFSI.output.visualize_tacs_results import visualize_tacs_results
 
@@ -97,6 +98,7 @@ class sol200:
         
         
         compute_centroid(self.elemlist,pointlist)
+        compute_normal(self.elemlist,pointlist)
         
         node_element_count = [ int() for i in range(no_of_points)]
         
