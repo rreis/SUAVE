@@ -83,19 +83,22 @@ def mark_loading_points(aircraft,elemlist,pointlist,bdf_structural_meshfile):
 
     fuse_loading_points_listset = list(set(fuse_loading_points))
 
-
-    distributed_fuel_load = aircraft.main_wing[0].fuel_load*9.81 / float(len(wing_loading_points_listset))
+    if(len(wing_loading_points_listset) == 0):
+        distributed_fuel_load = 0.0
+    else:
+        distributed_fuel_load = aircraft.main_wing[0].fuel_load*9.81 / float(len(wing_loading_points_listset))
+        #now add the point loads at the points
+        for i in range(0,len(wing_loading_points_listset)):
+            pointlist[wing_loading_points_listset[i]-1].f[1] += -1.0*float(distributed_fuel_load)
+            pointlist[wing_loading_points_listset[i]-1].f_loads[1] += -1.0*float(distributed_fuel_load)
+            #print "wing : ",i," : ",-1.0*float(distributed_fuel_load)
+            pointlist[wing_loading_points_listset[i]-1].fuel_load_p = 1
+            pointlist[wing_loading_points_listset[i]-1].fuel_load = -1.0*float(distributed_fuel_load)
 
     if(aircraft.fuselage):
         distributed_payload = aircraft.payload*9.81 / float(len(fuse_loading_points_listset))
 
-    #now add the point loads at the points
-    for i in range(0,len(wing_loading_points_listset)):
-        pointlist[wing_loading_points_listset[i]-1].f[1] += -1.0*float(distributed_fuel_load)
-        pointlist[wing_loading_points_listset[i]-1].f_loads[1] += -1.0*float(distributed_fuel_load)
-        #print "wing : ",i," : ",-1.0*float(distributed_fuel_load)
-        pointlist[wing_loading_points_listset[i]-1].fuel_load_p = 1
-        pointlist[wing_loading_points_listset[i]-1].fuel_load = -1.0*float(distributed_fuel_load)
+
 
     if(aircraft.fuselage):
         for i in range(0,len(fuse_loading_points_listset)):
