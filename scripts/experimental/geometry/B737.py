@@ -1290,6 +1290,7 @@ def mission_setup(analyses):
 
     return mission
 
+    '''
 def missions_setup(base_mission):
 
     # the mission container
@@ -1301,7 +1302,7 @@ def missions_setup(base_mission):
 
     missions.base = base_mission
 
-
+    
     # ------------------------------------------------------------------
     #   Mission for Constrained Fuel
     # ------------------------------------------------------------------    
@@ -1337,11 +1338,11 @@ def missions_setup(base_mission):
     payload.range   = 2316. * Units.nautical_mile
     payload.payload   = 19000.
     missions.append(payload)
-
+    
 
     # done!
     return missions  
-
+    '''
 if __name__ == '__main__': 
     main()    
     plt.show()
