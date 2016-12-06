@@ -13,7 +13,7 @@ class HWB(PGMconfiguration):
 
 
     def _define_comps(self):
-        self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=True)
+        self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=False)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
 
 
@@ -23,8 +23,8 @@ class HWB(PGMconfiguration):
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
         lwing['scl'].params[''] = PGMparameter(7, 1)
         lwing['pos'].params['lin'] = PGMparameter(7, 3)
-        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
-        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+#        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+#        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
 
     def _define_dvs(self):
@@ -57,7 +57,8 @@ class HWB(PGMconfiguration):
 
     def _set_bspline_options(self):
         comps = self.comps
-        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [6,4,4,20]) #[6,4,4,20] #[36,24,24,120]
+        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [40,40,40,40]) #[6,4,4,20] #[36,24,24,120]
+        comps['lwing'].faces['low'].set_option('num_cp', 'u', [40,40,40,40])
 
     def meshStructure(self):
         afm = Airframe(self, 1) #0.2)
@@ -140,34 +141,34 @@ if __name__ == '__main__':
 
     pgm.dvs['lwing_section_3_x'].data[0] = 4.1
     pgm.dvs['lwing_section_3_y'].data[0] = 0.1
-    pgm.dvs['lwing_section_3_z'].data[0] = 13.4
+    pgm.dvs['lwing_section_3_z'].data[0] = 23.4
     
     pgm.dvs['lwing_section_4_x'].data[0] = 6.1
     pgm.dvs['lwing_section_4_y'].data[0] = 0.2
-    pgm.dvs['lwing_section_4_z'].data[0] = 14.6
+    pgm.dvs['lwing_section_4_z'].data[0] = 34.6
 
 
     pgm.dvs['lwing_section_5_x'].data[0] = 8.1
     pgm.dvs['lwing_section_5_y'].data[0] = 0.3
-    pgm.dvs['lwing_section_5_z'].data[0] = 16.8
+    pgm.dvs['lwing_section_5_z'].data[0] = 46.8
     
     pgm.dvs['lwing_section_6_x'].data[0] = 10.1
     pgm.dvs['lwing_section_6_y'].data[0] = 0.4
-    pgm.dvs['lwing_section_6_z'].data[0] = 17.0
+    pgm.dvs['lwing_section_6_z'].data[0] = 57.0
 
 
     pgm.dvs['lwing_section_7_x'].data[0] = 12.1
     pgm.dvs['lwing_section_7_y'].data[0] = 0.5
-    pgm.dvs['lwing_section_7_z'].data[0] = 18.2    
+    pgm.dvs['lwing_section_7_z'].data[0] = 68.2
 
 
     pgm.dvs['lwing_section_1_chord'].data[0] = 24.
-    pgm.dvs['lwing_section_2_chord'].data[0] = 18.0
-    pgm.dvs['lwing_section_3_chord'].data[0] = 8.0
-    pgm.dvs['lwing_section_4_chord'].data[0] = 6.0
-    pgm.dvs['lwing_section_5_chord'].data[0] = 5.0
-    pgm.dvs['lwing_section_6_chord'].data[0] = 4.0
-    pgm.dvs['lwing_section_7_chord'].data[0] = 3.5  
+    pgm.dvs['lwing_section_2_chord'].data[0] = 24. #18.0
+    pgm.dvs['lwing_section_3_chord'].data[0] = 24. #8.0
+    pgm.dvs['lwing_section_4_chord'].data[0] = 24. #6.0
+    pgm.dvs['lwing_section_5_chord'].data[0] = 24. #5.0
+    pgm.dvs['lwing_section_6_chord'].data[0] = 24. #4.0
+    pgm.dvs['lwing_section_7_chord'].data[0] = 24. #3.5  
 
 
     pgm.compute_all()
@@ -180,4 +181,4 @@ if __name__ == '__main__':
     #bse.vec['cp_str'].export_IGES()
     bse.vec['cp_str'].export_STL('HWB.stl')
 
-    #pgm.meshStructure()
+    pgm.meshStructure()
