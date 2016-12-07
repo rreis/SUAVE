@@ -126,10 +126,11 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
     elif (aircraft.type=='Supersonic'):
         pgm = Supersonic()
         bse = pgm.initialize()
-        
-        pgm.comps['lwing'].set_airfoil('n65203.dat')
+        pgm.comps['lwing'].set_airfoil()
+        #pgm.comps['lwing'].set_airfoil('n65203.dat')
         #pgm.comps['ltail'].set_airfoil()
-        pgm.comps['vtail'].set_airfoil('supertail04.dat')
+        pgm.comps['vtail'].set_airfoil()
+        #pgm.comps['vtail'].set_airfoil('supertail04.dat')
         pgm.dvs['lwing_section_1_x'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[0] #16.
         pgm.dvs['lwing_section_1_y'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[1] #-1.
         pgm.dvs['lwing_section_1_z'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[2] #2.6
