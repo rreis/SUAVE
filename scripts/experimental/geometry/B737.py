@@ -364,7 +364,7 @@ def vehicle_setup():
     wing_section[0].span        = .324*wing.spans.projected#*.5
     wing_section[0].sweep       = 28.225 * Units.degrees
     
-    wing_section[0].root_origin = wing.root_origin
+    wing_section[0].root_origin = wing.origin
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[0])
     wing_section[0].tip_origin  = wing_rel_pos+wing.root_origin
     
@@ -405,7 +405,7 @@ def vehicle_setup():
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
-    wing.max_z = wing.origin+wing.section[0].tip_origin+wing.section[1].tip_origin+wing.section[2].tip_origin#0.6*wing.tip_origin[2]
+    wing.max_z = wing.origin+wing.section[0].tip_origin+wing.section[1].tip_origin+wing.section[2].tip_origin #0.6*wing.tip_origin[2]
     wing.load_scaling = 1.0
     
     wing.structural_dv           = dv_val #1
