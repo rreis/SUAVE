@@ -101,18 +101,31 @@ class Supersonic(PGMconfiguration):
 
         #main wing
 
-        dvs['lwing_root_x'] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', '', (0,0))
-        dvs['lwing_root_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
-        dvs['lwing_root_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
+        dvs['lwing_section_1_x'] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', '', (0,0))
+        dvs['lwing_section_1_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
+        dvs['lwing_section_1_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
+        
+        
+        dvs['lwing_section_2_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'lin', (1,0))
+        dvs['lwing_section_2_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'lin', (1,1))
+        dvs['lwing_section_2_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'lin', (1,2))
 
+  
+        
         #relative to the root
-        dvs['lwing_tip_x'] = PGMdv((1), 16.5).set_identity_param('lwing', 'pos', 'lin', (1,0))
-        dvs['lwing_tip_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin', (1,1))
-        dvs['lwing_tip_z'] = PGMdv((1), 23.3).set_identity_param('lwing', 'pos', 'lin', (1,2))
+        dvs['lwing_section_3_x'] = PGMdv((1), 16.5).set_identity_param('lwing', 'pos', 'lin', (2,0))
+        dvs['lwing_section_3_y'] = PGMdv((1), 4.4).set_identity_param('lwing', 'pos', 'lin',  (2,1))
+        dvs['lwing_section_3_z'] = PGMdv((1), 23.3).set_identity_param('lwing', 'pos', 'lin', (2,2))
 
-        dvs['lwing_root_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
-        dvs['lwing_mid_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
-        dvs['lwing_tip_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
+        dvs['lwing_section_4_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'lin', (3,0))
+        dvs['lwing_section_4_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'lin',  (3,1))
+        dvs['lwing_section_4_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'lin', (3,2))
+
+        
+        dvs['lwing_section_1_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '',  (0,0))
+        dvs['lwing_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
+        dvs['lwing_section_3_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
+        dvs['lwing_section_4_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (3,0))
 
 
         #horz tail
@@ -133,18 +146,25 @@ class Supersonic(PGMconfiguration):
         #vertical tail
 
 
-        dvs['vtail_root_x'] = PGMdv((1), 42.).set_identity_param('vtail', 'pos', '', (0,0))
-        dvs['vtail_root_y'] = PGMdv((1), 1.7).set_identity_param('vtail', 'pos', '', (0,1))
-        dvs['vtail_root_z'] = PGMdv((1), 0.0).set_identity_param('vtail', 'pos', '', (0,2))
+       
+        #vertical tail
 
-        dvs['vtail_tip_x'] = PGMdv((1), 6.).set_identity_param('vtail', 'pos', 'lin', (1,0))
-        dvs['vtail_tip_y'] = PGMdv((1), 8.).set_identity_param('vtail', 'pos', 'lin', (1,1))
-        dvs['vtail_tip_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (1,2))
 
-        dvs['vtail_root_chord'] = PGMdv((1), 5.8).set_identity_param('vtail', 'scl', '', (0,0))
-        dvs['vtail_mid_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
-        dvs['vtail_tip_chord'] = PGMdv((1), 2.0).set_identity_param('vtail', 'scl', '', (1,0))
+        dvs['vtail_section_1_x'] = PGMdv((1), 42.).set_identity_param('vtail', 'pos', '', (0,0))
+        dvs['vtail_section_1_y'] = PGMdv((1), 1.7).set_identity_param('vtail', 'pos', '', (0,1))
+        dvs['vtail_section_1_z'] = PGMdv((1), 0.0).set_identity_param('vtail', 'pos', '', (0,2))
 
+        dvs['vtail_section_2_x'] = PGMdv((1), 3.).set_identity_param('vtail', 'pos', 'lin', (1,0))
+        dvs['vtail_section_2_y'] = PGMdv((1), 4.).set_identity_param('vtail', 'pos', 'lin', (1,1))
+        dvs['vtail_section_2_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (1,2))
+        
+        dvs['vtail_section_3_x'] = PGMdv((1), 6.).set_identity_param('vtail', 'pos', 'lin', (2,0))
+        dvs['vtail_section_3_y'] = PGMdv((1), 8.).set_identity_param('vtail', 'pos', 'lin', (2,1))
+        dvs['vtail_section_3_z'] = PGMdv((1), 0.).set_identity_param('vtail', 'pos', 'lin', (2,2))
+
+        dvs['vtail_section_1_chord'] = PGMdv((1), 5.8).set_identity_param('vtail', 'scl', '', (0,0))
+        dvs['vtail_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('vtail', 'scl', '', (1,0))
+        dvs['vtail_section_3_chord'] = PGMdv((1), 2.0).set_identity_param('vtail', 'scl', '', (2,0))
 
         #fuselage
 
