@@ -322,12 +322,12 @@ def vehicle_setup():
     wing.tag = 'main_wing'
 
     wing.aspect_ratio            = 10.18
-    wing.sweep                   = 25 * Units.deg
+    #wing.sweep                   = 25 * Units.deg
     wing.thickness_to_chord      = 0.1
     wing.taper                   = 0.16
     wing.span_efficiency         = 0.9
 
-    wing.spans.projected         = 35.66    
+    wing.spans.projected         = 34.42  
 
     wing.chords.root             = 7.760 * Units.meter
     wing.chords.tip              = .782 * Units.meter
@@ -358,7 +358,7 @@ def vehicle_setup():
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     #build_geomach_geometry(wing)
     wing.root_origin  = wing.origin
-    wing.tip_origin   = find_tip_chord_leading_edge(wing)+wing.origin
+    #wing.tip_origin   = find_tip_chord_leading_edge(wing)+wing.origin
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
@@ -387,7 +387,7 @@ def vehicle_setup():
     wing_section[0].tip_origin  = wing_rel_pos+wing.root_origin
     
     
-    wing_section[1].type        =  'wing_section'
+    wing_section[1].type        =  'wing_section' #yehudi
     wing_section[1].root_chord  = wing_section[0].tip_chord
     wing_section[1].tip_chord   = .22*wing.chords.root
     wing_section[1].span        = (.963-.324)*wing.spans.projected#*.5
