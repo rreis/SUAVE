@@ -390,7 +390,7 @@ def vehicle_setup():
     
    
 
-   
+    wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].root_origin+wing_section[2].tip_origin
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
     
@@ -405,7 +405,7 @@ def vehicle_setup():
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
-    wing.max_z = wing.origin+wing.section[0].tip_origin+wing.section[1].tip_origin+wing.section[2].tip_origin #0.6*wing.tip_origin[2]
+    wing.max_z = wing.section[0].root_origin[1]+wing.section[0].tip_origin[1]+wing.section[1].tip_origin[1]+wing.section[2].tip_origin[1] #0.6*wing.tip_origin[2]
     wing.load_scaling = 1.0
     
     wing.structural_dv           = dv_val #1
