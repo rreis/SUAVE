@@ -405,7 +405,7 @@ def vehicle_setup():
     wing.fuel_load = 10000.0
     wing.max_x = 20.0
     wing.max_y = 20.0
-    wing.max_z = wing.wing_sections[0].root_origin[1]+wing.wing_sections[0].tip_origin[1]+wing.section[1].tip_origin[1]+wing.section[2].tip_origin[1] #0.6*wing.tip_origin[2]
+    wing.max_z = 0.6*wing.tip_origin[2]
     wing.load_scaling = 1.0
     
     wing.structural_dv           = dv_val #1
