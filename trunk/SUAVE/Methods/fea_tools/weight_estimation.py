@@ -235,6 +235,7 @@ class FEA_Weight:
             #self.run_Nastran_optimization(in_vals)
             self.s200.read_sol(self.filename.Nastran_f06,self.tecplot_file_vis)
             self.primary_structure_weight = float(self.s200.objective_list[-1])
+            print "primary structure weight :",self.primary_structure_weight
 
 
     def run_Nastran_optimization(self,in_vals):
