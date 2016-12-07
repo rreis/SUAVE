@@ -31,6 +31,10 @@ from SUAVE.Methods.fea_tools.geomach_geometry import geometry_generation
 from SUAVE.Methods.fea_tools.weight_estimation import FEA_Weight
 from SUAVE.Methods.fea_tools.weight_estimation import Filenames
 from SUAVE.Methods.fea_tools.build_geomach_geometry import build_geomach_geometry
+from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_chord_leading_edge import find_tip_chord_leading_edge
+from SUAVE.Methods.Geometry.Three_Dimensional.find_tip_section_origin_from_chord_and_span import find_tip_section_origin_from_chord_and_span
+from SUAVE.Methods.fea_tools.translate_to_geomach_geometry import translate_to_geomach_geometry
+
 
 # ----------------------------------------------------------------------
 #   Main
@@ -370,36 +374,63 @@ def vehicle_setup():
     
     #note: NASTRAN uses x, z, y as coordinate system
     #wing_planform(wing)
-    wing.no_of_sections          = 2
+    wing.no_of_sections          = 3
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
     wing_section[0].type = 'wing_section'
 
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   = 0.5*(wing.chords.root + wing.chords.tip)
+    wing_section[0].tip_chord   = 13.8/33.8*wing.chords.root
+    wing_section[0].span        = 6.15/(25.6/2.)*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
+    wing_section[0].sweep       = 67. * Units.degrees
     
-    wing_section[0].root_origin = wing.root_origin
-    wing_section[0].tip_origin  = wing.tip_origin
-    '''
-    #wing_section[0].mid_chord   = 0.0 #mid chord and mid origin are depecrated
-    coords = wing.root_origin 
-    wing_section[0].root_origin = np.array([coords[0], coords[2],coords[1]])
-    coords = wing.tip_origin
-    wing_section[0].tip_origin  =np.array([coords[0], coords[2], coords[1]])
-    #wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    '''
+    wing_section[0].root_origin = wing.origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[0])
+    wing_section[0].tip_origin  = wing_rel_pos#inner section uses relative tip origin#+wing_section[0].root_origin
     
-    wing_section[0].span        = wing_section[0].tip_origin[2] - wing_section[0].root_origin[2]
-    wing_section[0].sweep       = 28.225 * Units.degrees
     
-    wing_section[1].type =  'wing_section'
-    wing_section[1].root_chord = wing_section[0].tip_chord
-    wing_section[1].tip_chord = wing.chords.tip
-    wing_section[1].root_origin = [0.0,0.0,0.0] #why?
-    wing_section[1].tip_origin = [0.0,0.0,0.0]
-    wing_section[1].span = 0.0
-    wing_section[1].sweep = 0.0
+    wing_section[1].type        =  'wing_section' 
+    wing_section[1].root_chord  = wing_section[0].tip_chord*1.
+    wing_section[1].tip_chord   = 4.4/33.8*wing.chords.root
+    wing_section[1].span        = 6.15/(25.6/2.)*wing.spans.projected*.51
+    
+    wing_section[1].sweep       = 48.*Units.degrees
+    wing_section[1].root_origin = wing_section[0].tip_origin*1.
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
+    wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin #uses position relative to root
+    
+    wing_section[2].type        =  'wing_section'
+    wing_section[2].root_chord  = wing_section[1].tip_chord*1.
+    wing_section[2].tip_chord   = wing.chords.tip
+    wing_section[2].span        = 5.95/(25.6/2.)*wing.spans.projected*.5
+    wing_section[2].sweep       = 71. * Units.degrees
+    wing_section[2].root_origin = wing_section[1].tip_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
+    wing_section[2].tip_origin  = wing_rel_pos + wing_section[2].root_origin #everything is relative to root
 
+    wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].root_origin+wing_section[2].tip_origin
     wing.wing_sections = wing_section
+    translate_to_geomach_geometry(wing)
+    
+    #new nastran parameters (note nastran uses x, z, y coordinate system
+    wing.geometry_tag = "lwing"
+    wing.airfoil                 = "rae2012"
+    wing.element_area            = 0.25
+    wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
+    #build_geomach_geometry(wing)
+    wing.root_origin  = wing.origin
+    #wing.tip_origin   = find_tip_chord_leading_edge(wing)+wing.origin
+    wing.fuel_load = 10000.0
+    wing.max_x = 20.0
+    wing.max_y = 20.0
+    wing.max_z = 0.6*wing.tip_origin[2]
+    wing.load_scaling = 1.0
+    
+    wing.structural_dv           = dv_val #1
+    wing.strut_presence          = 0
+    wing.strut_location          = 0.5
+    wing.strut_section           = 1 #int(float(wing.strut_location)/float(0.05))
+    wing.lv_location             = 0.2
+    # add to vehicle
 
    
     # add to vehicle
@@ -603,20 +634,26 @@ def vehicle_setup():
     
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   = wing.chords.tip #not sure how this works
-    #wing_section[0].mid_chord   = 0.0
-    wing_section[0].root_origin = wing.root_origin
-    wing_section[0].tip_origin  = wing.tip_origin
-    #wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    wing_section[0].span        = .194*wing.spans.projected
-    wing_section[0].sweep       = 63.63 * Units.degrees
+    wing_section[0].tip_chord   = 7.5/14.5*wing.chords.root #not sure how this works
     
-    wing_section[1].root_chord = 0.54*wing.chords.root
-    wing_section[1].tip_chord = wing.chords.tip
-    wing_section[1].root_origin = [0.0,0.0,0.0] #why?
-    wing_section[1].tip_origin = [0.0,0.0,0.0]
-    wing_section[1].span = 0.
-    wing_section[1].sweep = 30*Units.degrees
+    #wing_section[0].mid_origin  = [0.0,0.0,0.0]
+    wing_section[0].span        = 2.4/(6.0)*wing.spans.projected
+    wing_section[0].sweep       = 63. * Units.degrees
+    wing_section[0].root_origin = wing.root_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[0])
+    wing_section[0].tip_origin  = wing_rel_pos#+wing_section[0].root_origin
+    
+    wing_section[1].root_chord = wing_section[0].tip_chord
+    wing_section[1].tip_chord  = wing.chords.tip
+ 
+    wing_section[1].span        = wing.spans.projected-wing_section[0].span
+    wing_section[1].sweep       = 40.*Units.degrees
+    
+    wing_section[1].root_origin = wing_section[0].tip_origin
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
+    wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin 
+    wing.wing_sections = wing_section
+    translate_to_geomach_geometry(wing)
 
     wing.wing_sections = wing_section
     
