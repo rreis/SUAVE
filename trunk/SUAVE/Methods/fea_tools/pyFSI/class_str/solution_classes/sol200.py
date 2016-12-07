@@ -1636,98 +1636,101 @@ class sol200:
         
 
         
+        #objective_list,no_of_design_runs,design_var_value,constraint_list = read_opt_f06_file(opt_filename,self.no_of_design_variables,self.elemlist,self.no_of_elements+self.no_of_beams)
+        
         objective_list,no_of_design_runs,design_var_value,constraint_list = read_opt_f06_file(opt_filename,self.no_of_design_variables,self.elemlist,self.no_of_elements+self.no_of_beams)
         
         self.objective_list = objective_list
-        self.no_of_design_runs = no_of_design_runs
-        self.design_var_value = design_var_value
-        self.constraint_list = constraint_list
-        
-        for i in range(0,self.no_of_design_runs):
-            self.shell_element_list[i].t = self.design_var_value[i]
-        
-        
-        read_opt_f06_file_stress(opt_filename,self.no_of_design_variables,self.elemlist,self.no_of_elements,self.no_of_points,self.pointlist,self.no_of_beams,self.no_of_design_runs)
-    
-    
-        for i in range(0,self.no_of_elements):
-            self.pointlist[self.elemlist[i].g[0]-1].thickness = max(self.elemlist[i].thickness,self.pointlist[self.elemlist[i].g[0]-1].thickness)
-            self.pointlist[self.elemlist[i].g[1]-1].thickness = max(self.elemlist[i].thickness,self.pointlist[self.elemlist[i].g[1]-1].thickness)
-            self.pointlist[self.elemlist[i].g[2]-1].thickness = max(self.elemlist[i].thickness,self.pointlist[self.elemlist[i].g[2]-1].thickness)
-        
-        pointlist =  self.pointlist
-        elemlist = self.elemlist
-        
-        
-        write_tecplot_file(pointlist,elemlist,tecplot_file_orig,self.no_of_points,self.no_of_elements)
-    
-    
-    
-    
-        design_vars =[ int() for i in range(self.no_of_design_variables)]
-        design_runs =[ int() for i in range(self.no_of_design_runs+1)]
-    
-    
-        for i in range(0,self.no_of_design_variables):
-            design_vars[i]=i+1
-    
-        for i in range(0,self.no_of_design_runs):
-            design_runs[i]=i+1
-    
-        plt.figure(1)
-        axes = plt.gca()
-        axes.plot(design_runs,self.objective_list,'bo-')
-    #plt.plot(design_runs,objective_list,'-*')
-        plt.xlabel('no. of design runs')
-        plt.ylabel('Objective function (Aircraft structural weight in kg)')
-        plt.savefig('objective_strut_braced.png')
-        axes.grid(True)
-    
-        plt.figure(2)
-        for i in range(0,self.no_of_design_variables):
-            plt.plot(design_runs,self.design_var_value[i],'-*')
-    
-        plt.xlabel('no. of design runs')
-        plt.ylabel('Design variables (element thickness in m)')
-    #plt.legend( loc='upper left' )
-    
-        plt.savefig('design_variables_strut_braced.png')
-    
-    
-    
-        plt.figure(4)
-        plt.plot(design_runs,self.constraint_list,'-*')
-        plt.xlabel('no. of design runs')
-        plt.ylabel('Maximum constraint violation (stress)')
-        plt.savefig('constraint_strut_braced.png')
-        
-        plt.figure(5)
-        plt.plot(design_runs,np.log10(self.constraint_list),'-*')
-        plt.xlabel('no. of design runs')
-        plt.ylabel('log Maximum constraint violation (stress)')
-        plt.savefig('constraint_strut_braced_log.png')
-    
-    
-        fig = plt.figure(3)
-        
-        ax = Axes3D(fig)
-        
-        
-        for i in range (0,self.no_of_points):
-            
-            
-            ax.scatter(self.pointlist[i].x[0], self.pointlist[i].x[1], self.pointlist[i].x[2],c="red")
-            
-    
-            
-    # ax.scatter(pointlist[i].x[0], pointlist[i].x[1], pointlist[i].x[2],c="blue")
-    
-        #plt.axis('equal')
-    
-        plt.savefig('struct_braced.png',format='png')
-    
-    #plt.show()
-        plt.clf()
+
+#        self.no_of_design_runs = no_of_design_runs
+#        self.design_var_value = design_var_value
+#        self.constraint_list = constraint_list
+#        
+#        for i in range(0,self.no_of_design_runs):
+#            self.shell_element_list[i].t = self.design_var_value[i]
+#        
+#        
+#        read_opt_f06_file_stress(opt_filename,self.no_of_design_variables,self.elemlist,self.no_of_elements,self.no_of_points,self.pointlist,self.no_of_beams,self.no_of_design_runs)
+#    
+#    
+#        for i in range(0,self.no_of_elements):
+#            self.pointlist[self.elemlist[i].g[0]-1].thickness = max(self.elemlist[i].thickness,self.pointlist[self.elemlist[i].g[0]-1].thickness)
+#            self.pointlist[self.elemlist[i].g[1]-1].thickness = max(self.elemlist[i].thickness,self.pointlist[self.elemlist[i].g[1]-1].thickness)
+#            self.pointlist[self.elemlist[i].g[2]-1].thickness = max(self.elemlist[i].thickness,self.pointlist[self.elemlist[i].g[2]-1].thickness)
+#        
+#        pointlist =  self.pointlist
+#        elemlist = self.elemlist
+#        
+#        
+#        write_tecplot_file(pointlist,elemlist,tecplot_file_orig,self.no_of_points,self.no_of_elements)
+#    
+#    
+#    
+#    
+#        design_vars =[ int() for i in range(self.no_of_design_variables)]
+#        design_runs =[ int() for i in range(self.no_of_design_runs+1)]
+#    
+#    
+#        for i in range(0,self.no_of_design_variables):
+#            design_vars[i]=i+1
+#    
+#        for i in range(0,self.no_of_design_runs):
+#            design_runs[i]=i+1
+#    
+#        plt.figure(1)
+#        axes = plt.gca()
+#        axes.plot(design_runs,self.objective_list,'bo-')
+#    #plt.plot(design_runs,objective_list,'-*')
+#        plt.xlabel('no. of design runs')
+#        plt.ylabel('Objective function (Aircraft structural weight in kg)')
+#        plt.savefig('objective_strut_braced.png')
+#        axes.grid(True)
+#    
+#        plt.figure(2)
+#        for i in range(0,self.no_of_design_variables):
+#            plt.plot(design_runs,self.design_var_value[i],'-*')
+#    
+#        plt.xlabel('no. of design runs')
+#        plt.ylabel('Design variables (element thickness in m)')
+#    #plt.legend( loc='upper left' )
+#    
+#        plt.savefig('design_variables_strut_braced.png')
+#    
+#    
+#    
+#        plt.figure(4)
+#        plt.plot(design_runs,self.constraint_list,'-*')
+#        plt.xlabel('no. of design runs')
+#        plt.ylabel('Maximum constraint violation (stress)')
+#        plt.savefig('constraint_strut_braced.png')
+#        
+#        plt.figure(5)
+#        plt.plot(design_runs,np.log10(self.constraint_list),'-*')
+#        plt.xlabel('no. of design runs')
+#        plt.ylabel('log Maximum constraint violation (stress)')
+#        plt.savefig('constraint_strut_braced_log.png')
+#    
+#    
+#        fig = plt.figure(3)
+#        
+#        ax = Axes3D(fig)
+#        
+#        
+#        for i in range (0,self.no_of_points):
+#            
+#            
+#            ax.scatter(self.pointlist[i].x[0], self.pointlist[i].x[1], self.pointlist[i].x[2],c="red")
+#            
+#    
+#            
+#    # ax.scatter(pointlist[i].x[0], pointlist[i].x[1], pointlist[i].x[2],c="blue")
+#    
+#        #plt.axis('equal')
+#    
+#        plt.savefig('struct_braced.png',format='png')
+#    
+#    #plt.show()
+#        plt.clf()
 
 
 

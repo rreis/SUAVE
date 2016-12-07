@@ -232,9 +232,9 @@ class FEA_Weight:
 
         elif(fea_code == 1):
             in_vals = 0.0
-            self.run_Nastran_optimization(in_vals)
-            #self.s200.read_sol(self.filename.Nastran_f06,self.tecplot_file_vis)
-            self.primary_structure_weight = 1000.0 #float(self.s200.objective_list[-1])
+            #self.run_Nastran_optimization(in_vals)
+            self.s200.read_sol(self.filename.Nastran_f06,self.tecplot_file_vis)
+            self.primary_structure_weight = float(self.s200.objective_list[-1])
 
 
     def run_Nastran_optimization(self,in_vals):
