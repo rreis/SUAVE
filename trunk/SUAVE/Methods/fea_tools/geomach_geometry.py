@@ -130,19 +130,23 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.comps['lwing'].set_airfoil('n65203.dat')
         #pgm.comps['ltail'].set_airfoil()
         pgm.comps['vtail'].set_airfoil('supertail04.dat')
-        pgm.dvs['lwing_root_x'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[0] #16.
-        pgm.dvs['lwing_root_y'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[1] #-1.
-        pgm.dvs['lwing_root_z'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[2] #2.6
+        pgm.dvs['lwing_section_1_x'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[0] #16.
+        pgm.dvs['lwing_section_1_y'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[1] #-1.
+        pgm.dvs['lwing_section_1_z'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[2] #2.6
         
         #relative to the root
-        pgm.dvs['lwing_tip_x'].data[0] = aircraft.main_wing[0].main_wing_section[0].tip_origin[0]#-aircraft.main_wing[0].main_wing_section[0].root_origin[0] #16.5
-        pgm.dvs['lwing_tip_y'].data[0] = aircraft.main_wing[0].main_wing_section[0].tip_origin[1]#-aircraft.main_wing[0].main_wing_section[0].root_origin[1] #4.4
-        pgm.dvs['lwing_tip_z'].data[0] = aircraft.main_wing[0].main_wing_section[0].tip_origin[2]#-aircraft.main_wing[0].main_wing_section[0].root_origin[2]  #23.3
-        
-        pgm.dvs['lwing_root_chord'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_chord # 10.0
-        pgm.dvs['lwing_mid_chord'].data[0] = aircraft.main_wing[0].main_wing_section[1].root_chord # 4.5
-        pgm.dvs['lwing_tip_chord'].data[0] = aircraft.main_wing[0].main_wing_section[1].tip_chord # 1.2
-        
+        pgm.dvs['lwing_section_2_x'].data[0] = aircraft.main_wing[0].main_wing_section[0].tip_origin[0]#-aircraft.main_wing[0].main_wing_section[0].root_origin[0] #16.5
+        pgm.dvs['lwing_section_2_y'].data[0] = aircraft.main_wing[0].main_wing_section[0].tip_origin[1]#-aircraft.main_wing[0].main_wing_section[0].root_origin[1] #4.4
+        pgm.dvs['lwing_section_2_z'].data[0] = aircraft.main_wing[0].main_wing_section[0].tip_origin[2]#-aircraft.main_wing[0].main_wing_section[0].root_origin[2]  #23.3
+                                                                                     #
+        pgm.dvs['lwing_section_3_x'].data[0] = aircraft.main_wing[0].main_wing_section[1].tip_origin[0]#-aircraft.main_wing[0].main_wing_section[1].root_origin[0] #16.5
+        pgm.dvs['lwing_section_3_y'].data[0] = aircraft.main_wing[0].main_wing_section[1].tip_origin[1]#-aircraft.main_wing[0].main_wing_section[1].root_origin[1] #4.4
+        pgm.dvs['lwing_section_3_z'].data[0] = aircraft.main_wing[0].main_wing_section[1].tip_origin[2]#-aircraft.main_wing[0].main_wing_section[1].root_origin[2]  #23.3
+                
+        #relative to the root
+        pgm.dvs['lwing_section_1_chord'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_chord # 10.0
+        pgm.dvs['lwing_section_2_chord'].data[0] = aircraft.main_wing[0].main_wing_section[1].root_chord # 4.5
+        pgm.dvs['lwing_section_3_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].root_chord # 1.2
         
         #horz tail
         

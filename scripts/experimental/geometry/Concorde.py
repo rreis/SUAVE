@@ -354,7 +354,7 @@ def vehicle_setup():
     
     #new nastran parameters (note nastran uses x, z, y coordinate system
     wing.geometry_tag = "lwing"
-    wing.airfoil                 = "n65203.dat"
+    wing.airfoil                 = "rae2012"#"n65203.dat"
     wing.element_area            = 0.25
     wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
     build_geomach_geometry(wing)
@@ -391,7 +391,7 @@ def vehicle_setup():
     wing_section[1].type        =  'wing_section' 
     wing_section[1].root_chord  = wing_section[0].tip_chord*1.
     wing_section[1].tip_chord   = 4.4/33.8*wing.chords.root
-    wing_section[1].span        = 6.15/(25.6/2.)*wing.spans.projected*.51
+    wing_section[1].span        = 6.15/(25.6/2.)*wing.spans.projected*.5
     
     wing_section[1].sweep       = 48.*Units.degrees
     wing_section[1].root_origin = wing_section[0].tip_origin*1.
