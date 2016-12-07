@@ -329,7 +329,7 @@ def vehicle_setup():
 
     wing.spans.projected         = 35.66    
 
-    wing.chords.root             = 17. * Units.meter
+    wing.chords.root             = 7.760 * Units.meter
     wing.chords.tip              = .782 * Units.meter
     wing.chords.mean_aerodynamic = 4.235
 
@@ -379,7 +379,7 @@ def vehicle_setup():
 
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   =.5*wing.chords.root
-    wing_section[0].span        = (.963-.324)*wing.spans.projected
+    wing_section[0].span        = 324*wing.spans.projected*.5
     wing_section[0].sweep       = 28.225 * Units.degrees
     
     wing_section[0].root_origin = wing.root_origin
@@ -400,7 +400,7 @@ def vehicle_setup():
     wing_section[2].type        =  'wing_section'
     wing_section[2].root_chord  = wing_section[0].tip_chord
     wing_section[2].tip_chord   = wing.chords.tip
-    wing_section[2].span        = wing.spans.projected*.5-wing_section[1].span
+    wing_section[2].span        = (1-.963)*.5*wing.spans.projected
     wing_section[2].sweep       = 56.75 * Units.degrees
     wing_section[2].root_origin = wing_section[1].tip_origin
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
