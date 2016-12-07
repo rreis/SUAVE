@@ -521,7 +521,7 @@ def vehicle_setup():
     wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin
     
     wing.wing_sections = wing_section
-    wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].tip_origin
+    wing.tip_origin = wing.origin +wing_section[1].tip_origin
     
     wing.airfoil                 = "rae2012"
     wing.element_area            = 0.25
