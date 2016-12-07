@@ -351,25 +351,7 @@ def vehicle_setup():
 
     wing.dynamic_pressure_ratio  = 1.0
     
-    #new nastran parameters (note nastran uses x, z, y coordinate system
-    wing.geometry_tag = "lwing"
-    wing.airfoil                 = "rae2012"
-    wing.element_area            = 0.25
-    wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
-    #build_geomach_geometry(wing)
-    wing.root_origin  = wing.origin
-    #wing.tip_origin   = find_tip_chord_leading_edge(wing)+wing.origin
-    wing.fuel_load = 10000.0
-    wing.max_x = 20.0
-    wing.max_y = 20.0
-    wing.max_z = 0.6*wing.tip_origin[2]
-    wing.load_scaling = 1.0
-    
-    wing.structural_dv           = dv_val #1
-    wing.strut_presence          = 0
-    wing.strut_location          = 0.5
-    wing.strut_section           = 1 #int(float(wing.strut_location)/float(0.05))
-    wing.lv_location             = 0.2
+   
     
     #note: NASTRAN uses x, z, y as coordinate system
     #wing_planform(wing)
@@ -411,7 +393,26 @@ def vehicle_setup():
    
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
-   
+    
+    #new nastran parameters (note nastran uses x, z, y coordinate system
+    wing.geometry_tag = "lwing"
+    wing.airfoil                 = "rae2012"
+    wing.element_area            = 0.25
+    wing.sizing_lift             = vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
+    #build_geomach_geometry(wing)
+    wing.root_origin  = wing.origin
+    #wing.tip_origin   = find_tip_chord_leading_edge(wing)+wing.origin
+    wing.fuel_load = 10000.0
+    wing.max_x = 20.0
+    wing.max_y = 20.0
+    wing.max_z = wing.origin+wing.section[0].tip_origin+wing.section[1].tip_origin+wing.section[2].tip_origin#0.6*wing.tip_origin[2]
+    wing.load_scaling = 1.0
+    
+    wing.structural_dv           = dv_val #1
+    wing.strut_presence          = 0
+    wing.strut_location          = 0.5
+    wing.strut_section           = 1 #int(float(wing.strut_location)/float(0.05))
+    wing.lv_location             = 0.2
     # add to vehicle
     vehicle.append_component(wing)
   
