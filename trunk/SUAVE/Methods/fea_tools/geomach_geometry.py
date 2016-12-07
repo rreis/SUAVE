@@ -36,9 +36,9 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
                                                                                                        #
         #print aircraft.main_wing[0].main_wing_section[2].tip_origin[0]                                #
         #print aircraft.main_wing[2].main_wing_section[2]                                              #
-        pgm.dvs['lwing_section_4_x'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_origin[0]#-aircraft.main_wing[0].main_wing_section[2].root_origin[0] #16.5
-        pgm.dvs['lwing_section_4_y'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_origin[1]#-aircraft.main_wing[0].main_wing_section[2].root_origin[1] #4.4
-        pgm.dvs['lwing_section_4_z'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_origin[2]#-aircraft.main_wing[0].main_wing_section[2].root_origin[2]  #23.3
+        pgm.dvs['lwing_section_4_x'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_origin[0]-aircraft.main_wing[0].main_wing_section[2].root_origin[0] #16.5
+        pgm.dvs['lwing_section_4_y'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_origin[1]-aircraft.main_wing[0].main_wing_section[2].root_origin[1] #4.4
+        pgm.dvs['lwing_section_4_z'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_origin[2]-aircraft.main_wing[0].main_wing_section[2].root_origin[2]  #23.3
         
         
         
