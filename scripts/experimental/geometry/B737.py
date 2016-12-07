@@ -398,7 +398,7 @@ def vehicle_setup():
     wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin
     
     wing_section[2].type        =  'wing_section'
-    wing_section[2].root_chord  = wing_section[0].tip_chord
+    wing_section[2].root_chord  = wing_section[1].tip_chord
     wing_section[2].tip_chord   = wing.chords.tip
     wing_section[2].span        = (1-.963)*.5*wing.spans.projected
     wing_section[2].sweep       = 56.75 * Units.degrees
@@ -447,7 +447,7 @@ def vehicle_setup():
     wing.origin                  = [28.79,0,1.14]
     wing.aerodynamic_center      = [2,0,0]
     
-    wing.tip_location            = find_tip_chord_leading_edge(wing)
+    #wing.tip_location            = find_tip_chord_leading_edge(wing)
 
     wing.vertical                = False 
     wing.symmetric               = True
@@ -528,10 +528,11 @@ def vehicle_setup():
     wing_section[1].root_chord = wing_section[0].tip_chord
     wing_section[1].tip_chord   = wing.chords.tip
     wing_section[1].root_origin = wing_section[0].tip_origin  #not being used
-    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
-    wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin 
     wing_section[1].span        = (1-.91)*.5*wing.spans.projected
     wing_section[1].sweep       = 48.17*Units.degrees
+    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
+ 
+    wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin
     
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
