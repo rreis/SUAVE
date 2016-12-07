@@ -341,7 +341,7 @@ def vehicle_setup():
     wing.twists.root             = 4.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
 
-    wing.origin                  = [13.61, 0., -1.27]
+    wing.origin                  = [13.61, 0.3*fuselage.effective_diameter, -1.27]
     wing.aerodynamic_center      = [3,0,0] #not really used here 
     
 
@@ -361,7 +361,7 @@ def vehicle_setup():
 
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   =.5*wing.chords.root
-    wing_section[0].span        = .324*wing.spans.projected*.51 #for some reason, inner section doesn't use half-span
+    wing_section[0].span        = .324*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
     wing_section[0].sweep       = 28.225 * Units.degrees
     
     wing_section[0].root_origin = wing.origin
