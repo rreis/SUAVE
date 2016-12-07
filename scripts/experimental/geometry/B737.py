@@ -361,7 +361,7 @@ def vehicle_setup():
 
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   =.5*wing.chords.root
-    wing_section[0].span        = .324*wing.spans.projected*.5 
+    wing_section[0].span        = .324*wing.spans.projected*1. #for some reason, inner section doesn't use half-span
     wing_section[0].sweep       = 28.225 * Units.degrees
     
     wing_section[0].root_origin = wing.origin
@@ -499,7 +499,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = .35*wing.chords.root
-    wing_section[0].span        = .91*wing.spans.projected #root section goes out both sides
+    wing_section[0].span        = .91*wing.spans.projected*.5 #root section goes out both sides
     wing_section[0].sweep       = 38.42 * Units.degrees
     
     wing_section[0].root_origin = wing.root_origin
