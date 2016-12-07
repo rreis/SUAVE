@@ -341,7 +341,7 @@ def vehicle_setup():
     wing.twists.root             = 4.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees
 
-    wing.origin                  = [13.61, 0.3*fuselage.effective_diameter, -1.27]
+    wing.origin                  = [13.61, 0.5*fuselage.effective_diameter, -1.27]
     wing.aerodynamic_center      = [3,0,0] #not really used here 
     
 
