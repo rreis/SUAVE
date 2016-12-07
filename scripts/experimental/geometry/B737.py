@@ -463,21 +463,8 @@ def vehicle_setup():
     
     
     #add in dihedral (remember nastran goes xzy, where z is up
-    wing.tip_origin[1] = wing.root_origin[1]+np.tan(8.63*Units.degrees)*wing.spans.projected/2.
+    #wing.tip_origin[1] = wing.root_origin[1]+np.tan(8.63*Units.degrees)*wing.spans.projected/2.
     
-    wing.airfoil                 = "rae2012"
-    wing.element_area            = 0.25
-    wing.vertical                = 0
-    wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
-    wing.fuel_load = 0.
-    wing.max_x = 200.0
-    wing.max_y = 200.0
-    wing.max_z = 0.6*wing.tip_origin[2]
-    wing.load_scaling = 1.1
-    
-    wing.structural_dv           = dv_val #1
-    wing.strut_presence          = 0
-    wing.strut                   = 0
     
 
     
@@ -534,6 +521,26 @@ def vehicle_setup():
     wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin
     
     wing.wing_sections = wing_section
+    wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].tip_origin
+    
+    wing.airfoil                 = "rae2012"
+    wing.element_area            = 0.25
+    wing.vertical                = 0
+    wing.sizing_lift             = 0.0*vehicle.mass_properties.max_takeoff*2.5*9.81/2.0
+    wing.fuel_load = 0.
+    wing.max_x = 200.0
+    wing.max_y = 200.0
+    wing.max_z = 0.6*wing.tip_origin[2]
+    wing.load_scaling = 1.1
+    
+    wing.structural_dv           = dv_val #1
+    wing.strut_presence          = 0
+    wing.strut                   = 0
+    
+    
+    
+    
+    
     translate_to_geomach_geometry(wing)
     
     
