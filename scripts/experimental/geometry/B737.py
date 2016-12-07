@@ -372,7 +372,7 @@ def vehicle_setup():
     wing_section[1].type        =  'wing_section' #yehudi
     wing_section[1].root_chord  = wing_section[0].tip_chord*1.
     wing_section[1].tip_chord   = .22*wing.chords.root
-    wing_section[1].span        = (.963-.324)*wing.spans.projected*.5
+    wing_section[1].span        = (.963-.324)*wing.spans.projected*.51
     
     wing_section[1].sweep       = 25.*Units.degrees
     wing_section[1].root_origin = wing_section[0].tip_origin*1.
