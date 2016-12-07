@@ -21,6 +21,7 @@ def read_opt_f06_file(opt_filename,no_of_design_variables,elemlist,no_of_element
 
     #[39:87]
     for line in file:
+        #print line
         count =0
 
         if (line[35:48]== 'S U M M A R Y'):
@@ -67,10 +68,12 @@ def read_opt_f06_file(opt_filename,no_of_design_variables,elemlist,no_of_element
             #print line
             for i in range(0,6):
                 for line in file:
+                    #print line
                     elem_count=0
                     break
         
             for line in file:
+                #print line
                 objective_list[0] = float(line[58:70])
                 if (line[110:113] == 'N/A'):
                     constraint_list[0] = 0.0
@@ -81,15 +84,17 @@ def read_opt_f06_file(opt_filename,no_of_design_variables,elemlist,no_of_element
                 break
             
             for i in range(0,no_of_design_runs):
-                if(i==16)or((i-16)%22==0):
+                if(i==15)or((i-15)%22==0):
                 #if(i==14)or((i-14)%22==0):
                 
                     for ijk in range(0,8):
                         for line in file:
+                            #print line
                             elem_count=0
                             break
             
                 for line in file:
+                    #print line
                     elem_count=0
                     break
                 for line in file:
@@ -102,77 +107,77 @@ def read_opt_f06_file(opt_filename,no_of_design_variables,elemlist,no_of_element
                     #print i , objective_list[1+i]
                     break
 
-#break
-
-        if (line[55:78]=='DESIGN VARIABLE HISTORY'):
-            #print line
-            no_of_dv_sections = (no_of_design_runs+1)/6 +1
-            
-            for j in range(0,no_of_dv_sections):
-                
-
-                for line in file:
-                
-                    if(line[0]=='1'):
-                    
-                        for ijk in range(0,6):
-                            for line in file:
-                                elem_count=0
-                                break
-
-                    else:
-
-                        for ijk in range(0,3):
-                            for line in file:
-                                elem_count=0
-                                break
-                                    
-                                    
-                    break
-            
-#                if (j>0):
-#                    for line in file:
-#                        elem_count=0
-#                        break
-
-
-
-                for i in range(0,no_of_design_variables):
-                    for line in file:
-                        if(line[0]=='1'):
-                            
-                            for ijk in range(0,7):
-                                for line in file:
-                                    elem_count=0
-                                    break
-#                        if (i == 0):
+##break
 #
+#        if (line[55:78]=='DESIGN VARIABLE HISTORY'):
+#            #print line
+#            no_of_dv_sections = (no_of_design_runs+1)/6 +1
+#            
+#            for j in range(0,no_of_dv_sections):
+#                
+#
+#                for line in file:
+#                
+#                    if(line[0]=='1'):
+#                    
+#                        for ijk in range(0,6):
 #                            for line in file:
 #                                elem_count=0
 #                                break
-
-                        for k in range(0,min(no_of_design_runs-6*j+1,6)):
-                            starting_value = 41 + k*15
-                            #print line[starting_value:starting_value+14],i,6*j+k
-                            design_var_value[i][6*j+k] = float(line[starting_value:starting_value+14])
-                        #print i,6*j+k,design_var_value[i][6*j+k]
-                        break
-
-
-
-            break
-            
-
-
-
-
-
-    
-    for i in range(0,no_of_elements):
-
-        elemlist[i].thickness = design_var_value[elemlist[i].pid-1][no_of_design_runs]
-    #print elemlist[i].pid-1
-    #print elemlist[i].thickness
+#
+#                    else:
+#
+#                        for ijk in range(0,3):
+#                            for line in file:
+#                                elem_count=0
+#                                break
+#                                    
+#                                    
+#                    break
+#            
+##                if (j>0):
+##                    for line in file:
+##                        elem_count=0
+##                        break
+#
+#
+#
+#                for i in range(0,no_of_design_variables):
+#                    for line in file:
+#                        if(line[0]=='1'):
+#                            
+#                            for ijk in range(0,7):
+#                                for line in file:
+#                                    elem_count=0
+#                                    break
+##                        if (i == 0):
+##
+##                            for line in file:
+##                                elem_count=0
+##                                break
+#
+#                        for k in range(0,min(no_of_design_runs-6*j+1,6)):
+#                            starting_value = 41 + k*15
+#                            #print line[starting_value:starting_value+14],i,6*j+k
+#                            design_var_value[i][6*j+k] = float(line[starting_value:starting_value+14])
+#                        #print i,6*j+k,design_var_value[i][6*j+k]
+#                        break
+#
+#
+#
+#            break
+#            
+#
+#
+#
+#
+#
+#    
+#    for i in range(0,no_of_elements):
+#
+#        elemlist[i].thickness = design_var_value[elemlist[i].pid-1][no_of_design_runs]
+#    #print elemlist[i].pid-1
+#    #print elemlist[i].thickness
 
 
     file.close()

@@ -27,7 +27,42 @@ def compute_normal(elemlist,pointlist):
         v2 = np.zeros(3)
         
         if (elemlist[i].type == "CTRIA3"):
-            print
+            for j in range(0,3):
+                
+                v1[j] = pointlist[elemlist[i].g[1]-1].x[j] - pointlist[elemlist[i].g[0]-1].x[j];
+                v2[j] = pointlist[elemlist[i].g[2]-1].x[j] - pointlist[elemlist[i].g[1]-1].x[j];                
+                
+            normal[0] = v1[1]*v2[2] - v1[2]*v2[1]
+            normal[1] = -1*(v1[0]*v2[2] - v1[2]*v2[0])
+            normal[2] = v1[0]*v2[1] - v1[1]*v2[0]
+            
+            
+            normal_magnitude = np.sqrt(normal[0]**2.0 + normal[1]**2.0 + normal[2]**2.0)
+            
+            normal[0] = normal[0]/normal_magnitude
+            normal[1] = normal[1]/normal_magnitude
+            normal[2] = normal[2]/normal_magnitude    
+            
+            
+            elemlist[i].normal = normal
+            
+            #area computation
+            
+            #triangle 1
+            s0 = np.sqrt((pointlist[elemlist[i].g[0]-1].x[0] -  pointlist[elemlist[i].g[1]-1].x[0])**2.0 + (pointlist[elemlist[i].g[0]-1].x[1] -  pointlist[elemlist[i].g[1]-1].x[1])**2.0 + (pointlist[elemlist[i].g[0]-1].x[2] -  pointlist[elemlist[i].g[1]-1].x[2])**2.0)
+            
+            s1 = np.sqrt((pointlist[elemlist[i].g[1]-1].x[0] -  pointlist[elemlist[i].g[2]-1].x[0])**2.0 + (pointlist[elemlist[i].g[1]-1].x[1] -  pointlist[elemlist[i].g[2]-1].x[1])**2.0 + (pointlist[elemlist[i].g[1]-1].x[2] -  pointlist[elemlist[i].g[2]-1].x[2])**2.0)
+             
+            s2 = np.sqrt((pointlist[elemlist[i].g[2]-1].x[0] -  pointlist[elemlist[i].g[0]-1].x[0])**2.0 + (pointlist[elemlist[i].g[2]-1].x[1] -  pointlist[elemlist[i].g[0]-1].x[1])**2.0 + (pointlist[elemlist[i].g[2]-1].x[2] -  pointlist[elemlist[i].g[0]-1].x[2])**2.0)
+            
+            
+            ss = 0.5*(s0 + s1 + s2)
+            
+            area0 = np.sqrt(ss*(ss-s0)*(ss-s1)*(ss-s2))
+            
+            area = area0    
+            
+            elemlist[i].area = area            
 
 
 
