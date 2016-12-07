@@ -410,7 +410,7 @@ def vehicle_setup():
 
    
     wing.wing_sections = wing_section
-    translate_to_geomach_geometry(wing)
+    #translate_to_geomach_geometry(wing)
    
     # add to vehicle
     vehicle.append_component(wing)
@@ -534,7 +534,7 @@ def vehicle_setup():
     wing_section[1].sweep       = 48.17*Units.degrees
     
     wing.wing_sections = wing_section
-    translate_to_geomach_geometry(wing)
+    #translate_to_geomach_geometry(wing)
     
     
     # add to vehicle
@@ -629,7 +629,7 @@ def vehicle_setup():
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
     wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin 
     wing.wing_sections = wing_section
-    translate_to_geomach_geometry(wing)
+    #translate_to_geomach_geometry(wing)
     
     
     # add to vehicle
