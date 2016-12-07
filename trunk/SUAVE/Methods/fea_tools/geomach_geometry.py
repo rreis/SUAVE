@@ -63,9 +63,9 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['ltail_section_3_z'].data[0] = aircraft.main_wing[1].main_wing_section[1].tip_origin[2]  #-aircraft.main_wing[1].main_wing_section[1].root_origin[2] #8.0
         
         
-        print 'aircraft.main_wing[0].main_wing_section[0].root_origin[0] =', aircraft.main_wing[0].main_wing_section[0].root_origin[0
-        print 'aircraft.main_wing[0].main_wing_section[0].root_origin[1] =', aircraft.main_wing[0].main_wing_section[0].root_origin[1
-        print 'aircraft.main_wing[0].main_wing_section[0].root_origin[2] =', aircraft.main_wing[0].main_wing_section[0].root_origin[2
+        print 'aircraft.main_wing[0].main_wing_section[0].root_origin[0] =', aircraft.main_wing[0].main_wing_section[0].root_origin[0]
+        print 'aircraft.main_wing[0].main_wing_section[0].root_origin[1] =', aircraft.main_wing[0].main_wing_section[0].root_origin[1]
+        print 'aircraft.main_wing[0].main_wing_section[0].root_origin[2] =', aircraft.main_wing[0].main_wing_section[0].root_origin[2]
                                                                                                                              
         print 'aircraft.main_wing[0].main_wing_section[0].tip_origin[0]  =', aircraft.main_wing[0].main_wing_section[0].tip_origin[0]
         print 'aircraft.main_wing[0].main_wing_section[0].tip_origin[1]  =', aircraft.main_wing[0].main_wing_section[0].tip_origin[1]
