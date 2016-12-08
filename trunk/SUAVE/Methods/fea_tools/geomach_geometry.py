@@ -230,7 +230,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
                 if i<7:
                     pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
                     print 'lwing_section_'+str(i+1)+dim_tags[j]
-                else i==7:
+                else:
                     pgm.dvs['lwing_section_'+str(i+2)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
                     print 'lwing_section_'+str(i+2)+dim_tags[j]
         '''
