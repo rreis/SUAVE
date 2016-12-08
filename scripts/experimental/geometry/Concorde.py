@@ -391,7 +391,7 @@ def vehicle_setup():
     wing_section[1].type        =  'wing_section' 
     wing_section[1].root_chord  = wing_section[0].tip_chord*1.
     wing_section[1].tip_chord   = 4.4/33.8*wing.chords.root
-    wing_section[1].span        = 6.15/(25.6/2.)*wing.spans.projected*.5
+    wing_section[1].span        = 5.95/(25.6/2.)*wing.spans.projected*.5
     
     wing_section[1].sweep       = 48.*Units.degrees
     wing_section[1].root_origin = wing_section[0].tip_origin*1.
@@ -401,7 +401,7 @@ def vehicle_setup():
     wing_section[2].type        =  'wing_section'
     wing_section[2].root_chord  = wing_section[1].tip_chord*1.
     wing_section[2].tip_chord   = wing.chords.tip
-    wing_section[2].span        = 5.95/(25.6/2.)*wing.spans.projected*.5
+    wing_section[2].span        = 0.7/(25.6/2.)*wing.spans.projected*.5
     wing_section[2].sweep       = 71. * Units.degrees
     wing_section[2].root_origin = wing_section[1].tip_origin
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
@@ -637,7 +637,7 @@ def vehicle_setup():
     wing_section[0].tip_chord   = 7.5/14.5*wing.chords.root #not sure how this works
     
     #wing_section[0].mid_origin  = [0.0,0.0,0.0]
-    wing_section[0].span        = 2.4/(6.0)*wing.spans.projected
+    wing_section[0].span        = 3.6/(6.0)*wing.spans.projected
     wing_section[0].sweep       = 63. * Units.degrees
     wing_section[0].root_origin = wing.root_origin
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[0])
@@ -646,7 +646,7 @@ def vehicle_setup():
     wing_section[1].root_chord = wing_section[0].tip_chord
     wing_section[1].tip_chord  = wing.chords.tip
  
-    wing_section[1].span        = wing.spans.projected-wing_section[0].span
+    wing_section[1].span        = 2.4/(6.0)*wing.spans.projected
     wing_section[1].sweep       = 40.*Units.degrees
     
     wing_section[1].root_origin = wing_section[0].tip_origin
@@ -654,8 +654,6 @@ def vehicle_setup():
     wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin 
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
-
-    wing.wing_sections = wing_section
     
     
     
