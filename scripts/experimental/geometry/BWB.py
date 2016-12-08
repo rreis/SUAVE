@@ -318,7 +318,7 @@ def vehicle_setup():
     wing.dynamic_pressure_ratio  = 1.0
     
     # Sections
-    wing.no_of_sections          = 8
+    wing.no_of_sections          = 7
     #nose
 
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
