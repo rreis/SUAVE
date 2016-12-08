@@ -334,7 +334,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
 
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   = 1.0786*wing.chords.root
+    wing_section[0].tip_chord   = .99*wing.chords.root
     wing_section[0].span        = .004*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
     wing_section[0].sweep       = 0.* Units.degrees
     wing_section[0].root_origin = wing.origin
