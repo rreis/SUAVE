@@ -89,7 +89,7 @@ class HWB(PGMconfiguration):
 
 
         #main wing leading section spars
-        '''
+        
         for i in range(idims.shape[0]):
             for j in range(jdims.shape[0]-1):
                 if i is 0 or i is idims.shape[0]-1:
@@ -116,7 +116,7 @@ class HWB(PGMconfiguration):
             #afm.addVertFlip('rwing_i_i1::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[idims[j+1],1-jdims[j+1]])
             afm.addVertFlip('lwing_i_i2::'+str(j)+':0','lwing',[idims[j],jdims[j]],[0.45,jdims[j]])
         #afm.addVertFlip('rwing_i_i2::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[0.45,1-jdims[j]])
-        '''
+        
 
 
 
