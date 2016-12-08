@@ -154,7 +154,6 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['lwing_section_3_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].root_chord # 1.2
         pgm.dvs['lwing_section_4_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_chord # 1.2
         
-        
         #horz tail
         
         #pgm.dvs['ltail_root_x'].data[0] = aircraft.main_wing[1].main_wing_section[0].root_origin[0] #44.0
@@ -189,7 +188,6 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['vtail_section_1_chord'].data[0] = aircraft.main_wing[1].main_wing_section[0].root_chord # 10.0
         pgm.dvs['vtail_section_2_chord'].data[0] = aircraft.main_wing[1].main_wing_section[1].root_chord # 4.5
         pgm.dvs['vtail_section_3_chord'].data[0] = aircraft.main_wing[1].main_wing_section[1].tip_chord # 1.2
-        pgm.dvs['lwing_section_4_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_chord # 1.2
         
         '''
         pgm.dvs['vtail_root_chord'].data[0] = aircraft.main_wing[2].main_wing_section[0].root_chord #5.8
