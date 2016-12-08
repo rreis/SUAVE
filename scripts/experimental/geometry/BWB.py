@@ -484,9 +484,6 @@ def vehicle_setup():
     vehicle.append_component(wing)
     
     
-    # add to vehicle
-    vehicle.append_component(wing)
-
 
     # ------------------------------------------------------------------
     #   Turbofan Network
