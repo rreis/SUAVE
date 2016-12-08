@@ -224,7 +224,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
     elif(aircraft.type=='BWB'):
         pgm = HWB()
         bse = pgm.initialize()
-        num_sections =  pgm.dvs.num_sections = num_sections
+        num_sections =  pgm.dvs.num_sections 
         dim_tags = ['_x','_y','_z']
         for i in range(0,num_sections): 
             for j in range(0,3):
