@@ -99,7 +99,7 @@ def full_setup():
     configs  = configs_setup(vehicle)
     
     # Write the vsp file
-    write(vehicle, 'BWB')
+    #write(vehicle, 'BWB')
 
     # vehicle analyses
     configs_analyses = analyses_setup(configs)
@@ -286,7 +286,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
 
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   =1.0786*wing.chords.root
+    wing_section[0].tip_chord   = 1.0786*wing.chords.root
     wing_section[0].span        = .004*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
     wing_section[0].sweep       = 0.* Units.degrees
     wing_section[0].root_origin = wing.origin
@@ -311,6 +311,7 @@ def vehicle_setup():
     wing_section[1].span        = (.164-.004)*wing.spans.projected*.5
     wing_section[1].sweep       = 50.*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
+    wing_section[1].root_origin = wing_section[0].tip_origin 
     wing_section[1].tip_origin  = wing_rel_pos + wing_section[1].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     #airfoil = SUAVE.Components.Wings.Airfoils.Airfoil()
@@ -338,6 +339,7 @@ def vehicle_setup():
     wing_section[2].span        = (.284-.164)*wing.spans.projected*.5
     wing_section[2].sweep       = 50*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
+    wing_section[2].root_origin = wing_section[1].tip_origin 
     wing_section[2].tip_origin  = wing_rel_pos + wing_section[2].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -363,6 +365,7 @@ def vehicle_setup():
     wing_section[3].span        = (.378-.284)*wing.spans.projected*.5
     wing_section[3].sweep       = 40*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[3])
+    wing_section[3].root_origin = wing_section[2].tip_origin 
     wing_section[3].tip_origin  = wing_rel_pos + wing_section[3].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -385,6 +388,7 @@ def vehicle_setup():
     wing_section[4].span        = (.458-.378)*wing.spans.projected*.5
     wing_section[4].sweep       = 40*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[4])
+    wing_section[4].root_origin = wing_section[3].tip_origin 
     wing_section[4].tip_origin  = wing_rel_pos + wing_section[4].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -408,6 +412,7 @@ def vehicle_setup():
     wing_section[5].span        = (.668-.458)*wing.spans.projected*.5
     wing_section[5].sweep       = 35*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[5])
+    wing_section[5].root_origin = wing_section[4].tip_origin 
     wing_section[5].tip_origin  = wing_rel_pos + wing_section[5].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -430,6 +435,7 @@ def vehicle_setup():
     wing_section[6].span        = (.877-.668)*wing.spans.projected*.5
     wing_section[6].sweep       = 35*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[6])
+    wing_section[6].root_origin = wing_section[5].tip_origin 
     wing_section[6].tip_origin  = wing_rel_pos + wing_section[6].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -453,6 +459,7 @@ def vehicle_setup():
     wing_section[7].span        = (1-.877)*wing.spans.projected*.5
     wing_section[7].sweep       = 45*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[7])
+    wing_section[7].root_origin = wing_section[6].tip_origin 
     wing_section[7].tip_origin  = wing_rel_pos + wing_section[7].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
