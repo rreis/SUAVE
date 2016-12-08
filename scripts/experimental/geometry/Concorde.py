@@ -380,7 +380,7 @@ def vehicle_setup():
 
     wing_section[0].root_chord  = wing.chords.root
     wing_section[0].tip_chord   = 13.8/33.8*wing.chords.root
-    wing_section[0].span        = 6.15/(25.6/2.)*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
+    wing_section[0].span        = 6.15/(25.6/2.)*wing.spans.projected*.53 #for some reason, inner section doesn't use half-span
     wing_section[0].sweep       = 67. * Units.degrees
     
     wing_section[0].root_origin = wing.origin
@@ -407,7 +407,7 @@ def vehicle_setup():
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
     wing_section[2].tip_origin  = wing_rel_pos + wing_section[2].root_origin #everything is relative to root
 
-    wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].root_origin+wing_section[2].tip_origin
+    wing.tip_origin = wing.origin+wing_section[2].tip_origin
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
     
