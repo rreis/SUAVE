@@ -224,7 +224,7 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm = HWB()
         bse = pgm.initialize()
         dim_tags = ['_x','_y','_z']
-        for i in range(0,7): 
+        for i in range(0,8): 
             for j in range(0,3):
                 dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[i].main_wing_section[0].root_origin[j]
 
