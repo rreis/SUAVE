@@ -189,4 +189,4 @@ if __name__ == '__main__':
     #bse.vec['cp_str'].export_IGES()
     bse.vec['cp_str'].export_STL('HWB.stl')
 
-    pgm.meshStructure()
+    #pgm.meshStructure()
