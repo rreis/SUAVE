@@ -232,7 +232,7 @@ class FEA_Weight:
 
         elif(fea_code == 1):
             in_vals = 0.0
-            #self.run_Nastran_optimization(in_vals)
+            self.run_Nastran_optimization(in_vals)
             self.s200.read_sol(self.filename.Nastran_f06,self.tecplot_file_vis)
             self.primary_structure_weight = float(self.s200.objective_list[-1])
             print "primary structure weight :",self.primary_structure_weight
@@ -273,14 +273,26 @@ class FEA_Weight:
         print 'nastran_call =', nastran_call
         #nastran_run = subprocess.Popen([nastran_call,self.filename.Nastran_sol200],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
-        nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200])#,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+        #nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200]) #,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+    
+        print "Calling nastran"
+        nastran_run = subprocess.Popen(['nast20140', self.filename.Nastran_sol200]) #,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
-        #nastran_run.wait()
+    
+        nastran_run.wait()
+                                        
+        nastran_run = 0
+        print "Waiting for nastran to run"             
+        while(nastran_run == 0):
+             #check if the scratch file is open
+            
+            if not os.path.isfile(self.filename.Nastran_scratch_file):
+                break
         
         #exit_status = nastran_run.returncode
         ctime = time.ctime()
         #sys.stdout.write("\nProcess finished: {0}\nExit status: {1}\n".format(ctime,exit_status))
-
+        
 
 
 
@@ -387,3 +399,4 @@ class Filenames:
         self.tacs_load = "geomach_tacs_load_crm_wing.txt"
         self.aero_load = None
         self.tacs_optimization_driver = "design_run_fsi_crm_wing.py"
+        self.Nastran_scratch_file = "scratch"
