@@ -280,7 +280,7 @@ def vehicle_setup():
     vehicle.fea_type = "BWB"
     vehicle.miscellaneous_tag=None#["lwing_i_i1","lwing_i_i2","fus_Misc_1","fus_Misc_2"]
     vehicle.intersection_tag=None#["lwing_fuse","ltail_fuse","vtail_fuse"]
-    dv_val = 3#12
+    dv_val = 12
 
 
     # ------------------------------------------------------------------        
