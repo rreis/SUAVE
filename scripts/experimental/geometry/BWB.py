@@ -49,8 +49,6 @@ from SUAVE.Methods.fea_tools.translate_to_geomach_geometry import translate_to_g
 
 def main():
 
-    def main():
-
     # define the problem
     configs, analyses = full_setup()
 
