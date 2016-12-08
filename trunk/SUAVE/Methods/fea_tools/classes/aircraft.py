@@ -99,6 +99,8 @@ class aircraft:
         
         
         for i in range(0,no_of_wings):
+            print 'i=', i
+            print 'vehicle.wings[wing_fea[i]].no_of_sections=',vehicle.wings[wing_fea[i]].no_of_sections
             no_of_wing_sections[i] += vehicle.wings[wing_fea[i]].no_of_sections
         
         
