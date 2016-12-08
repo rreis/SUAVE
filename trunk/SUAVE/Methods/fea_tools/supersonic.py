@@ -38,7 +38,7 @@ class Supersonic(PGMconfiguration):
         self.comps['vtail_fuse'] = PGMjunction(self, 'fuse', 'top', 'E', [0,20], 'vtail', 'right')
 
     def _define_params(self):
-         fuse = self.comps['fuse'].props
+        fuse = self.comps['fuse'].props
         fuse['pos'].params[''] = PGMparameter(2, 3)
         fuse['nor'].params[''] = PGMparameter(1, 1)
         fuse['scl'].params[''] = PGMparameter(1, 1)
@@ -54,7 +54,8 @@ class Supersonic(PGMconfiguration):
         lwing['pos'].params['lin'] = PGMparameter(4, 3)
         lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
         lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
-         vtail = self.comps['vtail'].props
+        
+        vtail = self.comps['vtail'].props
         vtail['pos'].params[''] = PGMparameter(1, 3)
         vtail['pos'].params['lin'] = PGMparameter(3, 3)  ##update this for sections
         vtail['nor'].params[''] = PGMparameter(1, 3)
