@@ -6,7 +6,7 @@ from GeoMACH.PGM.core import PGMconfiguration, PGMparameter, PGMdv
 from GeoMACH.PGM.components import PGMwing, PGMbody, PGMshell
 from GeoMACH.PGM.components import PGMjunction, PGMtip, PGMcone
 from GeoMACH.PSM import Airframe
-import numpy
+import numpy as np
 
 
 class HWB(PGMconfiguration):
@@ -71,8 +71,8 @@ class HWB(PGMconfiguration):
 
 
     #main wing leading section ribs
-        idims = numpy.linspace(0.45,0.9,7)
-        jdims = numpy.linspace(0,1,16)
+        idims = np.linspace(0.45,0.9,7)
+        jdims = np.linspace(0,1,16)
         for i in range(idims.shape[0]-1):
             for j in range(jdims.shape[0]):
                 afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
@@ -104,7 +104,7 @@ class HWB(PGMconfiguration):
 
 
         #wing box lower/back edge
-        idims = numpy.linspace(0.18,0.45,6)
+        idims = np.linspace(0.18,0.45,6)
         for j in range(idims.shape[0]-1):
             afm.addVertFlip('lwing_i_i1::'+str(j)+':0','lwing',[idims[j],jdims[j]],[idims[j+1],jdims[j+1]])
             #afm.addVertFlip('rwing_i_i1::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[idims[j+1],1-jdims[j+1]])
