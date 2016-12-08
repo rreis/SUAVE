@@ -219,7 +219,8 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         bse.vec['cp_str'].export_STL(stl_mesh_filename)
         
         pgm.meshStructure()
-        visualize_geomach_geometry('supersonic_str.bdf','supersonic_str.plt')        
+        visualize_geomach_geometry('supersonic_str.bdf','supersonic_str.plt')     
+        
     elif(aircraft.type=='BWB'):
         pgm = HWB()
         bse = pgm.initialize()
@@ -269,3 +270,4 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         
         pgm.meshStructure()
         visualize_geomach_geometry('bwb_str.bdf','bwb_str.plt')
+        print 'done'
