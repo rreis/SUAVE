@@ -149,7 +149,7 @@ class aircraft:
             main_wing[i].load_scaling = vehicle.wings[wing_fea[i]].load_scaling
             
             print main_wing[i].tag,main_wing[i].structural_dv
-            
+            print i
             
             if(vehicle.wings[wing_fea[i]].strut_presence == 1):
             
