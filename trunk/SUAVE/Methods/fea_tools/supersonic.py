@@ -220,8 +220,8 @@ class Supersonic(PGMconfiguration):
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
-        lwing['scl'].params[''].val([10,4.5,1.2])
-        lwing['pos'].params['lin'].val([[0,0,0],[16.5,4.4,23.3]])
+        lwing['scl'].params[''].val([10,4.5,1.2,0.8])
+        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,4.4,23.3],[16.5,4.4,23.3]])
 
 #        rwing = self.comps['rwing'].props
 #        rwing['pos'].params[''].val([16,-1,-2.6])
@@ -257,11 +257,12 @@ class Supersonic(PGMconfiguration):
 
         vtail = self.comps['vtail'].props
         vtail['pos'].params[''].val([42,1.7,0])
-        vtail['pos'].params['lin'].val([[0,0,0],[6,8,0]])
+        vtail['pos'].params['lin'].val([[0,0,0],[3,4,0],[6,8,0]])
         vtail['nor'].params[''].val([1,0,0])
-        vtail['scl'].params[''].val([5.8,2])
+        vtail['scl'].params[''].val([5.8,3.0,2])
         vtail['rot'].params[''].val([[0,10,0],[0,0,0]])
         vtail['ogn'].params[''].val([0.25,0,0])
+
 
         return [], [], []
 
