@@ -15,7 +15,7 @@ class HWB(PGMconfiguration):
     
     
     def _define_comps(self):
-        self.nplanes = 10
+        self.nplanes = 4
         self.num_sections = 7
         nplanes = self.nplanes
         self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=False)
@@ -30,7 +30,7 @@ class HWB(PGMconfiguration):
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
         lwing['scl'].params[''] = PGMparameter(num_sections, 1)
         lwing['pos'].params['lin'] = PGMparameter(num_sections, 3)
-        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4) #commented out earlier
         lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
 
@@ -71,7 +71,7 @@ class HWB(PGMconfiguration):
         nplanes = self.nplanes 
         comps = self.comps
         comps['lwing'].faces['upp'].set_option('num_cp', 'v', [40]*nplanes) #[6,4,4,20] #[36,24,24,120]
-        comps['lwing'].faces['low'].set_option('num_cp', 'u', [40]*nplanes)
+        #comps['lwing'].faces['low'].set_option('num_cp', 'u', [40]*nplanes)
 
     def meshStructure(self):
         afm = Airframe(self, 1.0) #0.2)
