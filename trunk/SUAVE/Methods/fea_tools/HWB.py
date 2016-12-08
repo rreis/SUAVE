@@ -177,9 +177,6 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_7_y'].data[0] = 0.5
     pgm.dvs['lwing_section_7_z'].data[0] = 68.2
 
-    pgm.dvs['lwing_section_8_x'].data[0] = 14
-    pgm.dvs['lwing_section_8_y'].data[0] = 0.5
-    pgm.dvs['lwing_section_8_z'].data[0] = 70
     
     
     pgm.dvs['lwing_section_1_chord'].data[0] = 24.
@@ -189,7 +186,7 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_5_chord'].data[0] = 24. #5.0
     pgm.dvs['lwing_section_6_chord'].data[0] = 24. #4.0
     pgm.dvs['lwing_section_7_chord'].data[0] = 24. #3.5  
-    pgm.dvs['lwing_section_8_chord'].data[0] = 24. #3.5  
+
 
     pgm.compute_all()
 
