@@ -52,7 +52,7 @@ class Supersonic(PGMconfiguration):
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
         lwing['scl'].params[''] = PGMparameter(4, 1)
         #lwing['pos'].params['lin'] = PGMparameter(2, 3)
-         lwing['pos'].params['lin'] = PGMparameter(4, 3)
+        lwing['pos'].params['lin'] = PGMparameter(4, 3)
         lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
         lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
