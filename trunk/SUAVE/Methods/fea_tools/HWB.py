@@ -79,7 +79,8 @@ class HWB(PGMconfiguration):
 
     #main wing leading section ribs
         idims = np.linspace(0.45,0.9,7)
-        jdims = np.linspace(0,1,16)
+        #jdims = np.linspace(0,1,16)
+        jdims = np.linspace(.4,1,6)
         for i in range(idims.shape[0]-1):
             for j in range(jdims.shape[0]):
                 afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
