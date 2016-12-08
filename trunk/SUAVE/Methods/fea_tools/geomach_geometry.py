@@ -257,3 +257,15 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['lwing_section_3_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].root_chord # 1.2
         pgm.dvs['lwing_section_4_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_chord # 1.2
         '''
+        pgm.compute_all()
+        
+        #bse.vec['pt_str']._hidden[:] = False
+        bse.vec['pt_str'].export_tec_str()
+        bse.vec['df'].export_tec_scatter()
+        bse.vec['cp'].export_tec_scatter()
+        bse.vec['pt'].export_tec_scatter()
+        bse.vec['cp_str'].export_IGES()
+        bse.vec['cp_str'].export_STL(stl_mesh_filename)
+        
+        pgm.meshStructure()
+        visualize_geomach_geometry('bwb_str.bdf','bwb_str.plt')
