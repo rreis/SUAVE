@@ -38,6 +38,31 @@ class Supersonic(PGMconfiguration):
         self.comps['vtail_fuse'] = PGMjunction(self, 'fuse', 'top', 'E', [0,20], 'vtail', 'right')
 
     def _define_params(self):
+         fuse = self.comps['fuse'].props
+        fuse['pos'].params[''] = PGMparameter(2, 3)
+        fuse['nor'].params[''] = PGMparameter(1, 1)
+        fuse['scl'].params[''] = PGMparameter(1, 1)
+        #fuse['flt'].params[''] = PGMparameter(2, 4, pos_u=[0.39,0.55])
+        fuse['pos'].params['nose'] = PGMparameter(3, 3, pos_u=[0,0.065,0.13], order_u=3)
+        fuse['scl'].params['nose'] = PGMparameter(3, 1, pos_u=[0,0.07,0.14], order_u=3)
+        fuse['scl'].params['tail'] = PGMparameter(2, 1, pos_u=[0.75,1.0])
+
+        lwing = self.comps['lwing'].props
+        lwing['pos'].params[''] = PGMparameter(1, 3)
+        #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
+        lwing['scl'].params[''] = PGMparameter(4, 1)
+        lwing['pos'].params['lin'] = PGMparameter(4, 3)
+        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+         vtail = self.comps['vtail'].props
+        vtail['pos'].params[''] = PGMparameter(1, 3)
+        vtail['pos'].params['lin'] = PGMparameter(3, 3)  ##update this for sections
+        vtail['nor'].params[''] = PGMparameter(1, 3)
+        vtail['scl'].params[''] = PGMparameter(3, 1)    #update this for sections
+        vtail['rot'].params[''] = PGMparameter(2, 3)
+        vtail['ogn'].params[''] = PGMparameter(1, 3)
+
+        '''
         fuse = self.comps['fuse'].props
         fuse['pos'].params[''] = PGMparameter(2, 3)
         fuse['nor'].params[''] = PGMparameter(1, 1)
@@ -55,7 +80,7 @@ class Supersonic(PGMconfiguration):
         lwing['pos'].params['lin'] = PGMparameter(4, 3)
         lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
         lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
-
+        
 #        rwing = self.comps['rwing'].props
 #        rwing['pos'].params[''] = PGMparameter(1, 3)
 #        rwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.65,1.0])
@@ -97,7 +122,7 @@ class Supersonic(PGMconfiguration):
         vtail['scl'].params[''] = PGMparameter(2, 1)
         vtail['rot'].params[''] = PGMparameter(2, 3)
         vtail['ogn'].params[''] = PGMparameter(1, 3)
-
+        '''
     def _define_dvs(self):
         dvs = self.dvs
 
