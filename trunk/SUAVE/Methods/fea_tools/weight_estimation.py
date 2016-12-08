@@ -282,11 +282,15 @@ class FEA_Weight:
         nastran_run.wait()
                                         
         nastran_run = 0
-        print "Waiting for nastran to run"             
+        print "Waiting for nastran to run"  
+        time.sleep(30)
         while(nastran_run == 0):
              #check if the scratch file is open
             
+            print "in wait loop"
             if not os.path.isfile(self.filename.Nastran_scratch_file):
+                time.sleep(30)
+                "breaking"
                 break
         
         #exit_status = nastran_run.returncode
