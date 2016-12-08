@@ -133,50 +133,50 @@ if __name__ == '__main__':
     #pgm.comps['ltail'].set_airfoil()
     #main wing
 
-    pgm.dvs['lwing_section_1_x'].data[0] = 16.
-    pgm.dvs['lwing_section_1_y'].data[0] = -1.
-    pgm.dvs['lwing_section_1_z'].data[0] = 2.6
+    pgm.dvs['lwing_section_1_x'].data[0] = 3.0
+    pgm.dvs['lwing_section_1_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_1_z'].data[0] = 0.0
     
-    pgm.dvs['lwing_section_2_x'].data[0] = 2.1
-    pgm.dvs['lwing_section_2_y'].data[0] = 0
-    pgm.dvs['lwing_section_2_z'].data[0] = 10.4
+    pgm.dvs['lwing_section_2_x'].data[0] = -0.0598932
+    pgm.dvs['lwing_section_2_y'].data[0] = 0.
+    pgm.dvs['lwing_section_2_z'].data[0] = 0.0128016
 
 
-    pgm.dvs['lwing_section_3_x'].data[0] = 4.1
-    pgm.dvs['lwing_section_3_y'].data[0] = 0.1
-    pgm.dvs['lwing_section_3_z'].data[0] = 23.4
+    pgm.dvs['lwing_section_3_x'].data[0] = 0.762654111638
+    pgm.dvs['lwing_section_3_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_3_z'].data[0] = 0.5248656
     
-    pgm.dvs['lwing_section_4_x'].data[0] = 6.1
-    pgm.dvs['lwing_section_4_y'].data[0] = 0.2
-    pgm.dvs['lwing_section_4_z'].data[0] = 34.6
+    pgm.dvs['lwing_section_4_x'].data[0] = 1.41084469537
+    pgm.dvs['lwing_section_4_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_4_z'].data[0] = 0.9089136
 
 
-    pgm.dvs['lwing_section_5_x'].data[0] = 8.1
-    pgm.dvs['lwing_section_5_y'].data[0] = 0.3
-    pgm.dvs['lwing_section_5_z'].data[0] = 46.8
+    pgm.dvs['lwing_section_5_x'].data[0] = 1.78976941457
+    pgm.dvs['lwing_section_5_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_5_z'].data[0] = 1.2097512
     
-    pgm.dvs['lwing_section_6_x'].data[0] = 10.1
-    pgm.dvs['lwing_section_6_y'].data[0] = 0.4
-    pgm.dvs['lwing_section_6_z'].data[0] = 57.0
+    pgm.dvs['lwing_section_6_x'].data[0] = 2.10671377134
+    pgm.dvs['lwing_section_6_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_6_z'].data[0] = 1.4657832
 
 
-    pgm.dvs['lwing_section_7_x'].data[0] = 12.1
-    pgm.dvs['lwing_section_7_y'].data[0] = 0.5
-    pgm.dvs['lwing_section_7_z'].data[0] = 68.2
+    pgm.dvs['lwing_section_7_x'].data[0] = 2.68018205445
+    pgm.dvs['lwing_section_7_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_7_z'].data[0] = 2.1378672
 
-    pgm.dvs['lwing_section_8_x'].data[0] = 14
-    pgm.dvs['lwing_section_8_y'].data[0] = 0.5
-    pgm.dvs['lwing_section_8_z'].data[0] = 70
+    pgm.dvs['lwing_section_8_x'].data[0] = 3.60481859336
+    pgm.dvs['lwing_section_8_y'].data[0] = 0.0
+    pgm.dvs['lwing_section_8_z'].data[0] = 3.2004
     
     
-    pgm.dvs['lwing_section_1_chord'].data[0] = 24.
-    pgm.dvs['lwing_section_2_chord'].data[0] = 24. #18.0
-    pgm.dvs['lwing_section_3_chord'].data[0] = 24. #8.0
-    pgm.dvs['lwing_section_4_chord'].data[0] = 24. #6.0
-    pgm.dvs['lwing_section_5_chord'].data[0] = 24. #5.0
-    pgm.dvs['lwing_section_6_chord'].data[0] = 24. #4.0
-    pgm.dvs['lwing_section_7_chord'].data[0] = 24. #3.5  
-    pgm.dvs['lwing_section_8_chord'].data[0] = 24. #3.5  
+    pgm.dvs['lwing_section_1_chord'].data[0] = 3.048
+    pgm.dvs['lwing_section_2_chord'].data[0] = 3.2875728
+    pgm.dvs['lwing_section_3_chord'].data[0] = 2.4384
+    pgm.dvs['lwing_section_4_chord'].data[0] = 1.6764
+    pgm.dvs['lwing_section_5_chord'].data[0] = 1.170432
+    pgm.dvs['lwing_section_6_chord'].data[0] = 0.762
+    pgm.dvs['lwing_section_7_chord'].data[0] = 0.35052
+    pgm.dvs['lwing_section_8_chord'].data[0] = 0.1  
 
     pgm.compute_all()
 
