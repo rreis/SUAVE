@@ -41,8 +41,8 @@ class HWB(PGMconfiguration):
             dvs['lwing_section_' + str(i+1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (i,0))
             for j in range(0,3):
                 dvs['lwing_section_'+str(i+1)+dim_tags[j]] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', 'lin', (i,j))
+                print 'lwing_section_'+str(i+1)+dim_tags[j]
                 
-
 
 
 

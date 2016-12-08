@@ -275,10 +275,10 @@ def vehicle_setup():
     #new nastran parameters
     vehicle.wing_fea = [0]
     vehicle.fuselage_fea = None
-    vehicle.no_of_intersections = 3
-    vehicle.no_of_miscellaneous = 4
+    vehicle.no_of_intersections = 0
+    vehicle.no_of_miscellaneous = 0
     vehicle.fea_type = "BWB"
-    vehicle.miscellaneous_tag=None["lwing_i_i1","lwing_i_i2","fus_Misc_1","fus_Misc_2"]
+    vehicle.miscellaneous_tag=None#["lwing_i_i1","lwing_i_i2","fus_Misc_1","fus_Misc_2"]
     vehicle.intersection_tag=None#["lwing_fuse","ltail_fuse","vtail_fuse"]
     dv_val = 12
 

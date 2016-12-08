@@ -221,9 +221,15 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.meshStructure()
         visualize_geomach_geometry('supersonic_str.bdf','supersonic_str.plt')        
     elif(aircraft.type=='BWB'):
-        pgm = Conventional5()
+        pgm = HBW()
         bse = pgm.initialize()
-        
+        for i in range(1,8): 
+            dvs['lwing_section_' + str(i+1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (i,0))
+            for j in range(0,3):
+                dvs['lwing_section_'+str(i+1)+dim_tags[j]] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', 'lin', (i,j))
+                
+
+        '''
         pgm.comps['lwing'].set_airfoil('rae2822.dat')
         pgm.comps['ltail'].set_airfoil()
         pgm.dvs['lwing_section_1_x'].data[0] = aircraft.main_wing[0].main_wing_section[0].root_origin[0] #16.
@@ -251,4 +257,4 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm.dvs['lwing_section_2_chord'].data[0] = aircraft.main_wing[0].main_wing_section[1].root_chord # 4.5
         pgm.dvs['lwing_section_3_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].root_chord # 1.2
         pgm.dvs['lwing_section_4_chord'].data[0] = aircraft.main_wing[0].main_wing_section[2].tip_chord # 1.2
-        
+        '''

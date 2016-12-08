@@ -1,5 +1,6 @@
 from geomach_geometry import geometry_generation
 from conventional5 import Conventional5
+from HBW import HBW
 
 import classes
 from class_structure import grid
