@@ -408,6 +408,7 @@ def vehicle_setup():
     
     wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].root_origin+\
     wing_section[3].root_origin+wing_section[4].root_origin + wing_section[5].root_origin +  wing_section[6].root_origin +wing_section[6].tip_origin
+    wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
     
     #new nastran parameters (note nastran uses x, z, y coordinate system
