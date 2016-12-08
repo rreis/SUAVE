@@ -23,8 +23,8 @@ class HWB(PGMconfiguration):
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
-        lwing['scl'].params[''] = PGMparameter(num_sections, 1)
-        lwing['pos'].params['lin'] = PGMparameter(num_sections, 3)
+        lwing['scl'].params[''] = PGMparameter(num_sections-1, 1)
+        lwing['pos'].params['lin'] = PGMparameter(num_sections-1, 3)
 #        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 #        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
@@ -49,8 +49,8 @@ class HWB(PGMconfiguration):
 
     def _compute_params(self):
         num_sections = self.dvs.num_sections
-        initial_scls = [0]*num_sections
-        initial_pos = [[0]*3]*num_sections
+        initial_scls = [0]*(num_sections-1)
+        initial_pos = [[0]*3]*(num_sections-1)
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
         lwing['scl'].params[''].val(initial_scls)
