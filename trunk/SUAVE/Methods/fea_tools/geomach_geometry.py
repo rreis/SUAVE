@@ -231,15 +231,16 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
             if i<num_sections-1:
                 pgm.dvs['lwing_section_'+str(i+1)+'_chord'].data[0] = aircraft.main_wing[0].main_wing_section[i].root_chord
                 print 'lwing_section_'+str(i+1)+'_chord',aircraft.main_wing[0].main_wing_section[i].root_chord
+            
             else:
                 print 'lwing_section_'+str(i+1)+'_chord',aircraft.main_wing[0].main_wing_section[i].tip_chord
                 pgm.dvs['lwing_section_'+str(i+1)+'_chord'].data[0] = aircraft.main_wing[0].main_wing_section[i].tip_chord
             for j in range(0,3):
                 if i<num_sections-1:
-                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
+                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]].data[0] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
                     print 'lwing_section_'+str(i+1)+dim_tags[j],aircraft.main_wing[0].main_wing_section[i].root_origin[j]
                 else:
-                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
+                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]].data[0] = aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
                     print 'lwing_section_'+str(i+1)+dim_tags[j],aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
 #=======
 #        for i in range(0,num_sections): 
