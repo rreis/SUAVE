@@ -224,18 +224,18 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
     elif(aircraft.type=='BWB'):
         pgm = HWB()
         bse = pgm.initialize()
-        num_sections =  pgm.dvs.num_sections 
+        num_sections =  self.num_sections 
         dim_tags = ['_x','_y','_z']
     #<<<<<<< HEAD
-        for i in range(0,8):
-            if i<7:
+        for i in range(0,num_sections):
+            if i<num_sections-1:
                 pgm.dvs['lwing_section_'+str(i+1)+'_chord'].data[0] = aircraft.main_wing[0].main_wing_section[i].root_chord
                 print 'lwing_section_'+str(i+1)+'_chord',aircraft.main_wing[0].main_wing_section[i].root_chord
             else:
                 print 'lwing_section_'+str(i+1)+'_chord',aircraft.main_wing[0].main_wing_section[i].tip_chord
                 pgm.dvs['lwing_section_'+str(i+1)+'_chord'].data[0] = aircraft.main_wing[0].main_wing_section[i].tip_chord
             for j in range(0,3):
-                if i<7:
+                if i<num_sections-1:
                     pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
                     print 'lwing_section_'+str(i+1)+dim_tags[j],aircraft.main_wing[0].main_wing_section[i].root_origin[j]
                 else:
