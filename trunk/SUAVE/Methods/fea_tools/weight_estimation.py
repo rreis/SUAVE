@@ -77,8 +77,8 @@ class FEA_Weight:
         self.filename.geomach_output_orig = self.filename.geomach_output
     
         rank = 0
-        comm = MPI.COMM_WORLD
-        rank = comm.Get_rank()
+        #comm = MPI.COMM_WORLD
+        #rank = comm.Get_rank()
     
         temp_output = self.filename.geomach_output.split('.')
         #print self.filename.geomach_output,temp_output
