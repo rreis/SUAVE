@@ -143,25 +143,73 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = SUAVE.Analyses.Vehicle()
-
+    
+    # ------------------------------------------------------------------
+    #  External Module
+    external = SUAVE.Analyses.External.UADF()
+    
+    filenames = Filenames()
+    
+    filenames.Nastran_sol200 = "bwb_opt.bdf"
+    filenames.Nastran_f06 ="bwb_opt.f06"
+    filenames.geomach_output = "bwb_str.bdf"
+    filenames.geomach_structural_surface_grid_points = "pt_str_surf.dat"
+    filenames.geomach_stl_mesh = 'bwb.stl'
+    filenames.tacs_load = "geomach_tacs_load_conventional.txt"
+    filenames.aero_load = "geomach_load_aero.txt"
+    filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
+    filenames.nastran_scratch_file = "scratch"
+    local_dir = os.getcwd()
+    SBW_wing = FEA_Weight(filenames,local_dir)
+    
+    #the nastran path on zion" 
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
+    
+    external.vehicle  = vehicle
+    external.external = SBW_wing
+    analyses.append(external)
+    
     # ------------------------------------------------------------------
     #  Basic Geometry Relations
     sizing = SUAVE.Analyses.Sizing.Sizing()
     sizing.features.vehicle = vehicle
+    
     analyses.append(sizing)
-
+    
+    # Geometry specify
+    geometry = SUAVE.Analyses.Geometry.UADF()
+    #geometry = SUAVE.Analyses.Geometry.Geometry()
+    geometry.vehicle = vehicle
+    geometry.external = external.external
+    analyses.append(geometry)
+    
     # ------------------------------------------------------------------
     #  Weights
-    weights = SUAVE.Analyses.Weights.Weights()
+    #weights = SUAVE.Analyses.Weights.Weights()
+    
+    weights = SUAVE.Analyses.Weights.UADF()
     weights.vehicle = vehicle
+    weights.external = external.external
     analyses.append(weights)
+
+#    # ------------------------------------------------------------------
+#    #  Basic Geometry Relations
+#    sizing = SUAVE.Analyses.Sizing.Sizing()
+#    sizing.features.vehicle = vehicle
+#    analyses.append(sizing)
+#
+#    # ------------------------------------------------------------------
+#    #  Weights
+#    weights = SUAVE.Analyses.Weights.Weights()
+#    weights.vehicle = vehicle
+#    analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = SUAVE.Analyses.Aerodynamics.Fidelity_Zero()
     aerodynamics.geometry = vehicle
-
     aerodynamics.settings.drag_coefficient_increment = 0.0000
+    aerodynamics.settings.aircraft_span_efficiency_factor = 1.0
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
@@ -171,9 +219,9 @@ def base_analysis(vehicle):
     analyses.append(stability)
 
     # ------------------------------------------------------------------
-    #  Energy
-    energy= SUAVE.Analyses.Energy.Energy()
-    energy.network = vehicle.propulsors 
+    #  Energy Analysis
+    energy  = SUAVE.Analyses.Energy.Energy()
+    energy.network=vehicle.propulsors
     analyses.append(energy)
 
     # ------------------------------------------------------------------
