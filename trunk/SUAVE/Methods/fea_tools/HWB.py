@@ -29,7 +29,7 @@ class HWB(PGMconfiguration):
 
     def _define_dvs(self):
         dvs = self.dvs
-        num_sections = 7
+        num_sections = dvs.num_sections
         #main wing
         dim_tags = ['_x','_y','_z']
         
