@@ -224,11 +224,9 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm = HWB()
         bse = pgm.initialize()
         dim_tags = ['_x','_y','_z']
-        for i in range(1,8): 
-            dvs['lwing_section_' + str(i+1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (i,0))
+        for i in range(0,7): 
             for j in range(0,3):
-                dvs['lwing_section_'+str(i+1)+dim_tags[j]] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', 'lin', (i,j))
-                
+                dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[i].main_wing_section[0].root_origin[j]
 
         '''
         pgm.comps['lwing'].set_airfoil('rae2822.dat')
