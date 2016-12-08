@@ -628,10 +628,10 @@ class aircraft:
 
 
 
-
+            '''
             for isurr in range(0,5):
                 print self.main_wing[1].chord_surrogate(float(isurr))
-    
+            '''
             
             print "Wing : ",wng,"\n"
             print "wing_box_start_x : ",self.main_wing[wng].wing_box_start_x,"\n"
