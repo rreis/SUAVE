@@ -11,15 +11,18 @@ import numpy as np
 
 class HWB(PGMconfiguration):
 
-
+    self.nplanes = 10
+    self.dvs.num_sections = 7
+    
     def _define_comps(self):
-        self.comps['lwing'] = PGMwing(num_x=10, num_z=10, left_closed=False)
+        nplanes = self.nplanes
+        self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=False)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
 
 
     def _define_params(self):
-        num_sections = 7
-        self.dvs.num_sections = num_sections
+       
+        num_sections = self.dvs.num_sections 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
@@ -63,9 +66,10 @@ class HWB(PGMconfiguration):
         return [], [], []
 
     def _set_bspline_options(self):
+        nplanes = self.nplanes 
         comps = self.comps
-        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [40,40,40,40]) #[6,4,4,20] #[36,24,24,120]
-        comps['lwing'].faces['low'].set_option('num_cp', 'u', [40,40,40,40])
+        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [40]*nplanes) #[6,4,4,20] #[36,24,24,120]
+        comps['lwing'].faces['low'].set_option('num_cp', 'u', [40]*nplanes)
 
     def meshStructure(self):
         afm = Airframe(self, 1.0) #0.2)
