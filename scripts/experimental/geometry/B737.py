@@ -636,6 +636,8 @@ def vehicle_setup():
     wing_section[1].root_origin = wing_section[0].tip_origin
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
     wing_section[1].tip_origin  = wing_rel_pos+wing_section[1].root_origin 
+    
+    wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[1].tip_origin
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
     
