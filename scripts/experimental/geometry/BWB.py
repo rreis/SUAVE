@@ -49,8 +49,6 @@ from SUAVE.Methods.fea_tools.translate_to_geomach_geometry import translate_to_g
 
 def main():
 
-    def main():
-
     # define the problem
     configs, analyses = full_setup()
 
@@ -101,7 +99,7 @@ def full_setup():
     configs  = configs_setup(vehicle)
     
     # Write the vsp file
-    write(vehicle, 'BWB')
+    #write(vehicle, 'BWB')
 
     # vehicle analyses
     configs_analyses = analyses_setup(configs)
@@ -145,25 +143,73 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = SUAVE.Analyses.Vehicle()
-
+    
+    # ------------------------------------------------------------------
+    #  External Module
+    external = SUAVE.Analyses.External.UADF()
+    
+    filenames = Filenames()
+    
+    filenames.Nastran_sol200 = "bwb_opt.bdf"
+    filenames.Nastran_f06 ="bwb_opt.f06"
+    filenames.geomach_output = "bwb_str.bdf"
+    filenames.geomach_structural_surface_grid_points = "pt_str_surf.dat"
+    filenames.geomach_stl_mesh = 'bwb.stl'
+    filenames.tacs_load = "geomach_tacs_load_conventional.txt"
+    filenames.aero_load = "geomach_load_aero.txt"
+    filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
+    filenames.nastran_scratch_file = "scratch"
+    local_dir = os.getcwd()
+    SBW_wing = FEA_Weight(filenames,local_dir)
+    
+    #the nastran path on zion" 
+    SBW_wing.nastran_path ="/opt/MSC.Software/NASTRAN/bin/msc20131"  #"nastran" #"nast20140"
+    
+    external.vehicle  = vehicle
+    external.external = SBW_wing
+    analyses.append(external)
+    
     # ------------------------------------------------------------------
     #  Basic Geometry Relations
     sizing = SUAVE.Analyses.Sizing.Sizing()
     sizing.features.vehicle = vehicle
+    
     analyses.append(sizing)
-
+    
+    # Geometry specify
+    geometry = SUAVE.Analyses.Geometry.UADF()
+    #geometry = SUAVE.Analyses.Geometry.Geometry()
+    geometry.vehicle = vehicle
+    geometry.external = external.external
+    analyses.append(geometry)
+    
     # ------------------------------------------------------------------
     #  Weights
-    weights = SUAVE.Analyses.Weights.Weights()
+    #weights = SUAVE.Analyses.Weights.Weights()
+    
+    weights = SUAVE.Analyses.Weights.UADF()
     weights.vehicle = vehicle
+    weights.external = external.external
     analyses.append(weights)
+
+#    # ------------------------------------------------------------------
+#    #  Basic Geometry Relations
+#    sizing = SUAVE.Analyses.Sizing.Sizing()
+#    sizing.features.vehicle = vehicle
+#    analyses.append(sizing)
+#
+#    # ------------------------------------------------------------------
+#    #  Weights
+#    weights = SUAVE.Analyses.Weights.Weights()
+#    weights.vehicle = vehicle
+#    analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = SUAVE.Analyses.Aerodynamics.Fidelity_Zero()
     aerodynamics.geometry = vehicle
-
     aerodynamics.settings.drag_coefficient_increment = 0.0000
+    aerodynamics.settings.aircraft_span_efficiency_factor = 1.0
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
@@ -173,9 +219,9 @@ def base_analysis(vehicle):
     analyses.append(stability)
 
     # ------------------------------------------------------------------
-    #  Energy
-    energy= SUAVE.Analyses.Energy.Energy()
-    energy.network = vehicle.propulsors 
+    #  Energy Analysis
+    energy  = SUAVE.Analyses.Energy.Energy()
+    energy.network=vehicle.propulsors
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -227,8 +273,8 @@ def vehicle_setup():
     vehicle.systems.accessories    = "medium range"
 
     #new nastran parameters
-    vehicle.wing_fea = [0,1,2]
-    vehicle.fuselage_fea = [0]
+    vehicle.wing_fea =1.
+    vehicle.fuselage_fea = None
     vehicle.no_of_intersections = 3
     vehicle.no_of_miscellaneous = 4
     vehicle.fea_type = "BWB"
@@ -288,7 +334,7 @@ def vehicle_setup():
     wing_section[0].type = 'wing_section'
 
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   =1.0786*wing.chords.root
+    wing_section[0].tip_chord   = 1.0786*wing.chords.root
     wing_section[0].span        = .004*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
     wing_section[0].sweep       = 0.* Units.degrees
     wing_section[0].root_origin = wing.origin
@@ -313,6 +359,7 @@ def vehicle_setup():
     wing_section[1].span        = (.164-.004)*wing.spans.projected*.5
     wing_section[1].sweep       = 50.*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
+    wing_section[1].root_origin = wing_section[0].tip_origin 
     wing_section[1].tip_origin  = wing_rel_pos + wing_section[1].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     #airfoil = SUAVE.Components.Wings.Airfoils.Airfoil()
@@ -340,6 +387,7 @@ def vehicle_setup():
     wing_section[2].span        = (.284-.164)*wing.spans.projected*.5
     wing_section[2].sweep       = 50*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
+    wing_section[2].root_origin = wing_section[1].tip_origin 
     wing_section[2].tip_origin  = wing_rel_pos + wing_section[2].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -365,6 +413,7 @@ def vehicle_setup():
     wing_section[3].span        = (.378-.284)*wing.spans.projected*.5
     wing_section[3].sweep       = 40*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[3])
+    wing_section[3].root_origin = wing_section[2].tip_origin 
     wing_section[3].tip_origin  = wing_rel_pos + wing_section[3].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -387,6 +436,7 @@ def vehicle_setup():
     wing_section[4].span        = (.458-.378)*wing.spans.projected*.5
     wing_section[4].sweep       = 40*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[4])
+    wing_section[4].root_origin = wing_section[3].tip_origin 
     wing_section[4].tip_origin  = wing_rel_pos + wing_section[4].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -410,6 +460,7 @@ def vehicle_setup():
     wing_section[5].span        = (.668-.458)*wing.spans.projected*.5
     wing_section[5].sweep       = 35*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[5])
+    wing_section[5].root_origin = wing_section[4].tip_origin 
     wing_section[5].tip_origin  = wing_rel_pos + wing_section[5].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -432,6 +483,7 @@ def vehicle_setup():
     wing_section[6].span        = (.877-.668)*wing.spans.projected*.5
     wing_section[6].sweep       = 35*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[6])
+    wing_section[6].root_origin = wing_section[5].tip_origin 
     wing_section[6].tip_origin  = wing_rel_pos + wing_section[6].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -455,6 +507,7 @@ def vehicle_setup():
     wing_section[7].span        = (1-.877)*wing.spans.projected*.5
     wing_section[7].sweep       = 45*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[7])
+    wing_section[7].root_origin = wing_section[6].tip_origin 
     wing_section[7].tip_origin  = wing_rel_pos + wing_section[7].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
@@ -486,9 +539,6 @@ def vehicle_setup():
     vehicle.append_component(wing)
     
     
-    # add to vehicle
-    vehicle.append_component(wing)
-
 
     # ------------------------------------------------------------------
     #   Turbofan Network
@@ -1013,8 +1063,8 @@ def mission_setup(analyses):
 
     # base segment
     base_segment = Segments.Segment()
-    base_segment.process.iterate.conditions.stability     = SUAVE.Methods.skip
-    base_segment.process.finalize.post_process.stability  = SUAVE.Methods.skip
+    #base_segment.process.iterate.conditions.stability     = SUAVE.Methods.skip
+    #base_segment.process.finalize.post_process.stability  = SUAVE.Methods.skip
 
 
     # ------------------------------------------------------------------

@@ -8,7 +8,7 @@
 import numpy as np
 import shutil
 import argparse
-from mpi4py import MPI
+#from mpi4py import MPI
 import os
 import subprocess
 
@@ -77,8 +77,8 @@ class FEA_Weight:
         self.filename.geomach_output_orig = self.filename.geomach_output
     
         rank = 0
-        comm = MPI.COMM_WORLD
-        rank = comm.Get_rank()
+        #comm = MPI.COMM_WORLD
+        #rank = comm.Get_rank()
     
         temp_output = self.filename.geomach_output.split('.')
         #print self.filename.geomach_output,temp_output
@@ -273,10 +273,10 @@ class FEA_Weight:
         print 'nastran_call =', nastran_call
         #nastran_run = subprocess.Popen([nastran_call,self.filename.Nastran_sol200],stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
-        #nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200]) #,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+        nastran_run = subprocess.Popen([self.nastran_path,'nastran', self.filename.Nastran_sol200]) #,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
     
         print "Calling nastran"
-        nastran_run = subprocess.Popen(['nast20140', self.filename.Nastran_sol200]) #,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
+        #nastran_run = subprocess.Popen(['nast20140', self.filename.Nastran_sol200]) #,stdout=sys.stdout,stderr=sys.stderr,stdin=subprocess.PIPE)
         
     
         nastran_run.wait()
