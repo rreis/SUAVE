@@ -18,7 +18,8 @@ class HWB(PGMconfiguration):
 
 
     def _define_params(self):
-        num_sections = self.dvs.num_sections
+        num_sections = 7
+        self.dvs.num_sections = num_sections
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
