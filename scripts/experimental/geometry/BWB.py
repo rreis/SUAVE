@@ -60,7 +60,7 @@ def main():
     mission = analyses.missions
     #results = mission.evaluate()
     
-    configs.base.type ='Conventional'
+    configs.base.type ='BWB'
     external = analyses.configs.base.external
     aircraft_external = external.evaluate()
     
@@ -273,13 +273,13 @@ def vehicle_setup():
     vehicle.systems.accessories    = "medium range"
 
     #new nastran parameters
-    vehicle.wing_fea =1.
+    vehicle.wing_fea = [0]
     vehicle.fuselage_fea = None
     vehicle.no_of_intersections = 3
     vehicle.no_of_miscellaneous = 4
     vehicle.fea_type = "BWB"
-    vehicle.miscellaneous_tag=["lwing_i_i1","lwing_i_i2","fus_Misc_1","fus_Misc_2"]
-    vehicle.intersection_tag=["lwing_fuse","ltail_fuse","vtail_fuse"]
+    vehicle.miscellaneous_tag=None["lwing_i_i1","lwing_i_i2","fus_Misc_1","fus_Misc_2"]
+    vehicle.intersection_tag=None#["lwing_fuse","ltail_fuse","vtail_fuse"]
     dv_val = 12
 
 
