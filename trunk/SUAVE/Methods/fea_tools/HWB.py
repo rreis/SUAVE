@@ -6,30 +6,37 @@ from GeoMACH.PGM.core import PGMconfiguration, PGMparameter, PGMdv
 from GeoMACH.PGM.components import PGMwing, PGMbody, PGMshell
 from GeoMACH.PGM.components import PGMjunction, PGMtip, PGMcone
 from GeoMACH.PSM import Airframe
-import numpy
+import numpy as np
 
 
 class HWB(PGMconfiguration):
-
-
+    
+    
+    
+    
     def _define_comps(self):
-        self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=False)
+        self.nplanes = 10
+        self.num_sections = 7
+        nplanes = self.nplanes
+        self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=False)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
 
 
     def _define_params(self):
+       
+        num_sections = self.num_sections 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
-        lwing['scl'].params[''] = PGMparameter(8, 1)
-        lwing['pos'].params['lin'] = PGMparameter(8, 3)
-#        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
-#        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        lwing['scl'].params[''] = PGMparameter(num_sections, 1)
+        lwing['pos'].params['lin'] = PGMparameter(num_sections, 3)
+        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
 
     def _define_dvs(self):
         dvs = self.dvs
-
+        num_sections = self.num_sections
         #main wing
         dim_tags = ['_x','_y','_z']
         
@@ -37,7 +44,7 @@ class HWB(PGMconfiguration):
         dvs['lwing_section_1_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
         dvs['lwing_section_1_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
         dvs['lwing_section_' + str(1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
-        for i in range(1,8):
+        for i in range(1,num_sections):
             dvs['lwing_section_' + str(i+1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (i,0))
             for j in range(0,3):
                 dvs['lwing_section_'+str(i+1)+dim_tags[j]] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', 'lin', (i,j))
@@ -46,26 +53,33 @@ class HWB(PGMconfiguration):
 
 
     def _compute_params(self):
+        num_sections = self.num_sections
+        initial_scls = [0]*num_sections
+        initial_pos = [[0]*3]*num_sections
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
-        lwing['scl'].params[''].val([10,4.5,4.2,4.0,3.9,3.5,1.2,.8])
-        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,4.4,23.3]])
+        lwing['scl'].params[''].val(initial_scls)
+        lwing['pos'].params['lin'].val(initial_pos)
+
+        #lwing['scl'].params[''].val([10,4.5,4.2,4.0,3.9,3.5,1.2,.8])
+        #lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,4.4,23.3]])
 
         return [], [], []
 
     def _set_bspline_options(self):
+        nplanes = self.nplanes 
         comps = self.comps
-        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [40,40,40,40]) #[6,4,4,20] #[36,24,24,120]
-        comps['lwing'].faces['low'].set_option('num_cp', 'u', [40,40,40,40])
+        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [40]*nplanes) #[6,4,4,20] #[36,24,24,120]
+        comps['lwing'].faces['low'].set_option('num_cp', 'u', [40]*nplanes)
 
     def meshStructure(self):
-        afm = Airframe(self, 1) #0.2)
+        afm = Airframe(self, 1.0) #0.2)
 
 
     #main wing leading section ribs
-        idims = numpy.linspace(0.45,0.9,7)
-        jdims = numpy.linspace(0,1,16)
+        idims = np.linspace(0.45,0.9,7)
+        jdims = np.linspace(0,1,16)
         for i in range(idims.shape[0]-1):
             for j in range(jdims.shape[0]):
                 afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
@@ -75,7 +89,7 @@ class HWB(PGMconfiguration):
 
 
         #main wing leading section spars
-
+        '''
         for i in range(idims.shape[0]):
             for j in range(jdims.shape[0]-1):
                 if i is 0 or i is idims.shape[0]-1:
@@ -92,18 +106,17 @@ class HWB(PGMconfiguration):
 #                    afm.addVertFlip('rwing_i_sb::'+str(i)+':'+str(j),'rwing',[idims[i],1-jdims[j]],[idims[i],1-jdims[j+1]],w=[0.15,0])
 
 
-
-
+        
 
 
         #wing box lower/back edge
-        idims = numpy.linspace(0.18,0.45,6)
+        idims = np.linspace(0.18,0.45,6)
         for j in range(idims.shape[0]-1):
             afm.addVertFlip('lwing_i_i1::'+str(j)+':0','lwing',[idims[j],jdims[j]],[idims[j+1],jdims[j+1]])
             #afm.addVertFlip('rwing_i_i1::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[idims[j+1],1-jdims[j+1]])
             afm.addVertFlip('lwing_i_i2::'+str(j)+':0','lwing',[idims[j],jdims[j]],[0.45,jdims[j]])
         #afm.addVertFlip('rwing_i_i2::'+str(j)+':0','rwing',[idims[j],1-jdims[j]],[0.45,1-jdims[j]])
-
+        '''
 
 
 
@@ -164,6 +177,7 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_7_y'].data[0] = 0.0
     pgm.dvs['lwing_section_7_z'].data[0] = 2.1378672
 
+#<<<<<<< HEAD
     pgm.dvs['lwing_section_8_x'].data[0] = 3.60481859336
     pgm.dvs['lwing_section_8_y'].data[0] = 0.0
     pgm.dvs['lwing_section_8_z'].data[0] = 3.2004
@@ -177,6 +191,18 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_6_chord'].data[0] = 0.762
     pgm.dvs['lwing_section_7_chord'].data[0] = 0.35052
     pgm.dvs['lwing_section_8_chord'].data[0] = 0.1  
+#=======
+#    
+#    
+#    pgm.dvs['lwing_section_1_chord'].data[0] = 24.
+#    pgm.dvs['lwing_section_2_chord'].data[0] = 24. #18.0
+#    pgm.dvs['lwing_section_3_chord'].data[0] = 24. #8.0
+#    pgm.dvs['lwing_section_4_chord'].data[0] = 24. #6.0
+#    pgm.dvs['lwing_section_5_chord'].data[0] = 24. #5.0
+#    pgm.dvs['lwing_section_6_chord'].data[0] = 24. #4.0
+#    pgm.dvs['lwing_section_7_chord'].data[0] = 24. #3.5  
+#
+#>>>>>>> ebd0051395ffd0bab5b2c5af221a991138bf0680
 
     pgm.compute_all()
 

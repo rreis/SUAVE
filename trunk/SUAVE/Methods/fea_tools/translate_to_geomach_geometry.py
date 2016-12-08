@@ -38,4 +38,5 @@ def translate_to_geomach_geometry(wing):
         coords               = section.tip_origin
         section.tip_origin   = np.array([coords[0], coords[2], coords[1]])
         print 'section.root_origin=', section.root_origin
+    
     return

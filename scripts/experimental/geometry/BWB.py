@@ -295,12 +295,12 @@ def vehicle_setup():
     wing.thickness_to_chord      = 0.14
     wing.taper                   = 0.1
     wing.span_efficiency         = 0.9
-    wing.dihedral                = 0.0 * Units.degrees
+    wing.dihedral                = 2.5 * Units.degrees
 
-    wing.spans.projected         = 21*Units.feet#18.85 #38.7298
+    wing.spans.projected         = 289.0 * Units.feet    
 
-    wing.chords.root             = 10.*Units.feet#16.
-    wing.chords.tip              = .1
+    wing.chords.root             = 145.0 * Units.feet
+    wing.chords.tip              = 1.0  * Units.feet
     wing.chords.mean_aerodynamic = (2./3.)*(wing.chords.root + wing.chords.root -(wing.chords.root*wing.chords.root)/(wing.chords.root+wing.chords.root))
 
     wing.areas.reference         = 74.9
@@ -318,46 +318,27 @@ def vehicle_setup():
     wing.dynamic_pressure_ratio  = 1.0
     
     # Sections
-    wing.no_of_sections          = 8
+    wing.no_of_sections          = 7
     #nose
-    '''
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_1'
-    segment.percent_span_location = 0 
-    segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 1.
-    segment.dihedral_outboard     = 0. * Units.deg
-    segment.sweeps.quarter_chord  = 0*Units.deg
-    wing.Segments.append(segment)
-    '''
+
     wing_section = [SUAVE.Components.Wings.Wing_Section() for mnw in range(wing.no_of_sections)]
     wing_section[0].type = 'wing_section'
 
     wing_section[0].root_chord  = wing.chords.root
-    wing_section[0].tip_chord   = 1.0786*wing.chords.root
-    wing_section[0].span        = .004*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
-    wing_section[0].sweep       = 0.* Units.degrees
+    wing_section[0].tip_chord   = .921*wing.chords.root
+    wing_section[0].span        = .1*wing.spans.projected*.5 #for some reason, inner section doesn't use half-span
+    wing_section[0].sweep       = 25.* Units.degrees
     wing_section[0].root_origin = wing.origin
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[0])
     wing_section[0].tip_origin  = wing_rel_pos#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
     
-    '''
-    #first fuselage section
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_2'
-    segment.percent_span_location = .004
-    segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 1.0786 #looks better
-    segment.dihedral_outboard     = 3. * Units.deg
-    segment.sweeps.quarter_chord  = 50.*Units.deg
-    '''
     wing_section[1].type        =  'wing_section'
     wing_section[1].root_chord  = wing_section[0].tip_chord*1.
-    wing_section[1].tip_chord   = .8*wing.chords.root
-    wing_section[1].span        = (.164-.004)*wing.spans.projected*.5
-    wing_section[1].sweep       = 50.*Units.degrees
+    wing_section[1].tip_chord   = .76*wing.chords.root
+    wing_section[1].span        = (.138-.1)*wing.spans.projected*.5
+    wing_section[1].sweep       = 52.5*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[1])
     wing_section[1].root_origin = wing_section[0].tip_origin 
     wing_section[1].tip_origin  = wing_rel_pos + wing_section[1].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
@@ -369,150 +350,64 @@ def vehicle_setup():
     #segment.append_airfoil(airfoil)
     
     
-    '''
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_3'
-    segment.percent_span_location = .164
-    segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = .8
-    segment.dihedral_outboard     = 3. * Units.deg
-    segment.sweeps.quarter_chord  = 50. * Units.deg
-    
-    #section = SUAVE.Components.Wings.Airfoils.Airfoil()
-    #section.airfoil = 'my_airfoil.dat' # Or enter a NACA number
-    '''
+
     wing_section[2].type        =  'wing_section'
     wing_section[2].root_chord  = wing_section[1].tip_chord*1.
-    wing_section[2].tip_chord   = .55*wing.chords.root
-    wing_section[2].span        = (.284-.164)*wing.spans.projected*.5
-    wing_section[2].sweep       = 50*Units.degrees
+    wing_section[2].tip_chord   = .624*wing.chords.root
+    wing_section[2].span        = (.221-.138)*wing.spans.projected*.5
+    wing_section[2].sweep       = 36.9*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[2])
     wing_section[2].root_origin = wing_section[1].tip_origin 
     wing_section[2].tip_origin  = wing_rel_pos + wing_section[2].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
     
-    #segment.append(section)
-    #wing.Segments.append(segment)    
-    '''
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_4'
-    segment.percent_span_location = .284
-    segment.twist                 = -1. * Units.deg
-    segment.root_chord_percent    = 0.55
-    segment.dihedral_outboard     = 3. * Units.deg
-    segment.sweeps.quarter_chord  = 40. * Units.deg
-    #section = SUAVE.Components.Wings.Airfoils.Airfoil()
-    #section.airfoil = 'my_airfoil.dat' # Or enter a NACA number
-    wing.Segments.append(segment)
-    '''
-    
     wing_section[3].type        =  'wing_section'
     wing_section[3].root_chord  = wing_section[2].tip_chord*1.
-    wing_section[3].tip_chord   = .384*wing.chords.root
-    wing_section[3].span        = (.378-.284)*wing.spans.projected*.5
-    wing_section[3].sweep       = 40*Units.degrees
+    wing_section[3].tip_chord   = .314*wing.chords.root
+    wing_section[3].span        = (.457-.221)*wing.spans.projected*.5
+    wing_section[3].sweep       = 30.4*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[3])
     wing_section[3].root_origin = wing_section[2].tip_origin 
     wing_section[3].tip_origin  = wing_rel_pos + wing_section[3].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
-    '''
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_5'
-    segment.percent_span_location = .378
-    segment.twist                 = -1. * Units.deg
-    segment.root_chord_percent    = 0.384
-    segment.dihedral_outboard     = 3. * Units.deg
-    segment.sweeps.quarter_chord  = 40. * Units.deg
-    #section = SUAVE.Components.Wings.Airfoils.Airfoil()
-    #section.airfoil = 'my_airfoil.dat' # Or enter a NACA number
-    wing.Segments.append(segment)
-    '''
-    
+  
     wing_section[4].type        =  'wing_section'
     wing_section[4].root_chord  = wing_section[3].tip_chord*1.
-    wing_section[4].tip_chord   = .25*wing.chords.root
-    wing_section[4].span        = (.458-.378)*wing.spans.projected*.5
-    wing_section[4].sweep       = 40*Units.degrees
+    wing_section[4].tip_chord   = .197*wing.chords.root
+    wing_section[4].span        = (.568-.457)*wing.spans.projected*.5
+    wing_section[4].sweep       = 30.85*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[4])
     wing_section[4].root_origin = wing_section[3].tip_origin 
     wing_section[4].tip_origin  = wing_rel_pos + wing_section[4].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
     
-    '''
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_6'
-    segment.percent_span_location = .458
-    segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 0.25
-    segment.dihedral_outboard     = 6. * Units.deg
-    segment.sweeps.quarter_chord  = 35. * Units.deg
-    #section = SUAVE.Components.Wings.Airfoils.Airfoil()
-    #section.airfoil = 'my_airfoil.dat' # Or enter a NACA number
-    wing.Segments.append(segment)
-    '''
-    
     wing_section[5].type        =  'wing_section'
     wing_section[5].root_chord  = wing_section[4].tip_chord*1.
-    wing_section[5].tip_chord   = .115*wing.chords.root
-    wing_section[5].span        = (.668-.458)*wing.spans.projected*.5
-    wing_section[5].sweep       = 35*Units.degrees
+    wing_section[5].tip_chord   = .086*wing.chords.root
+    wing_section[5].span        = (.97-.458)*wing.spans.projected*.5
+    wing_section[5].sweep       = 34.3*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[5])
     wing_section[5].root_origin = wing_section[4].tip_origin 
     wing_section[5].tip_origin  = wing_rel_pos + wing_section[5].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
-    
-    '''
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_7'
-    segment.percent_span_location = .668
-    segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 0.115
-    segment.dihedral_outboard     = 6. * Units.deg
-    segment.sweeps.quarter_chord  = 35. * Units.deg
-    #section = SUAVE.Components.Wings.Airfoils.Airfoil()
-    #section.airfoil = 'my_airfoil.dat' # Or enter a NACA number
-    wing.Segments.append(segment)
-    '''
+ 
     
     wing_section[6].type        =  'wing_section'
     wing_section[6].root_chord  = wing_section[5].tip_chord*1.
-    wing_section[6].tip_chord   = .1*wing.chords.root
-    wing_section[6].span        = (.877-.668)*wing.spans.projected*.5
-    wing_section[6].sweep       = 35*Units.degrees
+    wing_section[6].tip_chord   = wing.chords.tip
+    wing_section[6].span        = (1-.97)*wing.spans.projected*.5
+    wing_section[6].sweep       = 55*Units.degrees
     wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[6])
     wing_section[6].root_origin = wing_section[5].tip_origin 
     wing_section[6].tip_origin  = wing_rel_pos + wing_section[6].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
     
     
     
-    '''
-    #wingtip
-    segment = SUAVE.Components.Wings.Segment()
-    segment.tag                   = 'section_8'
-    segment.percent_span_location = .877
-    segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 0.1
-    segment.dihedral_outboard     = 80. * Units.deg
-    segment.sweeps.quarter_chord  = 45. * Units.deg
-    #section = SUAVE.Components.Wings.Airfoils.Airfoil()
-    #section.airfoil = 'my_airfoil.dat' # Or enter a NACA number
-    wing.Segments.append(segment)
-    '''
-    wing_section[7].type        =  'wing_section'
-    wing_section[7].root_chord  = wing_section[6].tip_chord*1.
-    wing_section[7].tip_chord   = wing.chords.tip
-    wing_section[7].span        = (1-.877)*wing.spans.projected*.5
-    wing_section[7].sweep       = 45*Units.degrees
-    wing_rel_pos                = find_tip_section_origin_from_chord_and_span(wing,wing_section[7])
-    wing_section[7].root_origin = wing_section[6].tip_origin 
-    wing_section[7].tip_origin  = wing_rel_pos + wing_section[7].root_origin#inner section uses relative tip origin#+wing_section[0].root_origin
-    
-    
     wing.tip_origin = wing.origin +wing_section[1].root_origin+wing_section[2].root_origin+\
-    wing_section[3].root_origin+wing_section[4].root_origin + wing_section[5].root_origin +  wing_section[6].root_origin  + wing_section[7].root_origin 
+    wing_section[3].root_origin+wing_section[4].root_origin + wing_section[5].root_origin +  wing_section[6].root_origin +wing_section[6].tip_origin
     wing.wing_sections = wing_section
     translate_to_geomach_geometry(wing)
     
@@ -549,11 +444,13 @@ def vehicle_setup():
     turbofan.tag = 'turbofan'
 
     # setup
-    turbofan.number_of_engines = 2.0
-    turbofan.bypass_ratio      = 5.4
-    turbofan.engine_length     = 2.71
-    turbofan.nacelle_diameter  = 2.05
-
+    turbofan.number_of_engines = 3.0
+    turbofan.bypass_ratio      = 8.1
+    turbofan.engine_length     = 289. * Units.inches
+    turbofan.nacelle_diameter  = 3.96 * Units.meters
+    #turbofan.cooling_ratio     = 1.0
+    turbofan.origin            = [[133.0 *Units.feet, 25.0*Units.feet, 5.0*Units.feet],[145.0 *Units.feet, 0.0*Units.feet, 5.0*Units.feet],[133.0 *Units.feet, -25.0*Units.feet, 5.0*Units.feet]]
+    
     # working fluid
     turbofan.working_fluid = SUAVE.Attributes.Gases.Air()
 
@@ -595,7 +492,7 @@ def vehicle_setup():
 
     # setup
     compressor.polytropic_efficiency = 0.91
-    compressor.pressure_ratio        = 1.14    
+    compressor.pressure_ratio        = 1.1    
 
     # add to network
     turbofan.append(compressor)
@@ -610,7 +507,7 @@ def vehicle_setup():
 
     # setup
     compressor.polytropic_efficiency = 0.91
-    compressor.pressure_ratio        = 13.415    
+    compressor.pressure_ratio        = 23.0  
 
     # add to network
     turbofan.append(compressor)
@@ -654,9 +551,9 @@ def vehicle_setup():
     combustor.tag = 'combustor'
 
     # setup
-    combustor.efficiency                = 0.99 
+    combustor.efficiency                = 1.0
     combustor.alphac                    = 1.0     
-    combustor.turbine_inlet_temperature = 1450
+    combustor.turbine_inlet_temperature = 1592
     combustor.pressure_ratio            = 0.95
     combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A()    
 
@@ -703,7 +600,7 @@ def vehicle_setup():
 
     # setup
     fan.polytropic_efficiency = 0.93
-    fan.pressure_ratio        = 1.7    
+    fan.pressure_ratio        = 1.58    
 
     # add to network
     turbofan.append(fan)
@@ -715,11 +612,12 @@ def vehicle_setup():
     thrust.tag ='compute_thrust'
 
     #total design thrust (includes all the engines)
-    thrust.total_design             = 2*24000. * Units.N #Newtons
-
+    thrust.total_design  = 2.0*512000 * Units.N
+    thrust.bypass_ratio  = 8.4
+    
     #design sizing conditions
-    altitude      = 35000.0*Units.ft
-    mach_number   = 0.78 
+    altitude      = 0. * Units.km
+    mach_number   = 0.01
     isa_deviation = 0.
 
     # add to network
