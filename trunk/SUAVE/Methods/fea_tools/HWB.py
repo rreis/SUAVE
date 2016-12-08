@@ -16,7 +16,7 @@ class HWB(PGMconfiguration):
     
     def _define_comps(self):
         self.nplanes = 4
-        self.num_sections = 7
+        self.num_sections = 4
         nplanes = self.nplanes
         self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=False)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
@@ -79,8 +79,8 @@ class HWB(PGMconfiguration):
 
     #main wing leading section ribs
         idims = np.linspace(0.45,0.9,7)
-        #jdims = np.linspace(0,1,16)
-        jdims = np.linspace(.4,1,6)
+        jdims = np.linspace(0,1,16)  #origin,1,number of ribs
+        #jdims = np.linspace(.4,1,6)
         for i in range(idims.shape[0]-1):
             for j in range(jdims.shape[0]):
                 afm.addVertFlip('lwing_r::'+str(i)+':'+str(j),'lwing',[idims[i],jdims[j]],[idims[i+1],jdims[j]])
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_4_y'].data[0] = 0.2
     pgm.dvs['lwing_section_4_z'].data[0] = 34.6
 
-
+    '''
     pgm.dvs['lwing_section_5_x'].data[0] = 8.1
     pgm.dvs['lwing_section_5_y'].data[0] = 0.3
     pgm.dvs['lwing_section_5_z'].data[0] = 46.8
@@ -187,7 +187,7 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_5_chord'].data[0] = 24. #5.0
     pgm.dvs['lwing_section_6_chord'].data[0] = 24. #4.0
     pgm.dvs['lwing_section_7_chord'].data[0] = 24. #3.5  
-
+    '''
 
     pgm.compute_all()
 
