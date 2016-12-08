@@ -37,7 +37,7 @@ class HWB(PGMconfiguration):
         dvs['lwing_section_1_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
         dvs['lwing_section_1_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
         dvs['lwing_section_' + str(1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
-        for i in range(0,8):
+        for i in range(1,8):
             dvs['lwing_section_' + str(i+1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (i,0))
             for j in range(0,3):
                 dvs['lwing_section_'+str(i+1)+dim_tags[j]] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', 'lin', (i,j))
@@ -189,4 +189,4 @@ if __name__ == '__main__':
     #bse.vec['cp_str'].export_IGES()
     bse.vec['cp_str'].export_STL('HWB.stl')
 
-    #pgm.meshStructure()
+    pgm.meshStructure()
