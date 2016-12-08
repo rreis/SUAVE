@@ -92,9 +92,9 @@ class Conventional5(PGMconfiguration):
 
         vtail = self.comps['vtail'].props
         vtail['pos'].params[''] = PGMparameter(1, 3)
-        vtail['pos'].params['lin'] = PGMparameter(3, 3)
+        vtail['pos'].params['lin'] = PGMparameter(3, 3)  ##update this for sections
         vtail['nor'].params[''] = PGMparameter(1, 3)
-        vtail['scl'].params[''] = PGMparameter(3, 1)
+        vtail['scl'].params[''] = PGMparameter(3, 1)    #update this for sections
         vtail['rot'].params[''] = PGMparameter(2, 3)
         vtail['ogn'].params[''] = PGMparameter(1, 3)
 
