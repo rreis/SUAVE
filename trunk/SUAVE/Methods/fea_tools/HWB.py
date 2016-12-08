@@ -49,8 +49,9 @@ class HWB(PGMconfiguration):
 
     def _compute_params(self):
         num_sections = self.dvs.num_sections
-        initial_scls = np.zeros(num_sections,1)
-        initial_pos = np.zeros(num_sections,3)
+        initial_scls = [0]*num_sections
+        initial_pos = [0,0,0]*num_sections
+        print 'initial_pos=', initial_pos
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
         lwing['scl'].params[''].val(initial_vals)
