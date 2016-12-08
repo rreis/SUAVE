@@ -225,11 +225,12 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         pgm = HWB()
         bse = pgm.initialize()
         dim_tags = ['_x','_y','_z']
-        for i in range(0,8): 
+        for i in range(0,7): 
             for j in range(0,3):
-                pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
-                print 'lwing_section_'+str(i+1)+dim_tags[j]
-                if i==7:
+                if i<7:
+                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
+                    print 'lwing_section_'+str(i+1)+dim_tags[j]
+                else i==7:
                     pgm.dvs['lwing_section_'+str(i+2)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
                     print 'lwing_section_'+str(i+2)+dim_tags[j]
         '''
