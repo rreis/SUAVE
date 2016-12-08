@@ -142,7 +142,7 @@ def base_analysis(vehicle):
     filenames.tacs_load = "geomach_tacs_load_conventional.txt"
     filenames.aero_load = "geomach_load_aero.txt"
     filenames.tacs_optimization_driver = "geomach_tacs_opt_driver.txt"
-    filenames.nastran_scratch_file = "scratch"
+    filenames.Nastran_scratch_file = "conventional_opt.aeso"
     local_dir = os.getcwd()
     SBW_wing = FEA_Weight(filenames,local_dir)
     
