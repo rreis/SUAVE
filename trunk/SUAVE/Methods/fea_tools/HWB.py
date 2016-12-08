@@ -30,8 +30,8 @@ class HWB(PGMconfiguration):
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
         lwing['scl'].params[''] = PGMparameter(num_sections, 1)
         lwing['pos'].params['lin'] = PGMparameter(num_sections, 3)
-        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4) #commented out earlier
-        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
+        #lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4) #commented out earlier
+        #lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
 
     def _define_dvs(self):
