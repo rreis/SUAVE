@@ -229,10 +229,10 @@ def geometry_generation(aircraft,geomach_structural_mesh,structural_surface_grid
         for i in range(0,num_sections): 
             for j in range(0,3):
                 if i<num_sections-1:
-                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
+                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]].data[0] = aircraft.main_wing[0].main_wing_section[i].root_origin[j]
                     print 'lwing_section_'+str(i+1)+dim_tags[j]
                 else:
-                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]] = aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
+                    pgm.dvs['lwing_section_'+str(i+1)+dim_tags[j]].data[0] = aircraft.main_wing[0].main_wing_section[i].tip_origin[j]
                     print 'lwing_section_'+str(i+1)+dim_tags[j]
         '''
         pgm.comps['lwing'].set_airfoil('rae2822.dat')
