@@ -273,8 +273,8 @@ def vehicle_setup():
     vehicle.systems.accessories    = "medium range"
 
     #new nastran parameters
-    vehicle.wing_fea = [0,1,2]
-    vehicle.fuselage_fea = [0]
+    vehicle.wing_fea = [0]
+    vehicle.fuselage_fea = None
     vehicle.no_of_intersections = 3
     vehicle.no_of_miscellaneous = 4
     vehicle.fea_type = "BWB"
