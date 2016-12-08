@@ -443,11 +443,13 @@ def vehicle_setup():
     turbofan.tag = 'turbofan'
 
     # setup
-    turbofan.number_of_engines = 2.0
-    turbofan.bypass_ratio      = 5.4
-    turbofan.engine_length     = 2.71
-    turbofan.nacelle_diameter  = 2.05
-
+    turbofan.number_of_engines = 3.0
+    turbofan.bypass_ratio      = 8.1
+    turbofan.engine_length     = 289. * Units.inches
+    turbofan.nacelle_diameter  = 3.96 * Units.meters
+    #turbofan.cooling_ratio     = 1.0
+    turbofan.origin            = [[133.0 *Units.feet, 25.0*Units.feet, 5.0*Units.feet],[145.0 *Units.feet, 0.0*Units.feet, 5.0*Units.feet],[133.0 *Units.feet, -25.0*Units.feet, 5.0*Units.feet]]
+    
     # working fluid
     turbofan.working_fluid = SUAVE.Attributes.Gases.Air()
 
@@ -489,7 +491,7 @@ def vehicle_setup():
 
     # setup
     compressor.polytropic_efficiency = 0.91
-    compressor.pressure_ratio        = 1.14    
+    compressor.pressure_ratio        = 1.1    
 
     # add to network
     turbofan.append(compressor)
@@ -504,7 +506,7 @@ def vehicle_setup():
 
     # setup
     compressor.polytropic_efficiency = 0.91
-    compressor.pressure_ratio        = 13.415    
+    compressor.pressure_ratio        = 23.0  
 
     # add to network
     turbofan.append(compressor)
@@ -548,9 +550,9 @@ def vehicle_setup():
     combustor.tag = 'combustor'
 
     # setup
-    combustor.efficiency                = 0.99 
+    combustor.efficiency                = 1.0
     combustor.alphac                    = 1.0     
-    combustor.turbine_inlet_temperature = 1450
+    combustor.turbine_inlet_temperature = 1592
     combustor.pressure_ratio            = 0.95
     combustor.fuel_data                 = SUAVE.Attributes.Propellants.Jet_A()    
 
@@ -597,7 +599,7 @@ def vehicle_setup():
 
     # setup
     fan.polytropic_efficiency = 0.93
-    fan.pressure_ratio        = 1.7    
+    fan.pressure_ratio        = 1.58    
 
     # add to network
     turbofan.append(fan)
@@ -609,11 +611,12 @@ def vehicle_setup():
     thrust.tag ='compute_thrust'
 
     #total design thrust (includes all the engines)
-    thrust.total_design             = 2*24000. * Units.N #Newtons
-
+    thrust.total_design  = 2.0*512000 * Units.N
+    thrust.bypass_ratio  = 8.4
+    
     #design sizing conditions
-    altitude      = 35000.0*Units.ft
-    mach_number   = 0.78 
+    altitude      = 0. * Units.km
+    mach_number   = 0.01
     isa_deviation = 0.
 
     # add to network
