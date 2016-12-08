@@ -300,7 +300,7 @@ def vehicle_setup():
     wing.spans.projected         = 289.0 * Units.feet    
 
     wing.chords.root             = 145.0 * Units.feet
-    wing.chords.tip              = 1.0  * Units.feet
+    wing.chords.tip              = 3.8*Units.meters#1.0  * Units.feet
     wing.chords.mean_aerodynamic = (2./3.)*(wing.chords.root + wing.chords.root -(wing.chords.root*wing.chords.root)/(wing.chords.root+wing.chords.root))
 
     wing.areas.reference         = 74.9
