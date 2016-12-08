@@ -126,6 +126,10 @@ if __name__ == '__main__':
     pgm = HWB()
     bse = pgm.initialize()
 
+    
+    
+    
+    
     pgm.comps['lwing'].set_airfoil('rae2822.dat')
     #pgm.comps['ltail'].set_airfoil()
     #main wing
