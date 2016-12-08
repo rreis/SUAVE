@@ -29,7 +29,7 @@ class HWB(PGMconfiguration):
 
     def _define_dvs(self):
         dvs = self.dvs
-
+        num_sections = 7
         #main wing
         dim_tags = ['_x','_y','_z']
         
@@ -37,7 +37,7 @@ class HWB(PGMconfiguration):
         dvs['lwing_section_1_y'] = PGMdv((1), -1.).set_identity_param('lwing', 'pos', '', (0,1))
         dvs['lwing_section_1_z'] = PGMdv((1), 2.6).set_identity_param('lwing', 'pos', '', (0,2))
         dvs['lwing_section_' + str(1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (0,0))
-        for i in range(1,8):
+        for i in range(1,num_sections):
             dvs['lwing_section_' + str(i+1) + '_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '', (i,0))
             for j in range(0,3):
                 dvs['lwing_section_'+str(i+1)+dim_tags[j]] = PGMdv((1), 16.).set_identity_param('lwing', 'pos', 'lin', (i,j))
