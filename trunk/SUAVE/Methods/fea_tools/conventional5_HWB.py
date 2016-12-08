@@ -15,17 +15,17 @@ class Conventional5(PGMconfiguration):
     def _define_comps(self):
         self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=True)
 
-        self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
+        self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.5)
 
 
     def _define_params(self):
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
-        lwing['scl'].params[''] = PGMparameter(5, 1)
-        lwing['pos'].params['B-spline'] = PGMparameter(5, 3)
-        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=6, order_v=6)
-        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=6, order_v=6)
+        lwing['scl'].params[''] = PGMparameter(4, 1)
+        lwing['pos'].params['B-spline'] = PGMparameter(4, 3)
+        lwing['shY','upp'].params[''] = PGMparameter(14, 8, order_u=6, order_v=6)
+        lwing['shY','low'].params[''] = PGMparameter(14, 8, order_u=6, order_v=6)
 
 
     def _define_dvs(self):
@@ -53,16 +53,16 @@ class Conventional5(PGMconfiguration):
         dvs['lwing_section_4_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'B-spline',  (3,1))
         dvs['lwing_section_4_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'B-spline', (3,2))
         
-        dvs['lwing_section_5_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'B-spline', (4,0))
-        dvs['lwing_section_5_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'B-spline',  (4,1))
-        dvs['lwing_section_5_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'B-spline', (4,2))
+#        dvs['lwing_section_5_x'] = PGMdv((1), 16.2).set_identity_param('lwing', 'pos', 'B-spline', (4,0))
+#        dvs['lwing_section_5_y'] = PGMdv((1), 2.4).set_identity_param('lwing', 'pos', 'B-spline',  (4,1))
+#        dvs['lwing_section_5_z'] = PGMdv((1), 12.3).set_identity_param('lwing', 'pos', 'B-spline', (4,2))
 
 
         dvs['lwing_section_1_chord'] = PGMdv((1), 10).set_identity_param('lwing', 'scl', '',  (0,0))
         dvs['lwing_section_2_chord'] = PGMdv((1), 4.5).set_identity_param('lwing', 'scl', '', (1,0))
         dvs['lwing_section_3_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (2,0))
         dvs['lwing_section_4_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (3,0))
-        dvs['lwing_section_5_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (4,0))
+        #dvs['lwing_section_5_chord'] = PGMdv((1), 1.2).set_identity_param('lwing', 'scl', '', (4,0))
 
 
 
@@ -70,15 +70,15 @@ class Conventional5(PGMconfiguration):
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
-        lwing['scl'].params[''].val([10,4.5,1.2,0.8,0.6])
-        lwing['pos'].params['B-spline'].val([[0,0,0],[16.5,2.4,12.3],[16.5,4.4,23.3],[16.5,4.4,23.3],[16.5,4.4,23.3]])
+        lwing['scl'].params[''].val([10,4.5,1.2,0.8])
+        lwing['pos'].params['B-spline'].val([[0,0,0],[16.5,2.4,12.3],[16.5,4.4,23.3],[16.5,4.4,23.3]])
 
         return [], [], []
 
     def _set_bspline_options(self):
         comps = self.comps
 
-        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120,40,40]) #[6,4,4,20]
+        comps['lwing'].faces['upp'].set_option('num_cp', 'v', [36,24,24,120,120,120]) #[6,4,4,20]
 
     def meshStructure(self):
         afm = Airframe(self, 1) #0.2)
@@ -165,9 +165,9 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_4_y'].data[0] = 0.0 #2.6
     pgm.dvs['lwing_section_4_z'].data[0] = 0.9089136 #27.1
     
-    pgm.dvs['lwing_section_5_x'].data[0] = 1.78976941457 #16.5
-    pgm.dvs['lwing_section_5_y'].data[0] = 0.0 #2.6
-    pgm.dvs['lwing_section_5_z'].data[0] = 1.2097512 #27.1
+#    pgm.dvs['lwing_section_5_x'].data[0] = 1.78976941457 #16.5
+#    pgm.dvs['lwing_section_5_y'].data[0] = 0.0 #2.6
+#    pgm.dvs['lwing_section_5_z'].data[0] = 1.2097512 #27.1
 
 
 
@@ -180,7 +180,7 @@ if __name__ == '__main__':
     pgm.dvs['lwing_section_2_chord'].data[0] = 3.2875728 #4.5
     pgm.dvs['lwing_section_3_chord'].data[0] = 2.4384 #1.2
     pgm.dvs['lwing_section_4_chord'].data[0] = 1.6764 #0.8
-    pgm.dvs['lwing_section_5_chord'].data[0] = 1.170432 #0.8
+    #pgm.dvs['lwing_section_5_chord'].data[0] = 1.170432 #0.8
 
 
     pgm.compute_all()
