@@ -21,8 +21,8 @@ class HWB(PGMconfiguration):
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''] = PGMparameter(1, 3)
         #lwing['scl'].params[''] = PGMparameter(3, 1, pos_u=[0,0.35,1.0])
-        lwing['scl'].params[''] = PGMparameter(7, 1)
-        lwing['pos'].params['lin'] = PGMparameter(7, 3)
+        lwing['scl'].params[''] = PGMparameter(8, 1)
+        lwing['pos'].params['lin'] = PGMparameter(8, 3)
 #        lwing['shY','upp'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 #        lwing['shY','low'].params[''] = PGMparameter(10, 6, order_u=4, order_v=4)
 
@@ -50,8 +50,8 @@ class HWB(PGMconfiguration):
 
         lwing = self.comps['lwing'].props
         lwing['pos'].params[''].val([16,-1,2.6])
-        lwing['scl'].params[''].val([10,4.5,4.2,4.0,3.9,3.5,1.2])
-        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,4.4,23.3]])
+        lwing['scl'].params[''].val([10,4.5,4.2,4.0,3.9,3.5,1.2,.8])
+        lwing['pos'].params['lin'].val([[0,0,0],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,2.4,12.3],[16.5,4.4,23.3]])
 
         return [], [], []
 
