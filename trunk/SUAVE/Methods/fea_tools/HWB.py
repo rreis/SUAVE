@@ -15,10 +15,10 @@ class HWB(PGMconfiguration):
     
     
     def _define_comps(self):
-        self.nplanes = 4
+        self.nplanes = 40
         self.num_sections = 7
         nplanes = self.nplanes
-        self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=False)
+        self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=True)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
 
 
@@ -74,7 +74,7 @@ class HWB(PGMconfiguration):
         #comps['lwing'].faces['low'].set_option('num_cp', 'u', [40]*nplanes)
 
     def meshStructure(self):
-        afm = Airframe(self, 1.0) #0.2)
+        afm = Airframe(self, .8) #0.2)
 
 
     #main wing leading section ribs

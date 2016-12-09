@@ -13,7 +13,7 @@ class HWB(PGMconfiguration):
 
 
     def _define_comps(self):
-        self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=False)
+        self.comps['lwing'] = PGMwing(num_x=4, num_z=4, left_closed=True)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
 
 
