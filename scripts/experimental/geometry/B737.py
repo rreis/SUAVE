@@ -278,28 +278,28 @@ def vehicle_setup():
     fuselage.seats_abreast         = 6
     fuselage.seat_pitch            = 1
 
-    fuselage.fineness.nose         = 1.6
-    fuselage.fineness.tail         = 2.
+    fuselage.fineness.nose         = 1.57
+    fuselage.fineness.tail         = 3.2
 
-    fuselage.lengths.nose          = 6.4
-    fuselage.lengths.tail          = 8.0
+    fuselage.lengths.nose          = 8.
+    fuselage.lengths.tail          = 12.
     fuselage.lengths.cabin         = 28.85
     fuselage.lengths.total         = 38.02
     fuselage.lengths.fore_space    = 6.
     fuselage.lengths.aft_space     = 5.    
 
-    fuselage.width                 = 3.74
+    fuselage.width                 = 3.76
 
-    fuselage.heights.maximum       = 3.74
-    fuselage.heights.at_quarter_length          = 3.74
-    fuselage.heights.at_three_quarters_length   = 3.74
-    fuselage.heights.at_wing_root_quarter_chord = 3.74
+    fuselage.heights.maximum       = 3.76
+    fuselage.heights.at_quarter_length          = 3.76
+    fuselage.heights.at_three_quarters_length   = 3.65
+    fuselage.heights.at_wing_root_quarter_chord = 3.76
 
     fuselage.areas.side_projected  = 142.1948
     fuselage.areas.wetted          = 446.718
     fuselage.areas.front_projected = 12.57
 
-    fuselage.effective_diameter    = 3.74 #4.0
+    fuselage.effective_diameter    = 3.77 #4.0
 
     fuselage.differential_pressure = 5.0e4 * Units.pascal # Maximum differential pressure
 
