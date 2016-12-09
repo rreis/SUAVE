@@ -16,7 +16,7 @@ class HWB(PGMconfiguration):
     
     def _define_comps(self):
         self.nplanes = 40
-        self.num_sections = 7
+        self.num_sections = 3
         nplanes = self.nplanes
         self.comps['lwing'] = PGMwing(num_x=nplanes , num_z=nplanes , left_closed=True)
         self.comps['lwing_t'] = PGMtip(self, 'lwing', 'left', 0.1)
