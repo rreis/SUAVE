@@ -71,12 +71,12 @@ def read_opt_f06_file(opt_filename,no_of_design_variables,elemlist,no_of_element
                     int(line[0:22])
                     if(int(line[0:22]) == no_of_design_runs):
                         objective_list[-1] = float(line[58:70])
-                        print "objective_list[-1]",objective_list[-1]
+                        #print "objective_list[-1]",objective_list[-1]
                         break
                 except ValueError:
                     continue
 
-                print line[0:22], line[58:70]
+                #print line[0:22], line[58:70]
                 if (line[55:78]=='DESIGN VARIABLE HISTORY'):
                     break
                 

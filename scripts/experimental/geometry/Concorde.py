@@ -146,6 +146,7 @@ def base_analysis(vehicle):
     filenames.tacs_load = "geomach_tacs_load_supersonic.txt"
     filenames.aero_load = "geomach_load_aero_super.txt"
     filenames.tacs_optimization_driver = "geomach_tacs_opt_driver_super.txt"
+    filenames.Nastran_scratch_file = "supersonic_opt.aeso"
     local_dir = os.getcwd()
     SBW_wing = FEA_Weight(filenames,local_dir)
     
