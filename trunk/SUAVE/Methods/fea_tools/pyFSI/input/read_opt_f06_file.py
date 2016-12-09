@@ -66,47 +66,62 @@ def read_opt_f06_file(opt_filename,no_of_design_variables,elemlist,no_of_element
                     
         if (line[46:86]=='OBJECTIVE AND MAXIMUM CONSTRAINT HISTORY'):
             #print line
-            for i in range(0,6):
-                for line in file:
-                    #print line
-                    elem_count=0
-                    break
-        
             for line in file:
-                #print line
-                objective_list[0] = float(line[58:70])
-                if (line[110:113] == 'N/A'):
-                    constraint_list[0] = 0.0
-                else:
-                    constraint_list[0] = float(line[107:120])
-                #if
-                #print constraint_list[0]
-                break
-            
-            for i in range(0,no_of_design_runs):
-                if(i==15)or((i-15)%22==0):
-                #if(i==14)or((i-14)%22==0):
-                
-                    for ijk in range(0,8):
-                        for line in file:
-                            #print line
-                            elem_count=0
-                            break
-            
-                for line in file:
-                    #print line
-                    elem_count=0
-                    break
-                for line in file:
-                    #print line
-                    objective_list[1+i] = float(line[58:70])
-                    if (line[110:113] == 'N/A'):
-                        constraint_list[0] = 0.0
-                    else:
-                        constraint_list[1+i] = float(line[107:120])
-                    #print i , objective_list[1+i]
-                    break
+                try :
+                    int(line[0:22])
+                    if(int(line[0:22]) == no_of_design_runs):
+                        objective_list[-1] = float(line[58:70])
+                        print "objective_list[-1]",objective_list[-1]
+                        break
+                except ValueError:
+                    continue
 
+                print line[0:22], line[58:70]
+                if (line[55:78]=='DESIGN VARIABLE HISTORY'):
+                    break
+                
+                
+#            for i in range(0,6):
+#                for line in file:
+#                    #print line
+#                    elem_count=0
+#                    break
+#        
+#            for line in file:
+#                #print line
+#                objective_list[0] = float(line[58:70])
+#                if (line[110:113] == 'N/A'):
+#                    constraint_list[0] = 0.0
+#                else:
+#                    constraint_list[0] = float(line[107:120])
+#                #if
+#                #print constraint_list[0]
+#                break
+#            
+#            for i in range(0,no_of_design_runs):
+#                if(i==15)or((i-15)%22==0):
+#                #if(i==14)or((i-14)%22==0):
+#                
+#                    for ijk in range(0,8):
+#                        for line in file:
+#                            #print line
+#                            elem_count=0
+#                            break
+#            
+#                for line in file:
+#                    #print line
+#                    elem_count=0
+#                    break
+#                for line in file:
+#                    #print line
+#                    objective_list[1+i] = float(line[58:70])
+#                    if (line[110:113] == 'N/A'):
+#                        constraint_list[0] = 0.0
+#                    else:
+#                        constraint_list[1+i] = float(line[107:120])
+#                    #print i , objective_list[1+i]
+#                    break
+#
 ##break
 #
 #        if (line[55:78]=='DESIGN VARIABLE HISTORY'):
