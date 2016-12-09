@@ -74,7 +74,7 @@ class HWB(PGMconfiguration):
         #comps['lwing'].faces['low'].set_option('num_cp', 'u', [40]*nplanes)
 
     def meshStructure(self):
-        afm = Airframe(self, 1.0) #0.2)
+        afm = Airframe(self, .8) #0.2)
 
 
     #main wing leading section ribs
