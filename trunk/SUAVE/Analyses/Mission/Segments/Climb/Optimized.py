@@ -1,7 +1,7 @@
-# Unknown_Throttle.py
+# Optimized.py
 #
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
+# Created:  Mar 2016, E. Botero 
+# Modified:
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -17,21 +17,27 @@ from SUAVE.Analyses import Process
 
 # Units
 from SUAVE.Core import Units
-
+import SUAVE
 
 # ----------------------------------------------------------------------
 #  Segment
 # ----------------------------------------------------------------------
 
-class Unknown_Throttle(Aerodynamic):
+class Optimized(Aerodynamic):
     
     def __defaults__(self):
         
         # --------------------------------------------------------------
         #   User inputs
         # --------------------------------------------------------------
-        self.altitude_start = None # Optional
-        self.altitude_end   = 10. * Units.km
+        self.altitude_start  = None
+        self.altitude_end    = None
+        self.air_speed_start = None
+        self.air_speed_end   = None
+        self.objective       = None # This will be a key
+        self.minimize        = True
+        self.CL_limit        = 1.e20 
+        
         
         # --------------------------------------------------------------
         #   State
@@ -39,13 +45,17 @@ class Unknown_Throttle(Aerodynamic):
         
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
-        
         # initials and unknowns
-        ones_row = self.state.ones_row
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.unknowns.body_angle = ones_row(1) * 0.01
-        self.state.residuals.forces    = ones_row(2) * 0.0
-        
+        ones_row    = self.state.ones_row
+        self.state.unknowns.throttle          = ones_row(1) * 0.8
+        self.state.unknowns.body_angle        = ones_row(1) * 2.0 * Units.degree
+        self.state.unknowns.flight_path_angle = ones_row(1) * 1.0 * Units.degree
+        self.state.unknowns.velocity          = ones_row(1) * 100.0
+        self.state.residuals.forces           = ones_row(2) * 0.0
+        self.state.inputs_last                = None
+        self.state.objective_value            = 0.0
+        self.state.constraint_values          = 0.0
+         
         # --------------------------------------------------------------
         #   The Solving Process
         # --------------------------------------------------------------
@@ -56,17 +66,17 @@ class Unknown_Throttle(Aerodynamic):
         initialize = self.process.initialize
         
         initialize.expand_state            = Methods.expand_state
+        initialize.unknowns                = Methods.Climb.Optimized.initialize_unknowns
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
-        initialize.conditions              = None
-        initialize.differentials_altitude  = Methods.Climb.Common.update_differentials_altitude
-        
+        initialize.conditions              = SUAVE.Methods.skip
+
         # --------------------------------------------------------------
         #   Converge - starts iteration
         # --------------------------------------------------------------
         converge = self.process.converge
         
-        converge.converge_root             = Methods.converge_root        
-        
+        converge.converge_root             = Methods.converge_opt    
+
         # --------------------------------------------------------------
         #   Iterate - this is iterated
         # --------------------------------------------------------------
@@ -81,11 +91,11 @@ class Unknown_Throttle(Aerodynamic):
         
         # Unpack Unknowns
         iterate.unknowns = Process()
-        iterate.unknowns.mission           = Methods.Climb.Common.unpack_unknowns  
+        iterate.unknowns.mission           = Methods.Climb.Optimized.unpack_unknowns
         
         # Update Conditions
         iterate.conditions = Process()
-        iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time 
+        iterate.conditions.differentials   = Methods.Climb.Optimized.update_differentials
         iterate.conditions.acceleration    = Methods.Common.Frames.update_acceleration
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
@@ -98,10 +108,16 @@ class Unknown_Throttle(Aerodynamic):
         iterate.conditions.weights         = Methods.Common.Weights.update_weights
         iterate.conditions.forces          = Methods.Common.Frames.update_forces
         iterate.conditions.planet_position = Methods.Common.Frames.update_planet_position
-        
+
         # Solve Residuals
-        iterate.residuals = Process()
+        iterate.residuals = Process()     
         iterate.residuals.total_forces     = Methods.Climb.Common.residual_total_forces
+        
+        # Set outputs
+        iterate.outputs = Process()   
+        iterate.outputs.objective          = Methods.Climb.Optimized.objective
+        iterate.outputs.constraints        = Methods.Climb.Optimized.constraints
+        iterate.outputs.cache_inputs       = Methods.Climb.Optimized.cache_inputs
         
         # --------------------------------------------------------------
         #   Finalize - after iteration
@@ -112,6 +128,6 @@ class Unknown_Throttle(Aerodynamic):
         finalize.post_process = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
         finalize.post_process.stability         = Methods.Common.Aerodynamics.update_stability
-       
+        
         return
 
