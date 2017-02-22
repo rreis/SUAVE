@@ -78,7 +78,8 @@ def datta_discharge(battery,numerics):
             ebat=np.zeros_like(ebat)
             
     current_energy = ebat + battery.current_energy[0]
-    
+    #make sure it doesn't overcharge
+    current_energy[current_energy>battery.max_energy] = battery.max_energy
     new_x = np.divide(current_energy,battery.max_energy)
             
     # A voltage model from Chen, M. and Rincon-Mora, G. A., "Accurate Electrical Battery Model Capable of Predicting

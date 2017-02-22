@@ -64,7 +64,6 @@ class Motor(Energy_Component):
         Kv    = self.speed_constant/G
         R     = self.propeller_radius
         v     = self.inputs.voltage
-    
         # Omega
         # This is solved by setting the torque of the motor equal to the torque of the prop
         # It assumes that the Cp is constant

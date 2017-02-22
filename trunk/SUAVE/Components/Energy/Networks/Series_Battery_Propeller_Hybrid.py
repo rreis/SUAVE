@@ -118,7 +118,6 @@ class Series_Battery_Propeller_Hybrid(Propulsor):
         battery.inputs.current  = esc.outputs.currentin*self.number_of_engines + avionics_payload_current-i_gen
         battery.inputs.power_in = -(esc.outputs.voltageout*esc.outputs.currentin*self.number_of_engines + avionics_payload_power-Pgen)
         battery.energy_calc(numerics)        
-    
         # Pack the conditions for outputs
         rpm                  = motor.outputs.omega*60./(2.*np.pi)
         current              = esc.outputs.currentin
@@ -131,6 +130,7 @@ class Series_Battery_Propeller_Hybrid(Propulsor):
         conditions.propulsion.current              = current
         conditions.propulsion.battery_draw         = battery_draw
         conditions.propulsion.battery_energy       = battery_energy
+        conditions.propulsion.generator_power      = Pgen
         conditions.propulsion.voltage_open_circuit = voltage_open_circuit
         conditions.propulsion.voltage_under_load   = voltage_under_load  
         conditions.propulsion.motor_torque         = motor.outputs.torque

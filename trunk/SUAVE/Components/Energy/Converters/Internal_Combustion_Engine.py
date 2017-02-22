@@ -80,10 +80,11 @@ class Internal_Combustion_Engine(Energy_Component):
         # calculating available power based on Gagg and Ferrar model (ref: S. Gudmundsson, 2014 - eq. 7-16)
         Pavailable = PSLS * (sigma - 0.117) / 0.883        
         Pavailable[h_flat > altitude]  = PSLS
-
+        
         # applying throttle setting
         output_power = Pavailable * throttle
-        
+        #print 'Pavailable[0] = ', Pavailable[0]
+        #print 'output_power[0] = ', output_power[0]
         SFC = BSFC * Units['lb/hp/hr']
 
         #fuel flow rate
