@@ -33,7 +33,7 @@ class Propulsor_Battery_Series_Hybrid(Propulsor):
         #just use efficiency
         self.motor_efficiency       = .95
         self.generator_efficiency   = .95
-        self.electronics_efficiency = 9  #speed controller, avionics
+        self.electronics_efficiency = .9  #speed controller, avionics
         self.tag                    = 'Network'
     
     # manage process with a driver function
@@ -87,6 +87,7 @@ class Propulsor_Battery_Series_Hybrid(Propulsor):
         battery_draw                         = battery.inputs.power_in
         battery_energy                       = battery.current_energy
                                                
+        conditions.propulsion.vehicle_power  = results.power
         conditions.propulsion.battery_draw   = battery_draw
         conditions.propulsion.engine_power   = engine.outputs.power
         conditions.propulsion.battery_energy = battery_energy
