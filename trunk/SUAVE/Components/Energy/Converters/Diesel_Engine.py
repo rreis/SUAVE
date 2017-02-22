@@ -18,14 +18,14 @@ from SUAVE.Components.Energy.Energy_Component import Energy_Component
 #  Internal Combustion Engine Class
 # ----------------------------------------------------------------------
 
-class Internal_Combustion_Engine(Energy_Component):
+class Diesel_Engine(Energy_Component):
 
     def __defaults__(self):
 
         self.sea_level_power                = 0.0
         self.flat_rate_altitude             = 6000. * Units.feet
         #self.speed                          = 0.0 #not used here
-        self.BSFC                           = Units['lb/hp/hr']  #reference SLS BSFC at 100% power
+        self.BSFC                           = .36*Units['lb/hp/hr']  #reference SLS BSFC at 100% power
         
         #lapse coefficient; Y = lapse_coefficient*delta*theta^lapse_exponent
         #where delta is pressure ratio and theta is temperature ratio relative to SLS
@@ -71,13 +71,13 @@ class Internal_Combustion_Engine(Energy_Component):
         throttle    = conditions.propulsion.combustion_engine_throttle
         PSLS        = self.sea_level_power
         h_flat      = self.flat_rate_altitude
-        speed       = self.speed
+        #speed       = self.speed
         BSFC        = self.BSFC
 
         
         #altitude_virtual = altitude - h_flat # shift in power lapse due to flat rate
         atmo = SUAVE.Analyses.Atmospheric.US_Standard_1976()
-        atmo_values = atmo.compute_values(altitude_virtual,delta_isa)
+        atmo_values = atmo.compute_values(altitude)
         p   = atmo_values.pressure
         T   = atmo_values.temperature
         rho = atmo_values.density
@@ -105,7 +105,7 @@ class Internal_Combustion_Engine(Energy_Component):
         '''
         
         # applying throttle setting
-        Pavailable   = power_available_linear_coefficent * Y +power_available_constant_coefficent
+        Pavailable   = np.fmin(np.ones_like(Y),(self.power_available_linear_coefficent * Y +self.power_available_constant_coefficent))*PSLS
         output_power = Pavailable * throttle
         
         
@@ -128,9 +128,10 @@ class Internal_Combustion_Engine(Energy_Component):
         ## SHP = torque * 2*pi * RPM / 33000        (UK units)
         # store to outputs
         self.outputs.power                           = output_power
-        self.outputs.power_specific_fuel_consumption = BSFC
+        self.outputs.power_specific_fuel_consumption = ff*BSFC
         self.outputs.fuel_flow_rate                  = fuel_flow_rate
 
+       
         return self.outputs
 
 if __name__ == '__main__':
