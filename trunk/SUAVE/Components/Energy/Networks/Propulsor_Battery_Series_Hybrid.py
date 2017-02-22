@@ -22,7 +22,9 @@ from SUAVE.Components.Propulsors.Propulsor import Propulsor
 # ----------------------------------------------------------------------
 #  Network
 # ----------------------------------------------------------------------
-class Ducted_Fan_Battery_Series_Hybrid(Propulsor):
+class Propulsor_Battery_Series_Hybrid(Propulsor):
+    #uses whatever propulsor you want, included ducted fans in a series hybrid configurations
+    #uses simple component efficiencies
     def __defaults__(self):
         self.propulsor            = None
         self.battery              = None # main battery (generally high esp)
@@ -89,8 +91,8 @@ class Ducted_Fan_Battery_Series_Hybrid(Propulsor):
                                                
         conditions.propulsion.battery_draw   = battery_draw
    
-   
-        results.vehicle_mass_rate = mdot
+        #propulsor itself may have a mass flow rate
+        results.vehicle_mass_rate += mdot
         
         return results
             

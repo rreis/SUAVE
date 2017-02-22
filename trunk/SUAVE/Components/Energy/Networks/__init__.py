@@ -19,7 +19,7 @@ from Turbofan_TASOPT import Turbofan_TASOPT
 from Turbofan_Deck_I import Turbofan_Deck_I
 from Turbofan_JDM import Turbofan_JDM
 from Turbofan_TASOPT_Net import Turbofan_TASOPT_Net
-from Series_Ducted_Fan_Hybrid import Series_Ducted_Fan_Hybrid
+from Propulsor_Battery_Series_Hybrid import Propulsor_Battery_Series_Hybrid
 from Series_Battery_Propeller_Hybrid import Series_Battery_Propeller_Hybrid
 from Series_Battery_Propeller_Hybrid_Interp import Series_Battery_Propeller_Hybrid_Interp
 from Battery_Propeller import Battery_Propeller
