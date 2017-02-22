@@ -61,7 +61,8 @@ class Propulsor_Battery_Series_Hybrid(Propulsor):
         results.power = np.transpose(np.array([results.power]))
       
         
-        Pe = -results.power + engine.outputs.power*self.generator_efficiency
+        Pe = results.power - engine.outputs.power*self.generator_efficiency
+        
         pbat=-Pe/(self.motor_efficiency*self.electronics_efficiency)
      
         battery_logic            = Data()
@@ -88,6 +89,7 @@ class Propulsor_Battery_Series_Hybrid(Propulsor):
                                                
         conditions.propulsion.battery_draw   = battery_draw
         conditions.propulsion.engine_power   = engine.outputs.power
+        conditions.propulsion.battery_energy = battery_energy
         #propulsor itself may have a mass flow rate
         results.vehicle_mass_rate += mdot
         
