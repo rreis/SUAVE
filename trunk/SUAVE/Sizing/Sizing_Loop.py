@@ -237,7 +237,7 @@ class Sizing_Loop(Data):
             print 'y_save = ', y_save
             
             print 'err = ', err
-            '''
+            
             #uncomment this when you want to write error at each iteration
             file=open('y_err_values.txt', 'ab')
             file.write(str(i))
@@ -245,11 +245,11 @@ class Sizing_Loop(Data):
             file.write(str(err.tolist()))
             file.write('\n') 
             file.close()
-            '''
+            
             j+=1
             
             if i>max_iter: #
-                err=float('nan')*np.ones(np.size(err))
+                #err=float('nan')*np.ones(np.size(err))
                 print "###########sizing loop did not converge##########"
                 break
     
@@ -275,6 +275,7 @@ class Sizing_Loop(Data):
     
         nexus.sizing_loop.converged = converged
         nexus.sizing_loop.norm_error  = np.linalg.norm(err)
+        print 'final err = ', err
         nexus.sizing_loop.max_error   = max(err)
         nexus.sizing_variables = y_save2
     
