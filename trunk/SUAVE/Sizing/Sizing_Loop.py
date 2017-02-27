@@ -24,7 +24,7 @@ import time
 class Sizing_Loop(Data):
     def __defaults__(self):
         #parameters common to all methods
-        self.tolerance             = None
+        self.tolerance             = 1E-4
         self.initial_step          = None  #'Default', 'Table', 'SVR'
         self.update_method         = None  #'successive_substitution', 'newton-raphson', ;broyden
         self.default_y             = None  #default inputs in case the guess is very far from 
@@ -33,6 +33,7 @@ class Sizing_Loop(Data):
         self.output_filename       = None
         self.sizing_evaluation     = None  #defined in the Procedure script
         self.write_threshhold      = 9     #number of iterations before it writes, regardless of how close it is to currently written values
+        self.max_error             = 0.    #maximum error
         
         #parameters that may only apply to certain methods
         self.iteration_options     = Data()
