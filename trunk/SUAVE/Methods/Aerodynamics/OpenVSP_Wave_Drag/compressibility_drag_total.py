@@ -112,7 +112,8 @@ def compressibility_drag_total(state,settings,geometry):
     if np.any(old_array[:,0]==1.05):
         cd_c_v = np.array([[float(old_array[old_array[:,0]==1.05,1])]])
     else:    
-        cd_c_v = wave_drag_volume(conditions,geometry, True)
+        #cd_c_v = wave_drag_volume(conditions,geometry, True)
+        cd_c_v = np.nan
     
     if file_exists:
         pass

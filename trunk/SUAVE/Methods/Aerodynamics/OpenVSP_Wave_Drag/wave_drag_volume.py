@@ -15,7 +15,7 @@ import numpy as np
 #   Wave Drag Volume
 # ----------------------------------------------------------------------
 
-def wave_drag_volume(conditions,geometry,flag105,num_slices=30,num_rots=15):
+def wave_drag_volume(conditions,geometry,flag105,num_slices=20,num_rots=10):
     """ SUAVE.Methods.wave_drag_volume(conditions,configuration,fuselage)
         computes the wave drag due to lift 
         Based on http://adg.stanford.edu/aa241/drag/ssdragcalc.html

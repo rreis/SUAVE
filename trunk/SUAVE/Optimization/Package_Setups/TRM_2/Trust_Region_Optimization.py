@@ -135,6 +135,27 @@ class Trust_Region_Optimization(Data):
                 df[level-1] = res[1]    # objective derivate vector
                 g[level-1]  = res[2]    # constraints vector
                 dg[level-1] = res[3]    # constraints jacobian
+                # -----------------------------------------------------------------------------------
+                # Testing Script
+                dx0 = self.difference_interval
+                dx  = np.array([-2,-1,0,1,2])*dx0
+                dar, dwing = np.meshgrid(dx,dx)
+                import pylab as plt
+                for ii in xrange(5):
+                    for jj in xrange(5):
+                        res = self.evaluate_model(problem,x,scaled_constraints,False)
+                        f = res[0]
+                        
+                
+                fig = plt.figure('Results')
+                ax = fig.add_subplot(111)
+                cax = ax.matshow(drag_results)
+                ax.set_xticklabels([0] + dar[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+                ax.set_yticklabels([0] + dwing[0,:][ax.get_yticks()[1:-1].tolist()].tolist())
+                fig.colorbar(cax)
+                plt.show()                
+                
+                # -----------------------------------------------------------------------------------
                 
             if iterations == 0:
                 self.objective_history.append(f[0])

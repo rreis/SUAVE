@@ -10,6 +10,7 @@
 import numpy as np
 from SUAVE.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
 from SUAVE.Methods.Geometry.Three_Dimensional.compute_chord_length_from_span_location import compute_chord_length_from_span_location
+import copy
 
 # ----------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
@@ -55,14 +56,15 @@ def compute_component_centers_of_gravity(vehicle):
     v_tail.mass_properties.center_of_gravity[0] = .3*chord_length_v_tail_35_percent_semi_span + \
         v_tail_35_percent_semi_span_offset
     
+    propulsor_origin_copy = copy.deepcopy(propulsor.origin)
 
     control_systems.origin                                  = wing.origin
     control_systems.mass_properties.center_of_gravity[0]    = .4*wing.chords.mean_aerodynamic+mac_le_offset
     fuselage.mass_properties.center_of_gravity[0]           = .45*fuselage.lengths.total
-    propulsor.origin[0][0]                                  = wing.origin[0]+mac_le_offset/2.-(3./4.)*propulsor.engine_length
+    propulsor_origin_copy[0][0]                                  = wing.origin[0]+mac_le_offset/2.-(3./4.)*propulsor.engine_length
     propulsor.mass_properties.center_of_gravity[0]          = propulsor.engine_length*.5
     electrical_systems.mass_properties.center_of_gravity[0] = .75*(fuselage.origin[0][0]+\
-                .5*fuselage.lengths.total)+.25*(propulsor.origin[0][0]+propulsor.mass_properties.center_of_gravity[0])
+                .5*fuselage.lengths.total)+.25*(propulsor_origin_copy[0][0]+propulsor.mass_properties.center_of_gravity[0])
     
     
     avionics.origin                                         = fuselage.origin
@@ -87,7 +89,7 @@ def compute_component_centers_of_gravity(vehicle):
     
     hydraulics.origin                                       = fuselage.origin
     hydraulics.mass_properties.center_of_gravity            = .75*(wing.origin+wing.mass_properties.center_of_gravity)\
-        +.25*(propulsor.origin+propulsor.mass_properties.center_of_gravity)
+        +.25*(propulsor_origin_copy+propulsor.mass_properties.center_of_gravity)
     
     optionals.origin                                        = fuselage.origin
     optionals.mass_properties.center_of_gravity[0]          = .51*fuselage.lengths.total
