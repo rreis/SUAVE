@@ -137,21 +137,25 @@ class Trust_Region_Optimization(Data):
                 dg[level-1] = res[3]    # constraints jacobian
                 # -----------------------------------------------------------------------------------
                 # Testing Script
-                dx0 = self.difference_interval
+                dx0 = tr_size/2.
                 dx  = np.array([-2,-1,0,1,2])*dx0
                 dar, dwing = np.meshgrid(dx,dx)
                 import pylab as plt
+                grid_res = np.zeros(np.shape(dar))
                 for ii in xrange(5):
                     for jj in xrange(5):
-                        res = self.evaluate_model(problem,x,scaled_constraints,False)
-                        f = res[0]
+                        x_loop = x_initial*1.
+                        x_loop[0] = x_initial[0]+dwing[ii,jj]
+                        x_loop[1] = x_initial[1]+dar[ii,jj]
+                        res = self.evaluate_model(problem,x_loop,scaled_constraints,False)
+                        grid_res[ii,jj] = res[0]             
                         
                 
                 fig = plt.figure('Results')
                 ax = fig.add_subplot(111)
-                cax = ax.matshow(drag_results)
-                ax.set_xticklabels([0] + dar[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
-                ax.set_yticklabels([0] + dwing[0,:][ax.get_yticks()[1:-1].tolist()].tolist())
+                cax = ax.matshow(grid_res)
+                ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+                ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
                 fig.colorbar(cax)
                 plt.show()                
                 
@@ -174,6 +178,33 @@ class Trust_Region_Optimization(Data):
 
             # Setup SNOPT 
             #opt_wrap = lambda x:self.evaluate_corrected_model(problem,x,corrections=corrections,tr=tr)
+            
+            # -----------------------------------------------------------------------------------
+            # Testing Script
+            problem.fidelity_level = 1
+            dx0 = self.difference_interval
+            dx  = np.array([-2,-1,0,1,2])*dx0
+            dar, dwing = np.meshgrid(dx,dx)
+            import pylab as plt
+            grid_res = np.zeros(np.shape(dar))
+            for ii in xrange(5):
+                for jj in xrange(5):
+                    x_loop = x_initial*1.
+                    x_loop[0] = x_initial[0]+dwing[ii,jj]
+                    x_loop[1] = x_initial[1]+dar[ii,jj]
+                    res = self.evaluate_corrected_model(x_loop,problem,corrections,tr)
+                    grid_res[ii,jj] = res[0]             
+                    
+            
+            fig = plt.figure('Results')
+            ax = fig.add_subplot(111)
+            cax = ax.matshow(grid_res)
+            ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+            ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
+            fig.colorbar(cax)
+            plt.show()                
+            
+            # -----------------------------------------------------------------------------------            
 
             opt_prob = pyOpt.Optimization('SUAVE',self.evaluate_corrected_model, corrections=corrections,tr=tr)
             
