@@ -135,31 +135,36 @@ class Trust_Region_Optimization(Data):
                 df[level-1] = res[1]    # objective derivate vector
                 g[level-1]  = res[2]    # constraints vector
                 dg[level-1] = res[3]    # constraints jacobian
-                # -----------------------------------------------------------------------------------
-                # Testing Script
-                dx0 = tr_size/2.
-                dx  = np.array([-2,-1,0,1,2])*dx0
-                dar, dwing = np.meshgrid(dx,dx)
-                import pylab as plt
-                grid_res = np.zeros(np.shape(dar))
-                for ii in xrange(5):
-                    for jj in xrange(5):
-                        x_loop = x_initial*1.
-                        x_loop[0] = x_initial[0]+dwing[ii,jj]
-                        x_loop[1] = x_initial[1]+dar[ii,jj]
-                        res = self.evaluate_model(problem,x_loop,scaled_constraints,False)
-                        grid_res[ii,jj] = res[0]             
+                ## -----------------------------------------------------------------------------------
+                ## Testing Script 001
+                #dx0 = tr_size/2.
+                ##dx  = np.array([-2,-1,0,1,2])*dx0
+                ##dy  = dx
+                #dx  = np.linspace(.9,1.8,10)
+                #dy  = np.linspace(.2,.6,9)
+                #dar, dwing = np.meshgrid(dy,dx)
+                #import pylab as plt
+                #grid_res = np.zeros(np.shape(dar))
+                #for ii in xrange(len(dx)):
+                    #for jj in xrange(len(dy)):
+                        #x_loop = x_initial*1.
+                        ##x_loop[0] = x_initial[0]+dwing[ii,jj]
+                        ##x_loop[1] = x_initial[1]+dar[ii,jj]
+                        #x_loop[0] = dwing[ii,jj]
+                        #x_loop[1] = dar[ii,jj]                        
+                        #res = self.evaluate_model(problem,x_loop,scaled_constraints,False)
+                        #grid_res[ii,jj] = res[0]             
                         
                 
-                fig = plt.figure('Results')
-                ax = fig.add_subplot(111)
-                cax = ax.matshow(grid_res)
-                ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
-                ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
-                fig.colorbar(cax)
-                plt.show()                
+                #fig = plt.figure('Results')
+                #ax = fig.add_subplot(111)
+                #cax = ax.matshow(grid_res)
+                #ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+                #ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
+                #fig.colorbar(cax)
+                #plt.show()                
                 
-                # -----------------------------------------------------------------------------------
+                ## -----------------------------------------------------------------------------------
                 
             if iterations == 0:
                 self.objective_history.append(f[0])
@@ -179,32 +184,32 @@ class Trust_Region_Optimization(Data):
             # Setup SNOPT 
             #opt_wrap = lambda x:self.evaluate_corrected_model(problem,x,corrections=corrections,tr=tr)
             
-            # -----------------------------------------------------------------------------------
-            # Testing Script
-            problem.fidelity_level = 1
-            dx0 = self.difference_interval
-            dx  = np.array([-2,-1,0,1,2])*dx0
-            dar, dwing = np.meshgrid(dx,dx)
-            import pylab as plt
-            grid_res = np.zeros(np.shape(dar))
-            for ii in xrange(5):
-                for jj in xrange(5):
-                    x_loop = x_initial*1.
-                    x_loop[0] = x_initial[0]+dwing[ii,jj]
-                    x_loop[1] = x_initial[1]+dar[ii,jj]
-                    res = self.evaluate_corrected_model(x_loop,problem,corrections,tr)
-                    grid_res[ii,jj] = res[0]             
+            ## -----------------------------------------------------------------------------------
+            ## Testing Script 002
+            #problem.fidelity_level = 1
+            #dx0 = self.difference_interval
+            #dx  = np.array([-2,-1,0,1,2])*dx0
+            #dar, dwing = np.meshgrid(dx,dx)
+            #import pylab as plt
+            #grid_res = np.zeros(np.shape(dar))
+            #for ii in xrange(5):
+                #for jj in xrange(5):
+                    #x_loop = x_initial*1.
+                    #x_loop[0] = x_initial[0]+dwing[ii,jj]
+                    #x_loop[1] = x_initial[1]+dar[ii,jj]
+                    #res = self.evaluate_corrected_model(x_loop,problem,corrections,tr)
+                    #grid_res[ii,jj] = res[0]             
                     
             
-            fig = plt.figure('Results')
-            ax = fig.add_subplot(111)
-            cax = ax.matshow(grid_res)
-            ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
-            ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
-            fig.colorbar(cax)
-            plt.show()                
+            #fig = plt.figure('Results')
+            #ax = fig.add_subplot(111)
+            #cax = ax.matshow(grid_res)
+            #ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+            #ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
+            #fig.colorbar(cax)
+            #plt.show()                
             
-            # -----------------------------------------------------------------------------------            
+            ## -----------------------------------------------------------------------------------            
 
             opt_prob = pyOpt.Optimization('SUAVE',self.evaluate_corrected_model, corrections=corrections,tr=tr)
             
@@ -266,6 +271,33 @@ class Trust_Region_Optimization(Data):
             print 'xOpt_lo = ', xOpt_lo
             print 'gOpt_lo = ', gOpt_lo
            
+            
+            ## -----------------------------------------------------------------------------------
+            ## Testing Script 003
+            #problem.fidelity_level = 1
+            #dx0 = self.difference_interval
+            #dx  = np.array([-2,-1,0,1,2])*dx0
+            #dar, dwing = np.meshgrid(dx,dx)
+            #import pylab as plt
+            #grid_res = np.zeros(np.shape(dar))
+            #for ii in xrange(5):
+                #for jj in xrange(5):
+                    #x_loop = xOpt_lo*1.
+                    #x_loop[0] = xOpt_lo[0]+dwing[ii,jj]
+                    #x_loop[1] = xOpt_lo[1]+dar[ii,jj]
+                    #res = self.evaluate_corrected_model(x_loop,problem,corrections,tr)
+                    #grid_res[ii,jj] = res[0]             
+                    
+            
+            #fig = plt.figure('Results')
+            #ax = fig.add_subplot(111)
+            #cax = ax.matshow(grid_res)
+            #ax.set_xticklabels([0] + (dar+xOpt_lo[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+            #ax.set_yticklabels([0] + (dwing+xOpt_lo[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
+            #fig.colorbar(cax)
+            #plt.show()                
+            
+            ## -----------------------------------------------------------------------------------                   
             
             # Evaluate high-fidelity at optimum
             problem.fidelity_level = np.max(self.fidelity_levels)
