@@ -23,10 +23,10 @@ def propeller_noise_frequency(noise_data):
     number_sections    = noise_data.number_sections               #number of section on the blade
     blades_number      = noise_data.blades_number                  #number of blades
     propeller_diameter = noise_data.propeller_diameter           #propeller diameter [ft]
-    thrust             = np.max(noise_data.thrust)       #Thrust [lbs]
-    hpower             = np.max(noise_data.hpower)    #horsepower [hp]
-    rpm                = np.max(noise_data.rpm)                        #shaft rotation frequency
-    velocity           = np.max(noise_data.velocity)                       #flight speed
+    thrust             = noise_data.thrust       #Thrust [lbs]
+    hpower             = noise_data.hpower   #horsepower [hp]
+    rpm                = noise_data.rpm                      #shaft rotation frequency
+    velocity           = noise_data.velocity                       #flight speed
     
     MCA = 0.5*np.ones(number_sections)  #MCA (midchord of alignment or sweep) of the blade for each section
     FA = np.zeros(number_sections)  #face alignment or offset    
@@ -39,9 +39,10 @@ def propeller_noise_frequency(noise_data):
 
     n_harmonic = noise_data.n_harmonic #Number of harmonics to consider (Default = 10)
     
-    sound_speed = np.max(noise_data.sound_speed) 
-    density = np.max(noise_data.density)
+    sound_speed = noise_data.sound_speed
+    density = noise_data.density
     
+    # Definitions for the method
     p_base=2.0*1e-5  
     zeff = 0.8
     
