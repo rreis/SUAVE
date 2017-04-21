@@ -48,7 +48,7 @@ def wave_drag_lift(conditions,configuration,wing):
     ARL = total_length**2/Sref
     
     # Lift coefficient
-    CL = conditions.aerodynamics.lift_coefficient * 1.0
+    CL = conditions.aerodynamics.lift_coefficient_wing[wing.tag] * 1.0
     
     # Computations
     x = np.pi*ARL/4
@@ -60,9 +60,9 @@ def wave_drag_lift(conditions,configuration,wing):
     
     # Dump data to conditions
     wave_lift_result = Results(
-        reference_area            = Sref   , 
+        reference_area             = Sref   , 
         wave_drag_lift_coefficient = wave_drag_lift ,
-        length_AR                 = ARL,
+        length_AR                  = ARL,
     )
 
     return wave_drag_lift
