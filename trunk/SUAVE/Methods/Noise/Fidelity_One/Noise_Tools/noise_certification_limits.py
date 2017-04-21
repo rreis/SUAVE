@@ -82,5 +82,3 @@ def noise_certification_propeller (noise_data):
         noise_takeoff_limit = 80.00 
         
     return (noise_takeoff_limit)
-    
-    

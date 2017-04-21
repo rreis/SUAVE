@@ -15,20 +15,16 @@ from Landing_Gear import Landing_Gear
 
 class Main_Landing_Gear(Landing_Gear):
     """ SUAVE.Components.Landing_Gear.Nose_Landing_Gear()
-
         Attributes:
-
         Methods:
-
         Assumptions:
-
-
+            if needed
     """
 
     def __defaults__(self):
         self.units         = 0. # number of main landing gear units        
-        self.strut_length  = 0. # lenght of the strut
-        self.tire_diameter = 0. # diameter of the tire
+        self.strut_length  = 0.
+        self.tire_diameter = 0.
         self.units         = 0. # number of main landing gear units
         self.wheels        = 0. # number of wheels on the main landing gear
 

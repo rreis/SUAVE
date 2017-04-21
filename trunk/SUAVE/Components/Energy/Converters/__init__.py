@@ -20,3 +20,6 @@ from Internal_Combustion_Engine import Internal_Combustion_Engine
 import Turbofan_JDM
 import Turbofan_TASOPT
 from Gearbox import Gearbox
+from Supersonic_Nozzle import Supersonic_Nozzle
+from Shaft_Power_Off_Take import Shaft_Power_Off_Take
+from Diesel_Engine import Diesel_Engine
