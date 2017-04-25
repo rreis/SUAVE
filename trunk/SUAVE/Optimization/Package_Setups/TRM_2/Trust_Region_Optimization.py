@@ -140,8 +140,10 @@ class Trust_Region_Optimization(Data):
                 #dx0 = tr_size/2.
                 ##dx  = np.array([-2,-1,0,1,2])*dx0
                 ##dy  = dx
-                #dx  = np.linspace(.9,1.8,10)
-                #dy  = np.linspace(.2,.6,9)
+                ##dx  = np.linspace(1.24,1.26,3)
+                ##dy  = np.linspace(.323,.343,3)
+                #dx  = np.linspace(1.,2.2,5)
+                #dy  = np.linspace(.2,.6,5)                
                 #dar, dwing = np.meshgrid(dy,dx)
                 #import pylab as plt
                 #grid_res = np.zeros(np.shape(dar))
@@ -159,8 +161,8 @@ class Trust_Region_Optimization(Data):
                 #fig = plt.figure('Results')
                 #ax = fig.add_subplot(111)
                 #cax = ax.matshow(grid_res)
-                #ax.set_xticklabels([0] + (dar+x_initial[1])[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
-                #ax.set_yticklabels([0] + (dwing+x_initial[0])[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
+                #ax.set_xticklabels([0] + (dar)[0,:][ax.get_xticks()[1:-1].tolist()].tolist())
+                #ax.set_yticklabels([0] + (dwing)[:,0][ax.get_yticks()[1:-1].tolist()].tolist())
                 #fig.colorbar(cax)
                 #plt.show()                
                 
