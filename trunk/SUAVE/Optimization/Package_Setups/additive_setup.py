@@ -98,6 +98,7 @@ def Additive_Solve(problem,num_fidelity_levels=2,num_samples=5,max_iterations=10
         g_additive_surrogate = g_additive_surrogate_base.fit(x_samples, g_diff)     
         
         ## Plot Surrogates -------------------------------------------------------
+        #import matplotlib.pyplot as plt
         #x1s = np.linspace(lbd[0],ubd[0],10)
         #x2s = np.linspace(lbd[1],ubd[1],10)
         #f_test = np.zeros([len(x1s),len(x2s)])
