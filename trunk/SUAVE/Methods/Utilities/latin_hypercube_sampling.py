@@ -18,7 +18,7 @@ import numpy as np
 #   Latin Hypercube Sampling
 # ----------------------------------------------------------------------
 
-def latin_hypercube_sampling(num_dimensions,num_samples,criterion='random'):
+def latin_hypercube_sampling(num_dimensions,num_samples,bounds=None,criterion='random'):
     
     n = num_dimensions
     samples = num_samples
@@ -43,6 +43,11 @@ def latin_hypercube_sampling(num_dimensions,num_samples,criterion='random'):
         
     ## Map samples to the standard normal distribution (if needed for future functionality)
     #lhd = norm(loc=0,scale=1).ppf(lhd)
+    
+    if bounds != None:
+        lower_bounds = bounds[0]
+        upper_bounds = bounds[1]
+        lhd = lhd*(upper_bounds-lower_bounds) + lower_bounds
 
     return lhd
 
