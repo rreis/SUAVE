@@ -280,7 +280,9 @@ class Sizing_Loop(Data):
             #make sure they're in right format      
             #use y_save2, as it makes derivatives consistent
                 write_sizing_outputs(self, y_save2, problem_inputs)
-                
+        else:
+            converged = 0
+        nexus.sizing_loop.converged = converged
 
         nexus.total_number_of_iterations += i
         nexus.number_of_iterations = i #function calls
