@@ -89,7 +89,7 @@ def compressibility_drag_total(state,settings,geometry):
 
         # Calculate compressibility drag at Mach 0.99 and 1.05 for interpolation between
         (drag99,a,b) = drag_div(np.array([[0.99]] * len(Mc)),wing,k,cl,Sref_main)
-        (drag105,a,b) = wave_drag(conditions, 
+        (drag105,a,b,c,d) = wave_drag(conditions, 
                                   configuration, 
                                   main_fuselage, 
                                   propulsor, 
@@ -104,7 +104,7 @@ def compressibility_drag_total(state,settings,geometry):
 
         # Use wave drag equations at supersonic values. The cutoff for this function is 1.05
         # Only the supsonic results are returned with nonzero values
-        (cd_c_sup,mcc_sup,MDiv_sup) = wave_drag(conditions, 
+        (cd_c_sup,mcc_sup,MDiv_sup,cd_c_l,cd_c_v) = wave_drag(conditions, 
                                                 configuration, 
                                                 main_fuselage, 
                                                 propulsor, 
@@ -117,6 +117,8 @@ def compressibility_drag_total(state,settings,geometry):
         # Dump data to conditions
         wing_results = Results(
             compressibility_drag      = cd_c    ,
+            volume_wave_drag          = cd_c_v  ,
+            lift_wave_drag            = cd_c_l  ,
             crest_critical            = mcc     ,
             divergence_mach           = MDiv    ,
         )
@@ -144,13 +146,20 @@ def compressibility_drag_total(state,settings,geometry):
 
     # Dump total comp drag
     total_compressibility_drag = 0.0
+    total_volume_wave_drag     = 0.0
+    total_lift_wave_drag       = 0.0
         
     for k in wings.keys():
         total_compressibility_drag = drag_breakdown.compressible[k].compressibility_drag + total_compressibility_drag
+        total_volume_wave_drag     = drag_breakdown.compressible[k].volume_wave_drag + total_volume_wave_drag
+        total_lift_wave_drag       = drag_breakdown.compressible[k].lift_wave_drag + total_lift_wave_drag
         
     total_compressibility_drag = total_compressibility_drag + fuse_drag
     total_compressibility_drag = total_compressibility_drag + prop_drag
+    total_volume_wave_drag     = total_volume_wave_drag + fuse_drag + prop_drag
     drag_breakdown.compressible.total = total_compressibility_drag
+    drag_breakdown.compressible.total_volume = total_volume_wave_drag
+    drag_breakdown.compressible.total_lift   = total_lift_wave_drag
 
     return total_compressibility_drag
 
@@ -229,8 +238,10 @@ def wave_drag(conditions,configuration,main_fuselage,propulsor,wing,num_engines,
         conditions.freestream.mach_number = np.array([[1.05]] * len(Mc))
         mach = conditions.freestream.mach_number
 
-    # Initalize cd array
+    # Initalize cd arrays
     cd_c = np.array([[0.0]] * len(mach))
+    cd_c_l = np.array([[0.0]] * len(mach)) # lift wave drag
+    cd_c_v = np.array([[0.0]] * len(mach)) # vol wave drag
 
     # Calculate wing values at all mach numbers
     # Note that these functions arrange the supersonic values at the beginning of the array
@@ -239,10 +250,14 @@ def wave_drag(conditions,configuration,main_fuselage,propulsor,wing,num_engines,
 
     # Pack supersonic results into correct elements
     cd_c[mach >= 1.05] = cd_lift_wave[0:len(mach[mach >= 1.05]),0] + cd_volume_wave[0:len(mach[mach >= 1.05]),0]
+    cd_c_l[mach >= 1.05] = cd_lift_wave[0:len(mach[mach >= 1.05]),0]
+    cd_c_v[mach >= 1.05] = cd_volume_wave[0:len(mach[mach >= 1.05]),0]
 
     # Convert coefficient to full aircraft value
     if k != 'main_wing':
         cd_c = cd_c*wing.areas.reference/Sref_main
+        cd_c_l = cd_c_l*wing.areas.reference/Sref_main
+        cd_c_v = cd_c_v*wing.areas.reference/Sref_main
 
     # Include fuselage and propulsors for one iteration
 
@@ -253,7 +268,7 @@ def wave_drag(conditions,configuration,main_fuselage,propulsor,wing,num_engines,
     # Reset mach number to real values
     conditions.freestream.mach_number = Mc
 
-    return (cd_c,mcc,MDiv)
+    return (cd_c,mcc,MDiv,cd_c_l,cd_c_v)
 
 def wave_drag_body_of_rev(total_length,Rmax,Sref):
 
