@@ -8,7 +8,7 @@ from SUAVE.Core import Units, Data
 from SUAVE.Optimization import helper_functions as help_fun
 from SUAVE.Methods.Utilities.latin_hypercube_sampling import latin_hypercube_sampling
 
-def Additive_Solve(problem,num_fidelity_levels=2,num_samples=5,max_iterations=10):
+def Additive_Solve(problem,num_fidelity_levels=2,num_samples=10,max_iterations=10):
     
     if num_fidelity_levels != 2:
         raise NotImplementedError
@@ -63,17 +63,17 @@ def Additive_Solve(problem,num_fidelity_levels=2,num_samples=5,max_iterations=10
     up_edge  = np.array(up_edge)         
     low_edge = np.array(low_edge)     
     
-    x_samples = latin_hypercube_sampling(len(x),num_samples,bounds=(lbd,ubd))
+    x_samples = latin_hypercube_sampling(len(x),num_samples,bounds=(lbd,ubd),criterion='center')
     
-    ## Plot samples -----------------------------------------
-    #import matplotlib.pyplot as plt
-    #fig = plt.figure("2D Test Case",figsize=(8,6))
-    #axes = plt.gca()
-    #axes.scatter(x_samples[:,0],x_samples[:,1])
-    #axes.set_xticks(np.linspace(lbd[0],ubd[0],num_samples+1))
-    #axes.set_yticks(np.linspace(lbd[1],ubd[1],num_samples+1))
-    #axes.grid()    
-    ## ------------------------------------------------------
+    # Plot samples -----------------------------------------
+    import matplotlib.pyplot as plt
+    fig = plt.figure("2D Test Case",figsize=(8,6))
+    axes = plt.gca()
+    axes.scatter(x_samples[:,0],x_samples[:,1])
+    axes.set_xticks(np.linspace(lbd[0],ubd[0],num_samples+1))
+    axes.set_yticks(np.linspace(lbd[1],ubd[1],num_samples+1))
+    axes.grid()    
+    # ------------------------------------------------------
     
     
     f = np.zeros([num_fidelity_levels,num_samples])
@@ -97,32 +97,32 @@ def Additive_Solve(problem,num_fidelity_levels=2,num_samples=5,max_iterations=10
         g_additive_surrogate_base = gaussian_process.GaussianProcess()
         g_additive_surrogate = g_additive_surrogate_base.fit(x_samples, g_diff)     
         
-        ## Plot Surrogates -------------------------------------------------------
-        #import matplotlib.pyplot as plt
-        #x1s = np.linspace(lbd[0],ubd[0],10)
-        #x2s = np.linspace(lbd[1],ubd[1],10)
-        #f_test = np.zeros([len(x1s),len(x2s)])
-        #g_test = np.zeros([len(x1s),len(x2s)])
-        #for ii,x1 in enumerate(x1s):
-            #for jj,x2 in enumerate(x2s):
-                #f_test[ii,jj] = f_additive_surrogate.predict([x1,x2])
-                #g_test[ii,jj] = g_additive_surrogate.predict([x1,x2])
+        # Plot Surrogates -------------------------------------------------------
+        import matplotlib.pyplot as plt
+        x1s = np.linspace(lbd[0],ubd[0],10)
+        x2s = np.linspace(lbd[1],ubd[1],10)
+        f_test = np.zeros([len(x1s),len(x2s)])
+        g_test = np.zeros([len(x1s),len(x2s)])
+        for ii,x1 in enumerate(x1s):
+            for jj,x2 in enumerate(x2s):
+                f_test[ii,jj] = f_additive_surrogate.predict([x1,x2])
+                g_test[ii,jj] = g_additive_surrogate.predict([x1,x2])
                 
-        #fig = plt.figure('Objective Additive Surrogate Plot')    
-        #CS = plt.contourf(x2s,x1s,f_test, linewidths=2)
-        #cbar = plt.colorbar(CS)
-        #cbar.ax.set_ylabel('F Surrogate')
-        #plt.xlabel('Aspect Ratios')
-        #plt.ylabel('Wing Areas')   
+        fig = plt.figure('Objective Additive Surrogate Plot')    
+        CS = plt.contourf(x2s,x1s,f_test, linewidths=2)
+        cbar = plt.colorbar(CS)
+        cbar.ax.set_ylabel('F Surrogate')
+        plt.xlabel('Aspect Ratios')
+        plt.ylabel('Wing Areas')   
         
-        ## This will only plot properly if there is only one constraint
-        #fig = plt.figure('Constraint Additive Surrogate Plot')    
-        #CS = plt.contourf(x2s,x1s,g_test, linewidths=2)
-        #cbar = plt.colorbar(CS)
-        #cbar.ax.set_ylabel('G Surrogate')
-        #plt.xlabel('Aspect Ratios')
-        #plt.ylabel('Wing Areas')       
-        ## -----------------------------------------------------------------------
+        # This will only plot properly if there is only one constraint
+        fig = plt.figure('Constraint Additive Surrogate Plot')    
+        CS = plt.contourf(x2s,x1s,g_test, linewidths=2)
+        cbar = plt.colorbar(CS)
+        cbar.ax.set_ylabel('G Surrogate')
+        plt.xlabel('Aspect Ratios')
+        plt.ylabel('Wing Areas')       
+        # -----------------------------------------------------------------------
         
         # Optimize corrected model
         
