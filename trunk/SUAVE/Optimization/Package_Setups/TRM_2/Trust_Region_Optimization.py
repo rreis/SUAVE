@@ -55,6 +55,11 @@ class Trust_Region_Optimization(Data):
         bnd = inp[:,2] # Bounds
         scl = inp[:,3] # Scale
         typ = inp[:,4] # Type
+        
+        # History writing
+        f_out = open('TRM_hist.txt','w')
+        import datetime
+        f_out.write(str(datetime.datetime.now())+'\n')        
     
         # Pull out the constraints and scale them
         bnd_constraints = help_fun.scale_const_bnds(con)
@@ -120,6 +125,12 @@ class Trust_Region_Optimization(Data):
             #self.assign_to_trust_region_history(iterations,tr_index,trc,tr_size)
             tr.set_center(x)
             
+            # History writing
+            f_out.write('Iteration ----- ' + str(iterations) + '\n')
+            f_out.write('x0_center: ' + str(x[0]) + '\n')
+            f_out.write('x1_center: ' + str(x[1]) + '\n')
+            f_out.write('tr size  : ' + str(tr.size) + '\n')            
+            
             xOpt = np.zeros(np.shape(x))
             fOpt = None
             gOpt = np.zeros(np.shape(scaled_constraints))
@@ -135,6 +146,13 @@ class Trust_Region_Optimization(Data):
                 df[level-1] = res[1]    # objective derivate vector
                 g[level-1]  = res[2]    # constraints vector
                 dg[level-1] = res[3]    # constraints jacobian
+                # History writing
+                f_out.write('Level    : ' + str(level) + '\n')
+                f_out.write('f        : ' + str(res[0][0]) + '\n')
+                f_out.write('df0      : ' + str(res[1][0]) + '\n')
+                f_out.write('df1      : ' + str(res[1][1]) + '\n') 
+                f_out.write('f for df0: ' + str(res[1][0]*self.difference_interval+res[0][0]) + '\n')
+                f_out.write('f for df1: ' + str(res[1][1]*self.difference_interval+res[0][0]) + '\n')
                 ## -----------------------------------------------------------------------------------
                 ## Testing Script 001
                 #dx0 = tr_size/2.
@@ -266,8 +284,9 @@ class Trust_Region_Optimization(Data):
             
             success_indicator = outputs[2]['value'][0]
             # hard convergence check
-            if (success_indicator==1 and np.sum(np.isclose(xOpt_lo,xOpt,rtol=1e-14,atol=1e-12))==len(x)):
+            if (success_indicator==1 and np.sum(np.isclose(xOpt_lo,x,rtol=1e-14,atol=1e-12))==len(x)):
                 print 'Hard convergence reached'
+                f_out.close()
                 return outputs
             print 'fOpt_lo = ', fOpt_lo
             print 'xOpt_lo = ', xOpt_lo
@@ -341,6 +360,7 @@ class Trust_Region_Optimization(Data):
                     break
                 ind1 += 1
             if( converged and len(self.relative_difference_history) >= tr.soft_convergence_limit):
+                f_out.close()
                 print 'Soft convergence reached'
                 return outputs     
             
@@ -385,13 +405,21 @@ class Trust_Region_Optimization(Data):
             # Terminate if trust region too small
             if( tr.size < tr.minimum_size ):
                 print 'Trust region too small'
+                f_out.close()
                 return -1
             
             # Terminate if solution is infeasible, no change is detected, and trust region does not expand
             if( success_indicator == 13 and tr_action < 3 and \
                 np.sum(np.isclose(xOpt,x,rtol=1e-15,atol=1e-14)) == len(x) ):
                 print 'Solution infeasible, no improvement can be made'
+                f_out.close()
                 return -1       
+            
+            # History writing
+            f_out.write('x0 opt   : ' + str(xOpt_lo[0]) + '\n')
+            f_out.write('x1 opt   : ' + str(xOpt_lo[1]) + '\n')
+            f_out.write('low obj  : ' + str(fOpt_lo[0][0]) + '\n')
+            f_out.write('hi  obj  : ' + str(fOpt_hi[0]) + '\n')              
             
             # Update Trust Region Center
             if accepted == 1:
@@ -400,13 +428,14 @@ class Trust_Region_Optimization(Data):
                 trc = xOpt_lo
             else:
                 aa = 0
-                pass
+                pass          
             
             print iterations
             print x
             print fOpt_hi
             aa = 0
-            
+        
+        f_out.close()
         print 'Max iteration limit reached'
         return (fOpt,xOpt)
             

@@ -13,6 +13,11 @@ def Additive_Solve(problem,num_fidelity_levels=2,num_samples=10,max_iterations=1
     if num_fidelity_levels != 2:
         raise NotImplementedError
     
+    # History writing
+    f_out = open('add_hist.txt','w')
+    import datetime
+    f_out.write(str(datetime.datetime.now())+'\n')
+    
     inp = problem.optimization_problem.inputs
     obj = problem.optimization_problem.objective
     con = problem.optimization_problem.constraints 
@@ -158,6 +163,10 @@ def Additive_Solve(problem,num_fidelity_levels=2,num_samples=10,max_iterations=1
         gOpt = np.zeros([1,len(con)])[0]
         
         if kk == (max_iterations-1):
+            f_out.write('Iteration: ' + str(kk+1) + '\n')
+            f_out.write('x0      : ' + str(xOpt[0]) + '\n')
+            f_out.write('x1      : ' + str(xOpt[1]) + '\n')
+            f_out.write('expd hi : ' + str(fOpt[0]) + '\n')
             print 'Iteration Limit Reached'
             break
         
@@ -170,10 +179,20 @@ def Additive_Solve(problem,num_fidelity_levels=2,num_samples=10,max_iterations=1
             f[level-1][-1] = res[0]
             g[level-1][-1] = res[1]
             
+        # History writing
+        f_out.write('Iteration: ' + str(kk+1) + '\n')
+        f_out.write('x0      : ' + str(xOpt[0]) + '\n')
+        f_out.write('x1      : ' + str(xOpt[1]) + '\n')
+        f_out.write('expd hi : ' + str(fOpt[0]) + '\n')
+        f_out.write('low obj : ' + str(f[0][-1]) + '\n')
+        f_out.write('hi  obj : ' + str(f[1][-1]) + '\n')
+            
         pass
     
-    
-    return (fOpt,xOpt)
+    np.save('x_samples.npy',x_samples)
+    f_out.close()
+    print f[1][-1],xOpt
+    return (f[1][-1],xOpt)
     
     
 def evaluate_model(problem,x,cons,der_flag=True):
